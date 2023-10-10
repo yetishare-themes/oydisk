@@ -1,0 +1,78 @@
+{% extends "partial/oydisk_layout.html.twig" %}
+
+{% block title %}{{ t("dmca_page_name", "DMCA") }}{% endblock %}
+{% block description %}{{ t("privacy_meta_description", "dmca.") }}{% endblock %}
+{% block keywords %}{{ t("privacy_meta_keywords", "dmca, copyright, file, hosting, site") }}{% endblock %}
+
+{% block body %}
+		<section class="ptb-120 justify-content-center bg-image">
+            <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg')repeat center center;opacity: 1;"></div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-8">
+                        <div class="hero-content-left text-white text-center">
+                            <h2 class="text-white">Copyright / DMCA</h2>
+                            <p class="lead">Prohibited contents will lead to immediate account suspension and reporting to appropriate authorites</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>	
+        <section class="privacy-policy ptb-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="content-with-sidebar">
+                            <div class="section-heading">
+                                <p>{{ SITE_CONFIG_SITE_NAME }} is an Internet Service Provider, {{ SITE_CONFIG_SITE_NAME }} complies with industry standards in the fields of copyright law including Intellectual Property Rights. {{ SITE_CONFIG_SITE_NAME }} responds promptly to claims of copyright infringement reported to its copyright ATT tool. {{ SITE_CONFIG_SITE_NAME }} shall accommodate and not interfere with standard technical measures used to identify and protect copyrighted works and shall disable access to or remove Content that it believes in good faith may infringe the copyrights of third parties as well as discontinue Service to users who repeatedly make such content available or otherwise violate {{ SITE_CONFIG_SITE_NAME }} User Agreement and supplemental policies.</p>
+                            </div>
+                            <div class="pt-5">
+                                <h5>Online Service Provider</h5>
+                                <p>{{ SITE_CONFIG_SITE_NAME }} is an Online Service Provider rendering automatic Services (as set by Art. 2 of the User Agreement). Therefore it does not own, publish or distribute any Content uploaded by users.</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>User's right to dispose access to Content</h5>
+                                <p>The decision how to utilize the access to the uploaded Content is made exclusively by uploading user upon his rights to Content.</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>Absence of index</h5>
+                                <p>{{ SITE_CONFIG_SITE_NAME }} is technically unable to index the vast amount of Content being uploaded or stored at the servers of {{ SITE_CONFIG_SITE_NAME }}.</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>Automated filtering</h5>
+                                <p>{{ SITE_CONFIG_SITE_NAME }} has implemented automated filtering for shared Content to avert infringing of the User Agreement and supplemental polices. Upon the results of filtering recognized copyrighted and/or infringing Content shall be withheld from sharing. Such automated filtering is considered a supplementary measure and does not guarantee complete and accurate recognition of all infringing Content therefore it does not free copyright owner from the duty of identifying own copyrights being infringed.</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>Content privacy</h5>
+                                <p>Any Content accessible exclusively via private account within the terms of NitroStorage services is private and thus presumed fair use unless validly stated otherwise by rightful party.</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>No authority to make judgment of Content</h5>
+                                <p>Without distinct Copyright owner's notification {{ SITE_CONFIG_SITE_NAME }} has no authority to make judgment whether each user is competent to upload Content to its servers (e.g. whether such user is the owner of work, or is authorized a proxy of the owner; whether the Content is uploaded for personal use; whether the copyright has expired; or if the Content is used under fair use, etc.) Any Content is considered as consistent with User Agreement unless otherwise notified by Copyright owner or any other authorized person in each particular case.</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>Content availability</h5>
+                                <p>The Content is considered available and unremoved only upon the ability of successful downloading of whole intact files constituting such Content. Due to technical reasons {{ SITE_CONFIG_SITE_NAME }} URLs database may experience lags, which may cause existence of URLs indicating removed or non-existing Content. Such URLs do not lead to Content and download attempts shall be denied by notification of a relevant error message.</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>File name</h5>
+                                <p>Files are named by user at own discretion for personal convenience. File names may uninformative, as well as human-readable, or supposedly descriptive of the alleged Content. However the Content cannot be characterized for the file name. Identification of the Content is only made upon accessing such Content in its entirety regardless of file names.</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>Plain text</h5>
+                                <p>Any messages, including Takedown notices are accepted as plain text. Any enclosed attachments are not opened or examined due to security reasons. The attachments shall be processed only if sent on demand of receiving party.</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>Delivering of Takedown notices</h5>
+                                <p>Complaining party is authorized to send its request by any of the means set below. {{ SITE_CONFIG_SITE_NAME }} is considered informed of the infringement upon its reply to the notification. If no reply is sent within reasonable term, {{ SITE_CONFIG_SITE_NAME }} advices to use other means of communication, as unreplied Takedown notices are deemed lost due to technical reasons (e.g. blocked as SPAM, subject to denial of service, lost due to software error etc.)</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>Copyright infringement ticket system</h5>
+                                <p>{{ SITE_CONFIG_SITE_NAME }} recommends to file Takedown notices using the integrated copyright infringement ticketing system which provides quick and reliable means of processing notifications. Copyright infringement ticketing system is accessible.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% endblock %}

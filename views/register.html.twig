@@ -1,0 +1,112 @@
+{% extends "partial/oydisk_layout_account.html.twig" %}
+
+{% block title %}{{ trialUser == false?t("register_page_name", "Register"):t("register_page_name_temp_account", "Convert Temp Account") }}{% endblock %}
+{% block description %}{{ t("register_meta_description", "Register for an account") }}{% endblock %}
+{% block keywords %}{{ t("register_meta_keywords", "register, account, short, url, user") }}{% endblock %}
+
+{% block body %}
+<section class="ptb-120 justify-content-center full-height bg-image">
+    <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg') repeat center center;opacity: 1;"></div>
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <div class="login-signup-wrap p-5 gray-light-bg rounded shadow">
+                        <div class="login-signup-header text-center">
+                            <a class="navbar-brand pt-0" href="{{ CORE_SITE_PATH }}"><img style="max-height: 1.85714286em;" src="{{ theme.getMainLogoUrl() }}" alt="logo"/></a>
+                            <h4 class="mb-2">{{ trialUser == false?t("create_your_Account", "Create Your Account"):t("register_page_name_temp_account", "Convert Temp Account") }}</h4>
+							{% if msg_page_errors is defined %}
+                    <div class="alert alert-danger">
+                        <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;{% if msg_page_errors is defined %}{{ msg_page_errors|join('. ') }}{% endif %}
+                    </div>
+                    {% endif %}
+                        </div>
+                        <form class="login-signup-form" method="post" role="form" id="form_login" action="{{ CORE_SITE_PATH }}/register" autocomplete="off">
+						
+							<div class="form-group" style="display:none">
+                                <select autofocus="autofocus" class="form-control" tabindex="1" id="title" name="title">
+                                    <option value="" selected>{{ t("title", "title") }}</option>
+                                    {% for value in titleOptions %}
+                                        <option value="Mr" {{ (title == value) ? 'SELECTED' : '' }}>{{ t('title_'~value, value) }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="pb-1">First Name</label>
+                                <input class="form-control" name="firstname" id="firstname" type="text" placeholder="Enter you first name" autocomplete="off" value="{{ firstname }}"/> 
+                            </div>
+							<div class="form-group">
+                                <label class="pb-1">Last Name</label>
+								<input class="form-control" name="lastname" id="lastname" type="text" placeholder="Enter you last name" autocomplete="off" value="{{ lastname }}"/>
+                            </div>
+							<div class="form-group">
+                                <label class="pb-1">Username</label>
+                                <div class="input-group input-group-merge">
+                                    <div class="input-icon">
+                                        <span class="ti-user"></span>
+                                    </div>
+									 <input class="form-control" name="username" id="username" type="text" placeholder="Enter you username" autocomplete="off" value="{{ username }}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="pb-1">
+                                    Email Address
+                                </label>
+                                <div class="input-group input-group-merge">
+                                    <div class="input-icon">
+                                        <span class="ti-email"></span>
+                                    </div>
+									<input class="form-control" name="emailAddress" id="emailAddress" type="email" placeholder="name@address.com" autocomplete="off" value="{{ emailAddress }}"/>
+                                </div>
+                            </div>
+							{% if SITE_CONFIG_REGISTER_FORM_ALLOW_PASSWORD == 'yes' %}
+                            <div class="form-group">
+                                <label class="pb-1">Password</label>
+                                <div class="input-group input-group-merge">
+                                    <div class="input-icon">
+                                        <span class="ti-lock"></span>
+                                    </div>
+									<input class="form-control" name="password" id="password" type="password" placeholder="{{ t("enter_password", "Enter Password")|title }}" autocomplete="off" value="{{ password }}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="pb-1">Repeat Password</label>
+                                <div class="input-group input-group-merge">
+                                    <div class="input-icon">
+                                        <span class="ti-lock"></span>
+                                    </div>
+									<input class="form-control" name="password2" id="password2" type="password" placeholder="{{ t("enter_repeat_password", "Enter repeat password")|title }}" autocomplete="off" value="{{ password }}"/>
+                                </div>
+                            </div>
+							{% endif %}
+                            {% if SITE_CONFIG_REGISTER_FORM_SHOW_CAPTCHA == 'yes' %}
+                            <div class="col-md-12">
+                                <div class="input-group" style="display: block; overflow: hidden;">
+                                    {{ CoreHelper.outputCaptcha()|raw }}
+                                </div>
+                            </div>
+                            {% endif %}	
+                            <button class="btn btn-block btn-brand-02 border-radius mt-4 mb-3" type="submit">
+                                {{ trialUser == false?t("register_page_name", "Register"):t("register_page_name_temp_account", "Convert Temp Account") }}
+                            </button>
+							<input type="hidden" value="1" name="submitme"/>
+                        </form>
+                        <div class="other-login-signup my-3">
+                            <div class="or-login-signup text-center">
+                                <strong>Or Sign Up With</strong>
+                            </div>
+                        </div>
+                        {{ HookLoginLoginBoxHtml|raw }}
+                        <p class="text-center mb-0">Already have an account? <a href="{{ CORE_SITE_PATH }}/account/login">{{ t("login", "login")|title }}</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="copyright-wrap small-text text-center mt-5 text-white">
+                        <p class="mb-0">{{ t("copyright", "copyright")|title }} &copy; {{ "now"|date("Y") }} - {{ SITE_CONFIG_SITE_NAME }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

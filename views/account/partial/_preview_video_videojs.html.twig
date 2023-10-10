@@ -1,0 +1,116 @@
+<link href="https://vjs.zencdn.net/7.17.0/video-js.css" rel="stylesheet" />
+<link href="{{ WEB_ROOT }}/plugins/filepreviewer/assets/players/videojs/videojs.vast.vpaid.min.css" rel="stylesheet" />
+<video
+    id="main-video"
+    class="video-js vjs-default-skin vjs-big-play-centered {{ IS_EMBED is defined ? 'vjs-fill' : 'vjs-16-9' }}"
+    controls 
+    preload="auto" 
+    poster="{{ videoThumbnail|raw }}"
+    data-setup='{}'
+>
+    <source src="{{ downloadUrlForMedia|raw }}" type="video/mp4" />
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a
+      web browser that
+      <a href="https://videojs.com/html5-video-support/" target="_blank"
+        >supports HTML5 video</a
+      >
+    </p>
+</video>
+
+<script src="https://vjs.zencdn.net/7.17.0/video.min.js"></script>
+<script src="{{ WEB_ROOT }}/plugins/filepreviewer/assets/players/videojs/videojs_5.vast.vpaid.min.js"></script>
+
+<script type="text/javascript">
+var shouldTrackPlayedTime = {{ ackPercentage > 0 ? 'true' : 'false' }};
+var ackPercentage = {{ ackPercentage|number_format }};
+var playedTimeTracker = null;
+var mediaTotalDuration = -1;
+var totalPlayedTime = 0;
+var isPlaying = false;
+
+function waitForFn(fnName, fnCall) {
+    var fn;
+    try {
+        eval("fn = " + fnName);
+        if(fn){
+            fnCall();
+        } else{
+            setTimeout(function(){waitForFn(fnName, fnCall);}, 50);
+        }
+    } catch(e){
+        setTimeout(function(){waitForFn(fnName, fnCall);}, 50);
+    }
+}
+
+$(document).ready(function() {
+    waitForFn('videojs', function() {
+        videojs.plugin('ads-setup', function (opts) {
+            var player = this;
+            var adsCancelTimeout = 3000;
+
+            var vastAd = player.vastClient({
+              //Media tag URL
+              adTagUrl: "http://pubads.g.doubleclick.net/gampad/ads?env=....",
+              playAdAlways: true,
+              //Note: As requested we set the preroll timeout at the same place than the adsCancelTimeout
+              adCancelTimeout: adsCancelTimeout,
+              adsEnabled: !!options.adsEnabled
+            });
+        });
+
+        videojs('main-video').on("play", function () {
+            isPlaying = true;
+        });
+        
+        videojs('main-video').on("pause", function () {
+            isPlaying = false;
+        });
+        
+        // track total played in seconds
+        playedTimeTracker = setInterval(trackPlayedTime, 5000);
+    });
+});
+
+function trackPlayedTime() {
+    if (shouldTrackPlayedTime == false) {
+        // stop any future attempts of the timer
+        clearInterval(playedTimeTracker);
+        return false;
+    }
+
+    if (isPlaying == true) {
+        // track actual played time
+        totalPlayedTime = totalPlayedTime + 5;
+    }
+
+    if (mediaTotalDuration == -1) {
+        // get total video length
+        mediaTotalDuration = Math.round(videojs('main-video').duration());
+    } 
+    else {
+        // calculate percentage
+        percent = 0;
+        if (totalPlayedTime > 0) {
+            percent = (parseInt(totalPlayedTime) / parseInt(mediaTotalDuration)) * 100;
+        }
+
+        // should we log yet?
+        if (percent >= ackPercentage) {
+            // clear for next time
+            shouldTrackPlayedTime = false;
+            // log PPD
+            $.ajax({
+                method: "POST",
+                url: "{{ WEB_ROOT }}/rewards/media_log_download_callback",
+                data: {
+                    fileId: "{{ file.id }}",
+                    tracker: "{{ downloadUrlForMediaBase64|raw }}",
+                    percent: percent
+                }
+            });
+        }
+    }
+}
+</script>
+

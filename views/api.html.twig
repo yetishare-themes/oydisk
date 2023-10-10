@@ -1,0 +1,23 @@
+{% extends "partial/layout.html.twig" %}
+
+{% block title %}{{ t("api_page_name", "API") }}{% endblock %}
+{% block description %}{{ t("api_meta_description", "Use our API to access your account upload files.") }}{% endblock %}
+{% block keywords %}{{ t("api_meta_keywords", "api, upload, download, file, hosting") }}{% endblock %}
+
+{% block body %}
+    <section>
+        <div class="container form-full-width">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>{{ t("api_page_name", "API") }}</h1>
+                    <hr>
+                </div>
+            </div>
+            <div class="row justify-content-between link-checker">
+                <div class="col-md-12">
+                    {% include '@corePath/partial/_api_documentation.html.twig' %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

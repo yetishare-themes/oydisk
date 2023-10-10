@@ -1,0 +1,344 @@
+<div class="preLoadImages hidden">
+    <img src="{{ theme.getAccountImagePath() }}/delete_small.png" height="1" width="1"/>
+    <img src="{{ theme.getAccountImagePath() }}/add_small.gif" height="1" width="1"/>
+    <img src="{{ theme.getAccountImagePath() }}/red_error_small.png" height="1" width="1"/>
+    <img src="{{ theme.getAccountImagePath() }}/green_tick_small.png" height="1" width="1"/>
+    <img src="{{ theme.getAccountImagePath() }}/processing_small.gif" height="1" width="1"/>
+</div>
+
+<div>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <ul class="nav nav-tabs bordered">
+        <li class="active"><a id="tabFileUpload" href="#fileUpload" data-toggle="tab">{{ t('file_upload', 'file upload')|upper }}</a></li>
+        {% if UserHelper.userTypeCanUseRemoteUrlUpload() == true %}
+        <li><a id="tabUrlUpload" href="#urlUpload" data-toggle="tab">{{ t('remote_url_upload', 'remote url upload')|upper }}</a></li>
+        {% endif %}
+        
+        {% if fileManagerPluginTabs|length > 0 %}
+            {% for k,fileManagerPluginTab in fileManagerPluginTabs %}
+                {% for k,tab in fileManagerPluginTab %}
+                <li>
+                    <a id="tab{{ tab['anchor'] }}" href="#{{ tab['anchor'] }}" data-toggle="tab" {{ tab['onclick']|length > 0 ? ('onclick='~tab['onclick']|raw) : '' }}>
+                        {{ tab['label']|upper }}
+                    </a>
+                </li>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+    <!-- FILE UPLOAD -->
+    <div class="tab-content">
+        <div id="fileUpload" class="tab-pane active">
+            <div class="fileUploadMain">
+                <div {% if userAllowedToUpload == false %}onClick="alert('{{ t('index_uploading_disabled', 'Error: Uploading has been disabled.') }}'); return false;"{% endif %}>
+                    <!-- uploader -->
+                    <div id="uploaderContainer" class="uploader-container">
+                        <div id="uploader">
+                            <form action="{{ uploadAction }}" method="POST" enctype="multipart/form-data">
+                                <div class="fileupload-buttonbar hiddenAlt">
+                                    <label class="fileinput-button">
+                                        <span>{{ t('add_files', 'Add files...') }}</span>
+                                        {% if userAllowedToUpload == true and uploadAction != null %}
+                                            <input id="add_files_btn" type="file" name="files[]" multiple/>
+                                        {% endif %}
+                                    </label>
+                                    <button id="start_upload_btn" type="submit" class="start">{{ t('start_upload', 'Start upload') }}</button>
+                                    <button id="cancel_upload_btn" type="reset" class="cancel">{{ t('cancel_upload', 'Cancel upload') }}</button>
+                                </div>
+                                <div class="fileupload-content">
+                                    <label for="add_files_btn" id="initialUploadSectionLabel">
+                                        <div id="initialUploadSection" class="initialUploadSection"{% if currentBrowserIsIE == false %} onClick="$('#add_files_btn').click();
+                                                    return false;"{% endif %}>
+                                            <div class="initialUploadText">
+                                                <div class="uploadElement">
+                                                    <div class="internal">
+                                                        <img src="{{ theme.getAccountImagePath() }}/modal_icons/upload-computer-icon{{ uploadAction == null?'-disabled':'' }}.png" class="upload-icon-image"/>
+                                                        <div class="clear"><!-- --></div>
+                                                        {% if uploadAction != null %}
+                                                            {% if currentBrowserIsIE == true %}
+                                                                {{ t('click_here_to_browse_your_files', 'Click here to browse your files...') }}
+                                                            {% else %}
+                                                                {{ t('drag_and_drop_files_here_or_click_to_browse', 'Drag & drop files here or click to browse...')|raw }}
+                                                            {% endif %}
+                                                        {% else %}
+                                                            {{ t('index_uploading_uploading_unavailable_no_active_storage_servers_found', 'Uploading unavailable, no active storage servers found') }}
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="uploadFooter">
+                                                <div class="baseText">
+                                                    <a class="showAdditionalOptionsLink">{{ t('options', 'options')|title }}</a>&nbsp;&nbsp;|&nbsp;&nbsp;{{ t('max_file_size', 'Max file size') }}: {{ maxUploadSize > 0 ? maxUploadSizeBoth : t('any', 'Any') }}.{% if acceptedFileTypesStr|length > 0 %} <span title="{{ acceptedFileTypesStr }}">{{ t('allowed_file_types', 'Allowed file types') }} : {{ acceptedFileTypesStr }}</span>{% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="clear"><!-- --></div>
+                                        </div>
+                                    </label>
+                                    <div id="fileListingWrapper" class="fileListingWrapper hidden">
+                                        <div class="fileSection">
+                                            <div id="files" class="files"></div>
+                                            <div id="addFileRow" class="addFileRow">
+                                                <div class="template-upload template-upload-img">
+                                                    <a href="#"{% if currentBrowserIsIE == false %} onClick="$('#add_files_btn').click(); return false;"{% endif %}>
+                                                        <i class="glyphicon glyphicon-plus"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="clear"></div>
+                                        </div>
+
+                                        <div id="processQueueSection" class="fileSectionFooterText">
+                                            <div class="upload-button">
+                                                <button onClick="$('#start_upload_btn').click(); return false;" class="btn btn-green btn-lg" type="button">{{ t("set_upload_queue", "Upload Queue") }} <i class="entypo-upload"></i></button>
+                                            </div>
+                                            <div class="baseText">
+                                                <a class="showAdditionalOptionsLink">{{ t('options', 'options')|title }}</a>&nbsp;&nbsp;|&nbsp;&nbsp;{{ t('max_file_size', 'Max file size') }}: {{ maxUploadSize > 0 ? maxUploadSizeBoth : t('any', 'Any') }}.{% if acceptedFileTypesStr|length > 0 %} <span title="{{ acceptedFileTypesStr }}">{{ t('allowed_file_types', 'Allowed file types') }} : {{ acceptedFileTypesStr }}</span>{% endif %}
+                                            </div>
+                                            <div class="clear"><!-- --></div>
+                                        </div>
+
+                                        <div id="processingQueueSection" class="fileSectionFooterText hidden">
+                                            <div class="globalProgressWrapper">
+                                                <div id="progress" class="progress progress-striped active">
+                                                    <div style="width: 0%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" role="progressbar" class="progress-bar progress-bar-info">
+                                                        <span class="sr-only"></span>
+                                                    </div>
+                                                </div>
+                                                <div id="fileupload-progresstext" class="fileupload-progresstext">
+                                                    <div id="fileupload-progresstextRight" class="file-upload-progress-right"><!-- --></div>
+                                                    <div id="fileupload-progresstextLeft" class="file-upload-progress-left"><!-- --></div>
+                                                </div>
+                                            </div>
+                                            <div class="clear"><!-- --></div>
+                                            <div class="upload-button">
+                                                <button id="cancel_upload_btn" class="btn btn-default btn-lg" type="button" onclick="return cancellAllUploads();">{{ t("cancel_uploads", "Cancel Uploads") }}</i></button>
+                                                <button id="hide_modal_btn" data-dismiss="modal" class="btn btn-default btn-lg" type="button">{{ t("set_hide", "Hide") }} <i class="entypo-arrows-ccw"></i></button>
+                                            </div>
+                                            <div class="clear"><!-- --></div>
+                                        </div>
+
+                                        <div id="completedSection" class="fileSectionFooterText row hidden">
+                                            <div class="col-md-12">
+                                                <div class="baseText">
+                                                    {{ t('file_upload_completed', 'File uploads completed.') }} {{ t('index_upload_more_files', '<a href="[[[WEB_ROOT]]]">Click here</a> to upload more files.', {'WEB_ROOT': '#" onclick="resetUploader(); return false;'})|raw }}
+                                                </div>
+                                            </div>
+											
+											<div class="col-md-12 upload-complete-btns">
+                                                <button class="btn btn-info" type="button" onClick="viewFileLinksPopup();
+                                                                                                        return false;">{{ t("view_all_links", "View All Links") }} <i class="entypo-link"></i></button>
+                                                <button id="copyLinksToClipboardEle" data-clipboard-action="copy" data-clipboard-target="#clipboard-placeholder" class="btn btn-info" type="button" onClick="copyLinksToClipboard();
+                                                                                                        return false;">{{ t("copy_links", "Copy Links") }}&nbsp;&nbsp;<i class="fa fa-copy"></i></button>
+                                                <button data-dismiss="modal" class="btn btn-default" type="button">{{ t("set_close", "Close") }} <i class="entypo-check"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <script id="template-upload" type="text/x-jquery-tmpl">
+                            {{ '{%' }} for (var i=0, file; file=o.files[i]; i++) { {{ '%}' }}
+                            <div class="template-upload-img template-upload{{ '{%' }} if (file.error) { {{ '%}' }} errorText{{ '{%' }} } {{ '%}' }}" id="fileUploadRow{{ '{%' }}=i{{ '%}' }}" title="{{ '{%' }}=file.name{{ '%}' }}">
+                            {{ '{%' }} if (file.error) { {{ '%}' }}
+                            <div class="error cancel" title="{{ '{%' }}=file.name{{ '%}' }}">
+Error:
+                            {{ '{%' }}=file.error{{ '%}' }}
+                            </div>
+                            {{ '{%' }} } else { {{ '%}' }}
+                            <div class="previewOverlay" title="{{ '{%' }}=file.name{{ '%}' }}">
+                            <div class="progressText hidden"></div>
+                            <div class="progress hidden">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                            </div>
+                            </div>
+                            </div>
+                            <div class="previewWrapper" title="{{ '{%' }}=file.name{{ '%}' }}">
+                            <div class="cancel">
+                            <a href="#" onClick="return false;">
+                            <img src="{{ SITE_THEME_PATH }}/assets/images/delete_small.png" height="10" width="10" alt="delete"/>
+                            </a>
+                            </div>
+                            <div class="preview" title="{{ '{%' }}=file.name{{ '%}' }}&nbsp;&nbsp;{{ '{%' }}=o.formatFileSize(file.size){{ '%}' }}"><span class="fade"></span></div>
+							<div class="filename" title="{{ '{%' }}=file.name{{ '%}' }}&nbsp;&nbsp;{{ '{%' }}=o.formatFileSize(file.size){{ '%}' }}">{{ '{%' }}=file.name{{ '%}' }}</div>
+                            </div>
+                            <div class="start hidden"><button>start</button></div>
+                            <div class="cancel hidden"><button>cancel</button></div>
+                            {{ '{%' }} } {{ '%}' }}
+                            </div>
+                            {{ '{%' }} } {{ '%}' }}
+                        </script>
+
+                        <script id="template-download" type="text/x-jquery-tmpl"><!-- --></script>
+
+                    </div>
+                    <!-- end uploader -->
+
+                </div>
+
+                <div class="clear"><!-- --></div>
+            </div>
+        </div>
+
+        <!-- URL UPLOAD -->
+        {% if userAllowedToRemoteUpload == true %}
+        <div class="tab-pane" id="urlUpload" {% if userAllowedToUpload == false %}onClick="alert('{{ t('index_uploading_disabled', 'Error: Uploading has been disabled.') }}'); return false;"{% endif %}>
+            <div class="urlUploadMain">
+                <div>
+                    <!-- url uploader -->
+                    <div>
+                        <div id="urlFileUploader">
+                            <div class="urlFileUploaderWrapper">
+                                <form action="#" method="POST" enctype="multipart/form-data">
+                                    <div class="initialUploadText">
+                                        <div>
+                                            {{ t('file_upload_remote_url_intro', 'Download files directly from other sites into your account. Note: If the files are on another file download site or password protected, this may not work.') }}<br/><br/>
+                                        </div>
+                                        <div class="inputElement">
+                                            <textarea name="urlList" id="urlList" class="urlList form-control" placeholder="http://example-site.com/file.jpg"></textarea>
+                                            <div class="clear"><!-- --></div>
+                                        </div>
+                                    </div>
+                                    <div class="urlUploadFooter">
+                                        <div class="upload-button">
+                                            <button id="transferFilesButton" onClick="urlUploadFiles();
+                                                return false;" class="btn btn-green btn-lg" type="button">{{ t("set_transfer_files", "Transfer Files") }} <i class="entypo-upload"></i></button>
+                                        </div>
+                                        <div class="baseText">
+                                            <a class="showAdditionalOptionsLink">{{ t('options', 'options')|title }}</a>&nbsp;&nbsp;|&nbsp;&nbsp;{{ t("enter_up_to_x_file_urls", "Enter up to [[[MAX_REMOTE_URL_FILES]]] file urls. Separate each url on it's own line.", {'MAX_REMOTE_URL_FILES': maxPermittedUrls}) }}
+                                        </div>
+                                    </div>
+                                    <div class="clear"><!-- --></div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div id="urlFileListingWrapper" class="urlFileListingWrapper hidden">
+                            <div class="fileSection">
+                                <table id="urls" class="files" width="100%">
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                                <div class="clear"><!-- --></div>
+                                <div class="upload-button processing-button">
+                                    <button onClick="$('#start_upload_btn').click(); return false;" class="btn btn-default disabled btn-lg" type="button">{{ t("set_upload_processing", "Processing...") }} <i class="entypo-arrows-ccw"></i></button>
+                                </div>
+                            </div>
+                            <div class="clear"><!-- --></div>
+
+                            <div class="fileSectionFooterText row hidden" style="margin-top: 12px;">
+                                <div class="col-md-12">
+                                    <div class="baseText">
+                                        {{ t('file_upload_completed', 'File uploads completed.') }} {{ t('index_upload_more_files', '<a href="[[[WEB_ROOT]]]">Click here</a> to upload more files.', {'WEB_ROOT': '#" onclick="resetUploader(); return false;'})|raw }}
+                                    </div>
+                                </div>
+                                <div class="col-md-12 upload-complete-btns">
+                                    <button class="btn btn-info" type="button" onClick="viewFileLinksPopup(); return false;">{{ t("view_all_links", "View All Links") }} <i class="entypo-link"></i></button>
+                                    <button id="copyLinksToClipboardEle" data-clipboard-action="copy" data-clipboard-target="#clipboard-placeholder" class="btn btn-info" type="button" onClick="copyLinksToClipboard();
+                                                                                                        return false;">{{ t("copy_links", "Copy Links") }}&nbsp;&nbsp;<i class="fa fa-copy"></i></button>
+                                    <button data-dismiss="modal" class="btn btn-default" type="button">{{ t("set_close", "Close") }} <i class="entypo-check"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- end url uploader -->
+
+                </div>
+
+                <div class="clear"><!-- --></div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if fileManagerPluginTabContents|length > 0 %}
+            {% for k,fileManagerPluginTabContent in fileManagerPluginTabContents %}
+                {{ fileManagerPluginTabContent['response_html']|raw }}
+            {% endfor %}
+        {% endif %}
+    </div>
+
+</div>
+
+<div id="additionalOptionsWrapper" class="additional-options-wrapper" style="display: none;">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel minimal">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        {{ t('send_via_email', 'send via email:')|upper }}
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        {{ t("enter_an_email_address_below_to_send_the_list_of_files", "Enter an email address below to send the list of files via email once they're uploaded.") }}
+                    </p>
+                    <div class="form-group">
+                        <label class="control-label" for="send_via_email">{{ t("email_address", "Email Address") }}:</label>
+                        <input id="send_via_email" name="send_via_email" type="text" class="form-control" autocomplete="off"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="panel minimal">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        {{ t('store_in_folder', 'store in folder:')|upper }}
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        {{ t('select_folder_below_to_store_intro_text_files', 'Select an folder below to store these files in. All current uploads will be available within these folders.') }}
+                    </p>
+                    <div class="form-group">
+                        <label class="control-label" for="upload_folder_id">{{ t("folder_name", "Folder Name") }}:</label>
+                        <select id="upload_folder_id" name="upload_folder_id" class="form-control" {{ Auth.loggedIn() == false ? 'DISABLED="DISABLED"' : '' }} autocomplete="off">
+                            <option value="">{{ Auth.loggedIn() == false ? t("index_login_to_enable", "- login to enable -") : t("index_default", "- default -") }}</option>
+                            {% if folderArr|length > 0 %}
+                                {% for folderId,folderLabel in folderArr %}
+                                    <option value="{{ folderId }}"{{ folderId == fid ? ' SELECTED':'' }}>{{ folderLabel }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+                        
+        <!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
+        <input style="display: none" type="text" name="fakeusernameremembered" />
+        <input style="display: none" type="password" name="fakepasswordremembered" />
+
+        <div class="col-md-4">
+            <div class="panel minimal">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        {{ t('set_password', 'set password:')|upper }}
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        {{ t('enter_a_password_below_to_secure_your_files', 'When downloading these files, users will be prompted for a password, if set. Download managers will not work if a password is set.') }}
+                    </p>
+                    <div class="form-group">
+                        <label class="control-label" for="send_via_email">{{ t("set_file_password", "Set Password") }}:</label>
+                        <input id="set_password" name="set_password" type="password" class="form-control" autocomplete="off"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="footer-buttons">
+                <button onClick="showAdditionalOptions(true);
+                        return false;" class="btn btn-default" type="button">{{ t("set_cancel", "Cancel") }}</button>
+                <button onClick="saveAdditionalOptions();
+                        return false;" class="btn btn-info" type="button">{{ t("set_save_and_close", "Save Options") }} <i class="entypo-check"></i></button>
+            </div>
+        </div>
+    </div>
+</div>

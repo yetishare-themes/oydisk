@@ -1,0 +1,172 @@
+<div id="playerContainer"></div>
+<script type="text/javascript">
+var shouldTrackPlayedTime = {{ ackPercentage > 0 ? 'true' : 'false' }};
+var ackPercentage = {{ ackPercentage|number_format }};
+var playedTimeTracker = null;
+var videoInstance = null;
+var mediaTotalDuration = -1;
+var totalPlayedTime = 0;
+$(document).ready(function() {
+    // remove any existing
+    if (typeof(videoPlayer) !== "undefined") {
+        delete videoPlayer;
+    }
+
+    videoInstance = new FWDUVPlayer({
+        //main settings
+        instanceName: "videoPlayer",
+        parentId: "playerContainer",
+        playlistsId: "playlists",
+        mainFolderPath: "{{ PLUGIN_WEB_ROOT }}/filepreviewer/assets/players/ultimate/content",
+        skinPath: "minimal_skin_white",
+        initializeOnlyWhenVisible: "no",
+        useVectorIcons: "no",
+        fillEntireVideoScreen: "no",
+        fillEntireposterScreen: "yes",
+        goFullScreenOnButtonPlay: "no",
+        playsinline: "yes",
+        useHEXColorsForSkin: "no",
+        normalHEXButtonsColor: "#666666",
+        googleAnalyticsTrackingCode: "",
+        useResumeOnPlay: "no",
+        showPreloader: "yes",
+        preloaderBackgroundColor: "#000000",
+        preloaderFillColor: "#FFFFFF",
+        addKeyboardSupport: "yes",
+        autoScale: "yes",
+        showButtonsToolTip: "yes",
+        stopVideoWhenPlayComplete: "no",
+        playAfterVideoStop: "no",
+        autoPlay: "no",
+        loop: "no",
+        shuffle: "no",
+        showErrorInfo: "no",
+        maxWidth:{{ playerMaxWidth is defined ? playerMaxWidth : '2000' }},
+        maxHeight:{{ playerMaxHeight is defined ? playerMaxHeight : '1200' }},
+        buttonsToolTipHideDelay: 1.5,
+        volume: .8,
+        backgroundColor: "#000000",
+        videoBackgroundColor: "#000000",
+        posterBackgroundColor: "#000000",
+        buttonsToolTipFontColor: "#5a5a5a",
+        //logo settings
+        showLogo: "no",
+        //playlist settings
+        showPlaylistsButtonAndPlaylists: "no",
+        showPlaylistButtonAndPlaylist: "no",
+        showPlaylistByDefault: "no",
+        //controller settings
+        showController: "yes",
+        showControllerWhenVideoIsStopped: "yes",
+        showNextAndPrevButtonsInController: "no",
+        showRewindButton: "yes",
+        showPlaybackRateButton: "yes",
+        showVolumeButton: "yes",
+        showTime: "yes",
+        showQualityButton: "yes",
+        showInfoButton: "yes",
+        showDownloadButton: "no",
+        showShareButton: "no",
+        showEmbedButton: "no",
+        showChromecastButton: "no",
+        showFullScreenButton: "yes",
+        disableVideoScrubber: "no",
+        showScrubberWhenControllerIsHidden: "yes",
+        showMainScrubberToolTipLabel: "yes",
+        showDefaultControllerForVimeo: "no",
+        repeatBackground: "yes",
+        controllerHeight: 42,
+        controllerHideDelay: 3,
+        startSpaceBetweenButtons: 7,
+        spaceBetweenButtons: 8,
+        scrubbersOffsetWidth: 2,
+        mainScrubberOffestTop: 14,
+        timeOffsetLeftWidth: 5,
+        timeOffsetRightWidth: 3,
+        timeOffsetTop: 0,
+        volumeScrubberHeight: 80,
+        volumeScrubberOfsetHeight: 12,
+        timeColor: "#888888",
+        youtubeQualityButtonNormalColor: "#888888",
+        youtubeQualityButtonSelectedColor: "#000000",
+        scrubbersToolTipLabelBackgroundColor: "#FFFFFF",
+        scrubbersToolTipLabelFontColor: "#5a5a5a",
+        //audio visualizer
+        audioVisualizerLinesColor: "#21a9e1",
+        audioVisualizerCircleColor: "#FFFFFF",
+        //a to b loop
+        useAToB: "no",
+        //thumbnails preview
+        thumbnailsPreviewWidth: 196,
+        thumbnailsPreviewHeight: 110,
+        thumbnailsPreviewBackgroundColor: "#000000",
+        thumbnailsPreviewBorderColor: "#666",
+        thumbnailsPreviewLabelBackgroundColor: "#666",
+        thumbnailsPreviewLabelFontColor: "#FFF",
+        // context menu
+        showContextmenu: 'no',
+        showScriptDeveloper: "no",
+        contextMenuBackgroundColor:"#ebebeb",
+        contextMenuBorderColor:"#ebebeb",
+        contextMenuSpacerColor:"#CCC",
+        contextMenuItemNormalColor:"#888888",
+        contextMenuItemSelectedColor:"#000",
+        contextMenuItemDisabledColor:"#BBB"
+    });
+
+    // track total played in seconds
+    playedTimeTracker = setInterval(trackPlayedTime, 5000);
+});
+
+function trackPlayedTime() {
+    if (shouldTrackPlayedTime == false) {
+        // stop any future attempts of the timer
+        clearInterval(playedTimeTracker);
+        return false;
+    }
+
+    if (videoInstance.isPlaying_bl == true) {
+        // track actual played time
+        totalPlayedTime = totalPlayedTime + 5;
+    }
+
+    if (mediaTotalDuration == -1) {
+        // get total video length
+        mediaTotalDuration = videoInstance.getTotalTime('seconds');
+    } 
+    else {
+        // calculate percentage
+        percent = 0;
+        if (totalPlayedTime > 0) {
+            percent = (parseInt(totalPlayedTime) / parseInt(mediaTotalDuration)) * 100;
+        }
+
+        // should we log yet?
+        if (percent >= ackPercentage) {
+            // clear for next time
+            shouldTrackPlayedTime = false;
+            // log PPD
+            $.ajax({
+                method: "POST",
+                url: "{{ WEB_ROOT }}/rewards/media_log_download_callback",
+                data: {
+                    fileId: "{{ file.id }}",
+                    tracker: "{{ downloadUrlForMediaBase64|raw }}",
+                    percent: percent
+                }
+            });
+        }
+    }
+}
+</script>
+
+<!--  Playlists -->
+<ul id="playlists" style="display: none;">
+    <li data-source="playlist1" data-playlist-name="PLAYLIST 1" data-thumbnail-path="{{ PLUGIN_WEB_ROOT }}/filepreviewer/assets/players/ultimate/content/images/thumbnail.jpg" data-poster-source="{{ videoThumbnail|raw }}">
+    </li>
+</ul>
+
+<!--  HTML playlist -->
+<ul id="playlist1" style="display: none;">
+    <li data-thumb-source="{{ PLUGIN_WEB_ROOT }}/filepreviewer/assets/players/ultimate/content/images/thumbnail.jpg" data-poster-source="{{ videoThumbnail|raw }}" data-video-source="[{source:'{{ downloadUrlForMedia|raw }}', label:'Original'}]" data-start-at-video="0" {% if subtitles|length > 0 %}data-subtitle-soruce="{{ subtitles|raw }}" data-start-at-subtitle="0" {% endif %}data-downloadable="yes"></li>
+</ul>

@@ -1,0 +1,146 @@
+{% extends "partial/layout.html.twig" %}
+
+{% block title %}{{ pageTitlePrepend }} {{ t("account", "account")|title }}{% endblock %}
+{% block description %}{{ pageTitlePrepend }} {{ t("upgrade_meta_description", "Your Account") }}{% endblock %}
+{% block keywords %}{{ pageTitlePrepend|lower }}{{ t("upgrade_meta_keywords", ", account, paid, membership, upload, download, site") }}{% endblock %}
+{% block selected_navigation_link %}upgrade{% endblock %}
+
+{% block body %}
+    <section class="text-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12 col-lg-11">
+                    <div class="cta">
+                        <h2>{{ pageTitlePrepend }} {{ t("account", "account")|title }}</h2>
+                        <p class="lead">
+                            {{ t("upgrade_title_page_description_left_by_package", "Get more storage and faster access to your files with one of our premium accounts.") }}
+                        </p>
+                        
+                        {% if msg_page_errors is defined %}
+                        <div class="alert bg--error">
+                            <div class="alert__body"><i class="fa fa-exclamation-triangle color--error"></i>&nbsp;&nbsp;{% if msg_page_errors is defined %}{{ msg_page_errors|join('. ') }}{% endif %}</div>
+                        </div>
+                        {% elseif msg_page_successes is defined %}
+                        <div class="alert bg--success">
+                            <div class="alert__body"><i class="fa fa-check color--success"></i>&nbsp;&nbsp;{% if msg_page_successes is defined %}{{ msg_page_successes|join('. ') }}{% endif %}</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <!--end of row-->
+        </div>
+        <!--end of container-->
+    </section>
+
+    <section class="pricing-section-packages">
+        <div class="container">
+            <div class="row">
+                {% for premiumPackage in premiumPackages %}
+                    <div class="col-md-6 col-lg-6" style="width: {{ pricingColSizePercent }}%; max-width: {{ pricingColSizePercent }}%; flex: 0 0 {{ pricingColSizePercent }}%;">
+                        <div class="pricing pricing-1 boxed boxed--border {% if premiumPackage['_is_most_popular'] == true %}boxed--emphasis{% endif %}">
+                            <h3>{{ premiumPackage['label']|title }}</h3>
+                            <span class="h2"{% if premiumPackage['_price_per_month'] > 0 and premiumPackage['level_type'] != 'free' %} style="display: inline; margin-right: -5px;"{% endif %}>
+                                <strong><span class="pricing__dollar">{{ premiumPackage['level_type'] != 'free' ? SITE_CONFIG_COST_CURRENCY_SYMBOL : '' }}</span>{{ premiumPackage['_price_per_month'] }}</strong>
+                            </span>
+                            {% if premiumPackage['_price_per_month'] > 0 and premiumPackage['level_type'] != 'free' %}
+                                <span class="type--fine-print">/{{ premiumPackage['_price_per_period'] }}</span>
+                            {% endif %}
+                            
+                            {% if premiumPackage['_is_most_popular'] == true %}
+                                <span class="label">{{ t('popular', 'Popular')|title }}</span>
+                            {% endif %}
+                            <hr>
+                            
+                            {% if premiumPackage['level_type'] == 'free' %}
+                            <ul>
+                                <li>
+                                    <span class="checkmark bg--primary-1"></span>
+                                    <span>{{ premiumPackage['_hd_storage'] }} {{ t('storage', 'Storage')|title }}</span>
+                                </li>
+                                <li>
+                                    <span class="checkmark bg--primary-1"></span>
+                                    <span>{{ t('unique_members_area', 'Unique Members Area')|title }}</span>
+                                </li>
+                                <li>
+                                    <span class="checkmark bg--primary-1"></span>
+                                    <span>{{ t('advert_supported', 'Advert Supported')|title }}</span>
+                                </li>
+                            </ul>
+                            {% else %}
+                            <ul>
+                                <li>
+                                    <span class="checkmark bg--primary-1"></span>
+                                    <span>{{ premiumPackage['_hd_storage'] }} {{ t('storage', 'Storage')|title }}</span>
+                                </li>
+                                <li>
+                                    <span class="checkmark bg--primary-1"></span>
+                                    <span>{{ t('unique_members_area', 'Unique Members Area')|title }}</span>
+                                </li>
+                                <li>
+                                    <span class="checkmark bg--primary-1"></span>
+                                    <span>{{ t('advert_free', 'No Adverts')|title }}</span>
+                                </li>
+                                <li>
+                                    <span class="checkmark bg--primary-1"></span>
+                                    <span>{{ t('secure_payment', 'Secure Payment')|title }}</span>
+                                </li>
+                                <li>
+                                    <span class="checkmark bg--primary-1"></span>
+                                    <span>{{ t('safe_and_anonymous', '100% Safe & Anonymous')|title }}</span>
+                                </li>
+                            </ul>
+                            {% endif %}
+                            
+                            <a class="btn {% if premiumPackage['level_type'] != 'free' %}btn--primary{% if premiumPackage['_is_most_popular'] == true %}-1{% endif %}{% endif %}" href="{{ premiumPackage['_pricing_button']['url'] }}">
+                                <span class="btn__text">
+                                    {{ premiumPackage['_pricing_button']['label'] }}
+                                </span>
+                            </a>
+                        </div>
+                        <!--end pricing-->
+                    </div>
+                {% endfor %}
+            </div>
+            <!--end of row-->
+        </div>
+        <!--end of container-->
+    </section>
+    
+    {% if upgradePagePluginMiddle|length > 0 %}
+        {% for pluginKey,upgradePagePluginMiddleItem in upgradePagePluginMiddle %}
+            {{ upgradePagePluginMiddleItem['response_html']|raw }}
+        {% endfor %}
+    {% endif %}
+
+    {% if Auth.loggedIn() == true %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h2>{{ t("account_status", "account status")|title }}</h2>
+                </div>
+                <div class="col-md-12">
+                    <table class="border--round table--alternate-row">
+                        <tbody>
+                            <tr>
+                                <td class="text-right" style="width: 50%;"><strong>{{ t('account_type', 'account type')|title }}</strong></td>
+                                <td>{{ accountTypeLabel }}</td>
+                            </tr>
+                            {% if accountType in ['paid', 'admin', 'moderator'] %}
+                                <tr>
+                                    <td class="text-right"><strong>{{ t('reverts_to_free_account', 'reverts to free account')|title }}</strong></td>
+                                    <td>{{ accountExpiry }}</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% include '@themePath/partial/_premium_benefits.html.twig' %}
+
+{% endblock %}

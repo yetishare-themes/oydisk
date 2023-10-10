@@ -1,0 +1,138 @@
+<form action="{{ theme.getAccountWebRoot() }}/ajax/edit_file_process" autocomplete="off">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{{ t("edit_existing_item", "Edit Existing Item") }} ({{ file.originalFilename }})</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="modal-icon-left"><img src="{{ theme.getAccountImagePath() }}/modal_icons/document_edit.png"/></div>
+            </div>
+
+            <div class="col-md-9">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="filename" class="control-label">{{ t("filename", "filename")|title }}</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="filename" id="filename" value="{{ file.getFilenameExcExtension() }}"/>
+                                <span class="input-group-addon">.{{ file.extension }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                            
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="folderName" class="control-label">{{ t('edit_image_sharing_url', 'Sharing Url:') }}</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="{{ file.getFullShortUrl() }}" readonly/>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" onClick="window.open('{{ file.getFullShortUrl() }}');
+                                                                                return false;"><i class="entypo-link"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="description" class="control-label">{{ t("description", "description")|title }}</label>
+                            <textarea rows="3" class="form-control" name="description" id="description">{{ file.description }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="keywords" class="control-label">{{ t("keywords", "keywords")|title }}</label>
+                            <input type="text" class="form-control tagsinput" name="keywords" id="keywords" value="{{ file.keywords }}"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="folder" class="control-label">{{ t("file_folder", "file folder")|title }}</label>
+                            <select class="form-control" name="folder" id="folder">
+                                <option value="">{{ t('_default_', '- Default -') }}</option>
+                                {% for k,folderListingItem in folderListing %}
+                                    <option value="{{ k }}"{% if file.folderId == k %} SELECTED{% endif %}>
+                                        {{ folderListingItem }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="access_password" class="control-label">{{ t("edit_folder_optional_password", "Optional Password:") }}</label>
+                            <div class="row">
+                                <div class="col-md-2 inline-checkbox">
+                                    <input type="checkbox" name="enable_password" id="enable_password" value="1" {{ file.accessPassword|length > 0 ? 'CHECKED' : '' }} onClick="toggleFilePasswordField();">
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="password" class="form-control" name="access_password" id="access_password" autocomplete="off"{{ file.accessPassword|length > 0 ? ' value="**********"' : '' }} {{ accessPassword|length > 0 ? '' : 'READONLY' }}/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row advancedOptionsLink">
+                    <div class="col-md-12">
+                        <div class="form-group" style="margin-top: 20px; margin-bottom: 0px;">
+                            <i class="fa fa-angle-right"></i>&nbsp;&nbsp;<a href="#" onclick="toggleAdvanced(); return false;">{{ t("advanced_options", "Advanced Options") }}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="advancedOptions" style="display: none; margin-top: 25px;">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="min_user_level" class="control-label">{{ t("minimum_user_level", "Minimum User Level") }}</label>
+                                <select name="min_user_level" id="min_user_level" class="form-control">
+                                    <option value="">- any user type can download this file -</option>
+                                    {% for userType in userTypes %}
+                                        <option value="{{ userType['id'] }}"{{ userType['id'] == file.minUserLevel?' SELECTED':'' }}>>= {{ userType['label']|title }}</option>
+                                    {% endfor %}
+                                </select>
+                                <p class="text-muted" style="margin-top: 2px;">{{ t("minimum_user_level_description", "Set a minimum account level required to download this file. This file must be publicly available.") }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="reset_stats" class="control-label">{{ t("reset_stats", "reset stats")|title }}</label>
+                                <select class="form-control" name="reset_stats" id="reset_stats">
+                                    <option value="0" SELECTED>{{ t('no_keep_stats', 'No, keep stats') }}</option>
+                                    <option value="1">{{ t('yes_remove_stats', 'Yes, remove stats') }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <input type="hidden" name="submitme" id="submitme" value="1"/>
+        <input type="hidden" value="{{ file.id }}" name="fileId"/>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ t("cancel", "cancel")|title }}</button>
+        <button type="button" class="btn btn-info" data-submit-btn="true" onClick="processAjaxForm(this, function () {
+                    reloadPreviousAjax();
+                    $('.modal').modal('hide');
+                });
+                return false;">{{ t("update_item", "update item")|title }} <i class="entypo-check"></i></button>
+    </div>
+</form>

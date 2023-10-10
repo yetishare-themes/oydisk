@@ -1,0 +1,1042 @@
+.sprite_icon_torrent, .sprite_icon_trm, .sprite_icon_ttf, .sprite_icon_txt, .sprite_icon_url, .sprite_icon_vbp, .sprite_icon_vob, .sprite_icon_wav, .sprite_icon_wma, .sprite_icon_wmf, .sprite_icon_wmv, .sprite_icon_x3f, .sprite_icon_xls, .sprite_icon_xlsb, .sprite_icon_xlsm, .sprite_icon_xlsx, .sprite_icon_xltm, .sprite_icon_xml, .sprite_icon_xmp, .sprite_icon_z, .sprite_icon_zip, .sprite_icon__page, .sprite_icon_s-3fr, .sprite_icon_s-7z, .sprite_icon_aac, .sprite_icon_ai, .sprite_icon_aif, .sprite_icon_aiff, .sprite_icon_app, .sprite_icon_are, .sprite_icon_asp, .sprite_icon_aspx, .sprite_icon_au, .sprite_icon_avi, .sprite_icon_bak, .sprite_icon_bat, .sprite_icon_bin, .sprite_icon_bmp, .sprite_icon_bz2, .sprite_icon_c, .sprite_icon_cab, .sprite_icon_cdf, .sprite_icon_cdr, .sprite_icon_chm, .sprite_icon_cmd, .sprite_icon_cp, .sprite_icon_cr2, .sprite_icon_crw, .sprite_icon_css, .sprite_icon_csv, .sprite_icon_ctb, .sprite_icon_cue, .sprite_icon_cur, .sprite_icon_dat, .sprite_icon_db, .sprite_icon_dcr, .sprite_icon_default, .sprite_icon_dic, .sprite_icon_divx, .sprite_icon_dll, .sprite_icon_dmg, .sprite_icon_dng, .sprite_icon_doc, .sprite_icon_docm, .sprite_icon_docx, .sprite_icon_dot, .sprite_icon_drv, .sprite_icon_dvd, .sprite_icon_dwg, .sprite_icon_emf, .sprite_icon_enc, .sprite_icon_eps, .sprite_icon_epub, .sprite_icon_exe, .sprite_icon_fcp, .sprite_icon_fcpx, .sprite_icon_fla, .sprite_icon_fon, .sprite_icon_gif, .sprite_icon_gz, .sprite_icon_hlp, .sprite_icon_htm, .sprite_icon_html, .sprite_icon_ibooks, .sprite_icon_icns, .sprite_icon_ico, .sprite_icon_idx, .sprite_icon_ifo, .sprite_icon_indd, .sprite_icon_ini, .sprite_icon_ipa, .sprite_icon_iso, .sprite_icon_itdb, .sprite_icon_itl, .sprite_icon_java, .sprite_icon_jpe, .sprite_icon_jpeg, .sprite_icon_jpg, .sprite_icon_js, .sprite_icon_jsp, .sprite_icon_kdc, .sprite_icon_key, .sprite_icon_log, .sprite_icon_m3u, .sprite_icon_m3u8, .sprite_icon_m4a, .sprite_icon_m4r, .sprite_icon_m4v, .sprite_icon_max, .sprite_icon_mdb, .sprite_icon_mef, .sprite_icon_mid, .sprite_icon_midi, .sprite_icon_mix, .sprite_icon_mkv, .sprite_icon_mmf, .sprite_icon_mobi, .sprite_icon_mos, .sprite_icon_mov, .sprite_icon_mp3, .sprite_icon_mp4, .sprite_icon_mpeg, .sprite_icon_mpg, .sprite_icon_mpg2, .sprite_icon_mpp, .sprite_icon_mrw, .sprite_icon_nef, .sprite_icon_numbers, .sprite_icon_ogg, .sprite_icon_one, .sprite_icon_orf, .sprite_icon_otf, .sprite_icon_pages, .sprite_icon_pdf, .sprite_icon_pef, .sprite_icon_php, .sprite_icon_pl, .sprite_icon_png, .sprite_icon_potm, .sprite_icon_potx, .sprite_icon_ppam, .sprite_icon_ppm, .sprite_icon_pps, .sprite_icon_ppsm, .sprite_icon_ppsx, .sprite_icon_ppt, .sprite_icon_pptm, .sprite_icon_pptx, .sprite_icon_psd, .sprite_icon_qt, .sprite_icon_raf, .sprite_icon_rar, .sprite_icon_raw, .sprite_icon_rss, .sprite_icon_rtf, .sprite_icon_rw2, .sprite_icon_sdr, .sprite_icon_skp, .sprite_icon_sldx, .sprite_icon_smi, .sprite_icon_sql, .sprite_icon_sr2, .sprite_icon_srt, .sprite_icon_stb, .sprite_icon_svg, .sprite_icon_swf, .sprite_icon_sys, .sprite_icon_tar, .sprite_icon_tgz, .sprite_icon_thmx, .sprite_icon_tif, .sprite_icon_tiff, .sprite_icon_tmp{
+	background: url(../images/file_icons/sprite_48px.png) no-repeat;
+}
+
+.sprite_icon_torrent{
+	background-position: 0 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_trm{
+	background-position: -49px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_ttf{
+	background-position: -98px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_txt{
+	background-position: -147px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_url{
+	background-position: -196px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_vbp{
+	background-position: -245px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_vob{
+	background-position: -294px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_wav{
+	background-position: -343px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_wma{
+	background-position: -392px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_wmf{
+	background-position: -441px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_wmv{
+	background-position: -490px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_x3f{
+	background-position: -539px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_xls{
+	background-position: -588px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_xlsb{
+	background-position: -637px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_xlsm{
+	background-position: -686px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_xlsx{
+	background-position: -735px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_xltm{
+	background-position: -784px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_xml{
+	background-position: -833px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_xmp{
+	background-position: -882px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_z{
+	background-position: -931px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_zip{
+	background-position: -980px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon__page{
+	background-position: -1029px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_s-3fr{
+	background-position: -1078px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_s-7z{
+	background-position: -1127px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_aac{
+	background-position: -1176px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_ai{
+	background-position: -1225px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_aif{
+	background-position: -1274px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_aiff{
+	background-position: -1323px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_app{
+	background-position: -1372px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_are{
+	background-position: -1421px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_asp{
+	background-position: -1470px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_aspx{
+	background-position: -1519px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_au{
+	background-position: -1568px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_avi{
+	background-position: -1617px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_bak{
+	background-position: -1666px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_bat{
+	background-position: -1715px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_bin{
+	background-position: -1764px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_bmp{
+	background-position: -1813px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_bz2{
+	background-position: -1862px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_c{
+	background-position: -1911px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_cab{
+	background-position: -1960px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_cdf{
+	background-position: -2009px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_cdr{
+	background-position: -2058px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_chm{
+	background-position: -2107px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_cmd{
+	background-position: -2156px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_cp{
+	background-position: -2205px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_cr2{
+	background-position: -2254px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_crw{
+	background-position: -2303px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_css{
+	background-position: -2352px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_csv{
+	background-position: -2401px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_ctb{
+	background-position: -2450px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_cue{
+	background-position: -2499px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_cur{
+	background-position: -2548px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_dat{
+	background-position: -2597px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_db{
+	background-position: -2646px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_dcr{
+	background-position: -2695px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_default{
+	background-position: -2744px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_dic{
+	background-position: -2793px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_divx{
+	background-position: -2842px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_dll{
+	background-position: -2891px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_dmg{
+	background-position: -2940px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_dng{
+	background-position: -2989px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_doc{
+	background-position: -3038px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_docm{
+	background-position: -3087px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_docx{
+	background-position: -3136px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_dot{
+	background-position: -3185px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_drv{
+	background-position: -3234px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_dvd{
+	background-position: -3283px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_dwg{
+	background-position: -3332px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_emf{
+	background-position: -3381px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_enc{
+	background-position: -3430px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_eps{
+	background-position: -3479px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_epub{
+	background-position: -3528px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_exe{
+	background-position: -3577px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_fcp{
+	background-position: -3626px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_fcpx{
+	background-position: -3675px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_fla{
+	background-position: -3724px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_fon{
+	background-position: -3773px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_gif{
+	background-position: -3822px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_gz{
+	background-position: -3871px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_hlp{
+	background-position: -3920px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_htm{
+	background-position: -3969px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_html{
+	background-position: -4018px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_ibooks{
+	background-position: -4067px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_icns{
+	background-position: -4116px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_ico{
+	background-position: -4165px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_idx{
+	background-position: -4214px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_ifo{
+	background-position: -4263px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_indd{
+	background-position: -4312px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_ini{
+	background-position: -4361px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_ipa{
+	background-position: -4410px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_iso{
+	background-position: -4459px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_itdb{
+	background-position: -4508px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_itl{
+	background-position: -4557px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_java{
+	background-position: -4606px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_jpe{
+	background-position: -4655px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_jpeg{
+	background-position: -4704px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_jpg{
+	background-position: -4753px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_js{
+	background-position: -4802px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_jsp{
+	background-position: -4851px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_kdc{
+	background-position: -4900px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_key{
+	background-position: -4949px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_log{
+	background-position: -4998px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_m3u{
+	background-position: -5047px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_m3u8{
+	background-position: -5096px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_m4a{
+	background-position: -5145px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_m4r{
+	background-position: -5194px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_m4v{
+	background-position: -5243px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_max{
+	background-position: -5292px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mdb{
+	background-position: -5341px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mef{
+	background-position: -5390px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mid{
+	background-position: -5439px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_midi{
+	background-position: -5488px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mix{
+	background-position: -5537px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mkv{
+	background-position: -5586px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mmf{
+	background-position: -5635px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mobi{
+	background-position: -5684px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mos{
+	background-position: -5733px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mov{
+	background-position: -5782px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mp3{
+	background-position: -5831px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mp4{
+	background-position: -5880px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mpeg{
+	background-position: -5929px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mpg{
+	background-position: -5978px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mpg2{
+	background-position: -6027px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mpp{
+	background-position: -6076px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_mrw{
+	background-position: -6125px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_nef{
+	background-position: -6174px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_numbers{
+	background-position: -6223px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_ogg{
+	background-position: -6272px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_one{
+	background-position: -6321px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_orf{
+	background-position: -6370px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_otf{
+	background-position: -6419px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_pages{
+	background-position: -6468px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_pdf{
+	background-position: -6517px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_pef{
+	background-position: -6566px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_php{
+	background-position: -6615px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_pl{
+	background-position: -6664px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_png{
+	background-position: -6713px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_potm{
+	background-position: -6762px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_potx{
+	background-position: -6811px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_ppam{
+	background-position: -6860px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_ppm{
+	background-position: -6909px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_pps{
+	background-position: -6958px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_ppsm{
+	background-position: -7007px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_ppsx{
+	background-position: -7056px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_ppt{
+	background-position: -7105px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_pptm{
+	background-position: -7154px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_pptx{
+	background-position: -7203px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_psd{
+	background-position: -7252px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_qt{
+	background-position: -7301px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_raf{
+	background-position: -7350px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_rar{
+	background-position: -7399px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_raw{
+	background-position: -7448px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_rss{
+	background-position: -7497px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_rtf{
+	background-position: -7546px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_rw2{
+	background-position: -7595px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_sdr{
+	background-position: -7644px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_skp{
+	background-position: -7693px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_sldx{
+	background-position: -7742px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_smi{
+	background-position: -7791px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_sql{
+	background-position: -7840px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_sr2{
+	background-position: -7889px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_srt{
+	background-position: -7938px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_stb{
+	background-position: -7987px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_svg{
+	background-position: -8036px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_swf{
+	background-position: -8085px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_sys{
+	background-position: -8134px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_tar{
+	background-position: -8183px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_tgz{
+	background-position: -8232px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_thmx{
+	background-position: -8281px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_tif{
+	background-position: -8330px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_tiff{
+	background-position: -8379px 0;
+	width: 48px;
+	height: 48px;
+}
+
+.sprite_icon_tmp{
+	background-position: -8428px 0;
+	width: 48px;
+	height: 48px;
+}
+

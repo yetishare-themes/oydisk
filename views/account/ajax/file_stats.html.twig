@@ -1,0 +1,138 @@
+<script src="{{ theme.getAccountJsPath() }}/charts/Chart.js"></script>
+<script>
+    $ = jQuery;
+
+    {{ last24hours['chartJS']|raw }}
+    {{ last7days['chartJS']|raw }}
+    {{ last30days['chartJS']|raw }}
+    {{ last12months['chartJS']|raw }}
+    {{ countries['chartJS']|raw }}
+    {{ referrers['chartJS']|raw }}
+    {{ browsers['chartJS']|raw }}
+    {{ os['chartJS']|raw }}
+
+        $(document).ready(function ($)
+        {
+            redrawCharts();
+        });
+
+        $(window).resize(function ()
+        {
+            redrawCharts();
+        });
+
+        function redrawCharts()
+        {
+    {{ last24hours['onLoadJS']|raw }}
+    {{ last7days['onLoadJS']|raw }}
+    {{ last30days['onLoadJS']|raw }}
+    {{ last12months['onLoadJS']|raw }}
+    {{ countries['onLoadJS']|raw }}
+    {{ referrers['onLoadJS']|raw }}
+    {{ browsers['onLoadJS']|raw }}
+    {{ os['onLoadJS']|raw }}
+        }
+
+        function showChart(chartId)
+        {
+            $('#tab1_chart1').hide();
+            $('#tab1_chart2').hide();
+            $('#tab1_chart3').hide();
+            $('#tab1_chart4').hide();
+            $('#' + chartId).show(0, function () {
+                redrawCharts();
+            });
+
+            return false;
+        }
+</script>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">{{ file.originalFilename }} {{ t("stats_title", "statistics") }}. ({{ file.visits }} {{ t("stats_downloads", "Downloads") }})</h4>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="modal-icon-left"><img src="{{ theme.getAccountImagePath() }}/modal_icons/chart_2.png"/></div>
+        </div>
+
+        <div class="col-md-9">
+            <div id="tabs" class="tab-content">
+                <ul class="nav nav-tabs stats-padding">
+                    <li class="active"><a href="#tab1" data-toggle="tab"><i class="fa fa-user tab-padding">&nbsp;</i>{{ t("visitors", "visitors") }}</a></li>
+                    <li><a href="#tab2" data-toggle="tab"><i class="fa fa-globe tab-padding">&nbsp;</i>{{ t("countries", "countries") }}</a></li>
+                    <li><a href="#tab3" data-toggle="tab"><i class="fa fa-comment tab-padding">&nbsp;</i>{{ t("top_referrers", "top referrers") }}</a></li>
+                    <li><a href="#tab4" data-toggle="tab"><i class="fa fa-laptop tab-padding">&nbsp;</i>{{ t("browsers", "browsers") }}</a></li>
+                    <li><a href="#tab5" data-toggle="tab"><i class="fa fa-linux tab-padding">&nbsp;</i>{{ t("operating_systems", "operating systems") }}</a></li>
+                </ul>  
+                <div id="tab1" class="tab-pane active">
+                    <!-- TAB 1 -->
+                    <div class="text-center">
+                        <a href="#" onClick="showChart('tab1_chart1');
+                                return false;">{{ t("last_24_hours", "last 24 hours") }}</a> | <a href="#" onClick="showChart('tab1_chart2');
+                                        return false;">{{ t("last_7_days", "last 7 days") }}</a> | <a href="#" onClick="showChart('tab1_chart3');
+                                                return false;">{{ t("last_30_days", "last 30 days") }}</a> | <a href="#" onClick="showChart('tab1_chart4');
+                                                        return false;">{{ t("last_12_months", "last 12 months") }}</a><br/><br/>
+                    </div>
+                    <div id="tab1_chart1">
+                        <div class="responsiveTable">{{ last24hours['canvasHTML']|raw }}
+                            <div> 
+                                {{ last24hours['dataTableHTML']|raw }}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab1_chart2" style="display:none;">
+                        {{ last7days['canvasHTML']|raw }}
+                        <div> 
+                            {{ last7days['dataTableHTML']|raw }}
+                        </div>
+                    </div>
+                    <div id="tab1_chart3" style="display:none;">
+                        {{ last30days['canvasHTML']|raw }}
+                        <div> 
+                            {{ last30days['dataTableHTML'] |raw}}
+                        </div>
+                    </div>
+                    <div id="tab1_chart4" style="display:none;">
+                        {{ last12months['canvasHTML']|raw }}
+                        <div> 
+                            {{ last12months['dataTableHTML']|raw }}
+                        </div>
+                    </div>
+                </div>
+                <div id="tab2" class="tab-pane">
+                    {{ countries['canvasHTML']|raw }}
+                    <div> 
+                        {{ countries['dataTableHTML']|raw }}
+                    </div>
+                </div>
+                <div id="tab3" class="tab-pane">
+                    {{ referrers['canvasHTML']|raw }}
+                    <div> 
+                        {{ referrers['dataTableHTML']|raw }}
+                    </div>
+                </div>
+                <div id="tab4" class="tab-pane">
+                    {{ browsers['canvasHTML']|raw }}
+                    <div> 
+                        {{ browsers['dataTableHTML']|raw }}
+                    </div>
+                </div>
+                <div id="tab5" class="tab-pane">
+                    {{ os['canvasHTML']|raw }}
+                    <div> 
+                        {{ os['dataTableHTML']|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <input type="hidden" name="submitme" id="submitme" value="1"/>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{{ t("close", "close") }}</button>
+</div>

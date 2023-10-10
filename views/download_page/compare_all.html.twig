@@ -1,0 +1,194 @@
+{% extends "partial/layout.html.twig" %}
+
+{% block title %}{{ file.originalFilename }}{% endblock %}
+{% block description %}{{ file.description|length > 0 ? file.description|slice(0, 250) : t("file_download_description", "Download file")~' - '~file.originalFilename }}{% endblock %}
+{% block keywords %}{{ file.getFileKeywords() }}{% endblock %}
+
+{% block body %}
+    <section>
+        <div class="container">
+            <div class="row align-items-center justify-content-around download-page">
+                <div class="col-md-12 text-center">
+                    <h2>
+                        {{ file.originalFilename }}
+                    </h2>
+                </div>
+                    
+                {% if UserHelper.showSiteAdverts() %}
+                    <div class="col-md-12 text-center advert-wrapper top-advert">
+                        {{ SITE_CONFIG_ADVERT_DELAYED_REDIRECT_TOP|raw }}
+                    </div>
+                {% endif %}
+
+                <div class="col-md-12">
+                    <table class="border--round table--alternate-row download-page-compare-all">
+                        <tbody>
+                            <tr>
+                                <th class="responsiveInfoTable">
+                                    <strong>
+                                        {{ file.originalFilename }} ({{ file.getFormattedFilesize() }})
+                                    </strong>
+                                    <p>{{ t('choose_free_or_premium_download', 'Choose free or premium download') }}</p>
+                                </th>
+                                <th class="color--primary mobileHide">
+                                    {{ t('free', 'Free')|upper }}
+                                </th>
+                                <th class="color--primary mobileHide">
+                                    {{ t('registered', 'Registered')|upper }}
+                                </th>
+                                <th>
+                                    <a class="btn btn--primary" href="{{ upgradeUrl }}">
+                                        <span class="btn__text">
+                                            <i class="fas fa-bolt"></i>
+                                            {{ t('Premium', 'Premium')|upper }}
+                                        </span>
+                                    </a>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ t('download_speed', 'download speed')|title }}:
+                                </td>
+                                <td class="mobileHide">
+                                    {{ UserHelper.getMaxDownloadSpeed(0) > 0 ? ( CoreHelper.formatSize(UserHelper.getMaxDownloadSpeed(0)) ~ 'ps') : t('limited', 'limited')|title }}
+                                </td>
+                                <td class="mobileHide">
+                                    {{ UserHelper.getMaxDownloadSpeed(1) > 0 ? ( CoreHelper.formatSize(UserHelper.getMaxDownloadSpeed(1)) ~ 'ps') : t('limited', 'limited')|title }}
+                                </td>
+                                <td>
+                                    <strong>
+                                        {{ t('maximum', 'maximum')|title }}
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ t('waiting_time', 'waiting time')|title }}:
+                                </td>
+                                <td class="mobileHide">{{ additionalSettings['download_wait'] > 0 ? ( additionalSettings['download_wait'] ~ ' ' ~ t('seconds', 'seconds')|title) : t('instant', 'instant')|title }}</td>
+                                <td class="mobileHide">{{ additionalSettings['download_wait'] > 0 ? ( additionalSettings['download_wait'] ~ ' ' ~ t('seconds', 'seconds')|title) : t('instant', 'instant')|title }}</td>
+                                <td>
+                                    <strong>
+                                        {{ t('instant', 'instant')|title }}
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ t('site_advertising', 'site advertising')|title }}:
+                                </td>
+                                <td class="mobileHide">
+                                    {{ t('yes', 'yes')|title }}                            
+                                </td>
+                                <td class="mobileHide">
+                                    {{ t('yes', 'yes')|title }}                            
+                                </td>
+                                <td>
+                                    <strong>
+                                        {{ t('none', 'none')|title }}
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ t('how_long_to_keep_files', 'how long to keep files')|title }}:
+                                </td>
+                                <td class="mobileHide">{{ UserHelper.getDaysToKeepInactiveFiles(0) }} {{ t('days', 'days')|title }}</td>
+                                <td class="mobileHide">{{ UserHelper.getDaysToKeepInactiveFiles(1) }} {{ t('days', 'days')|title }}</td>
+                                <td>
+                                    {{ UserHelper.getDaysToKeepInactiveFiles(2) == 0 ? t('forever', 'forever')|title : (UserHelper.getDaysToKeepInactiveFiles(2) ~ ' ' ~ t('days', 'days')|title) }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ t('maximum_file_upload_size', 'Maximum file upload size')|title }}:
+                                </td>
+                                <td class="mobileHide">{{ UserHelper.getMaxUploadFilesize(0) > 0 ? CoreHelper.formatSize(UserHelper.getMaxUploadFilesize(0)) : t('unlimited', 'unlimited')|title }}</td>
+                                <td class="mobileHide">{{ UserHelper.getMaxUploadFilesize(1) > 0 ? CoreHelper.formatSize(UserHelper.getMaxUploadFilesize(1)) : t('unlimited', 'unlimited')|title }}</td>
+                                <td>{{ UserHelper.getMaxUploadFilesize(2) > 0 ? CoreHelper.formatSize(UserHelper.getMaxUploadFilesize(2)) : t('unlimited', 'unlimited')|title }}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ t('interface_to_manage_uploaded_files', 'interface to manage uploaded files')|title }}:
+                                </td>
+                                <td class="mobileHide">{{ t('not_available', 'not available')|title }}</td>
+                                <td class="mobileHide">{{ t('available', 'available')|title }}</td>
+                                <td>{{ t('available', 'available')|title }}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ t('fast_download_even_when_servers_are_busy', 'fast download even when servers are busy') }}:
+                                </td>
+                                <td class="mobileHide">{{ t('not_available', 'not available')|title }}</td>
+                                <td class="mobileHide">{{ t('not_available', 'not available')|title }}</td>
+                                <td>{{ t('available', 'available')|title }}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ t('estimated_download_time', 'estimated Download time')|title }}:
+                                </td>
+                                <td class="mobileHide">
+                                    {{ CoreHelper.calculateDownloadSpeedFormatted(file.fileSize, UserHelper.getMaxDownloadSpeed(0)) }}
+                                </td>
+                                <td class="mobileHide">
+                                    {{ CoreHelper.calculateDownloadSpeedFormatted(file.fileSize, UserHelper.getMaxDownloadSpeed(1)) }}
+                                </td>
+                                <td>
+                                    {{ CoreHelper.calculateDownloadSpeedFormatted(file.fileSize, 0) }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                {% if UserHelper.showSiteAdverts() %}
+                    <div class="col-md-12 text-center advert-wrapper bottom-advert">
+                        {{ SITE_CONFIG_ADVERT_DELAYED_REDIRECT_BOTTOM|raw }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="row justify-content-around download-page">
+                <div class="col-md-6 col-lg-5">
+                    <div class="boxed boxed--border bg--secondary boxed--lg box-shadow">
+                        <h4>{{ t('download_page_slow_download', 'slow download')|title }}</h4>
+                        <p>
+                            {{ t('download_slow_speed_intro', 'Download without an account with restricted download speed.') }}
+                        </p>
+                        <a class="btn btn-subtle" href="{{ file.getNextDownloadPageLink() }}" style="background-color: #ffffff;">
+                            <span class="btn__text">
+                                {{ t('download_page_slow_download', 'slow download')|upper }}
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-5">
+                    <div class="boxed boxed--border bg--secondary boxed--lg box-shadow">
+                        <h4>{{ t('download_page_high_speed_download', 'high speed download')|title }}</h4>
+                        <p>
+                            {{ t('register_for_a_premium_account_intro', 'Register for a premium account for lightning fast download speeds!') }}
+                        </p>
+                        <a class="btn btn--primary" href="{{ upgradeUrl }}">
+                            <span class="btn__text">
+                                {{ t('download_page_high_speed_download', 'high speed download')|upper }}
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!--end of row-->
+        </div>
+        <!--end of container-->
+    </section>
+    {% include '@themePath/partial/_premium_benefits.html.twig' %}
+{% endblock %}
+
+{% block footerjs %}
+{% if downloadPageData['additional_javascript_code'] is defined %}
+    {{ downloadPageData['additional_javascript_code']|raw }}
+{% endif %}
+{% endblock %}

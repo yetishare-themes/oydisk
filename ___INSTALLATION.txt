@@ -1,0 +1,22 @@
+NEW INSTALLATION:
+
+- Themes can be installed automatically through the admin area of your script installation.
+- Login to the admin area
+- Select themes, add themes.
+- Attach the downloaded zip file and click 'upload theme package'.
+- Once uploaded, you can install and configure the theme settings.
+
+- If the above process fails, you can manually upload the theme. Via FTP, go into the themes folder on your install. Create a new folder named the same as the $themeConfig['folder_name'] value in ThemeConfig.class.php. i.e. 'flow' etc. Upload the theme files to this folder. Reload the theme manager via your script admin to see the theme listed.
+
+
+UPGRADES:
+
+- Backup your existing files and database.
+- Re-upload all the theme code to replace your existing code in the themes/[theme_name]/ folder.
+
+Note: Your theme version number can be found in themes/[theme_name]/ThemeConfig.class.php
+
+
+SUPPORT:
+
+- Your purchase of this theme includes full premium support from YetiShare for 1 year. If you need any help at any time, feel free to check out the support forums on yetishare.com or contact us via the site.

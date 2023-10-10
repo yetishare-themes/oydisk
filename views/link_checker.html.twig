@@ -1,0 +1,66 @@
+{% extends "partial/oydisk_layout.html.twig" %}
+
+{% block title %}{{ t("link_checker_page_name", "Link Checker") }}{% endblock %}
+{% block description %}{{ t("link_checker_meta_description", "Check multiple download links at the same time.") }}{% endblock %}
+{% block keywords %}{{ t("link_checker_meta_keywords", "link, checker, copyright, infringement, file, hosting") }}{% endblock %}
+
+{% block body %}
+	<section class="ptb-120 justify-content-center bg-image">
+        <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg')repeat center center;opacity: 1;"></div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-8">
+                        <div class="hero-content-left text-white text-center">
+						<h1 class="text-white">{{ t("link_checker_page_name", "Link Checker") }}</h1>
+						<p class="lead">{{ t("link_checker_intro", "Use this page to check whether multiple download links are still active. Enter up to 200 urls below, a new one on each line and click 'Check Files'") }}</p>
+                        </div>
+                    </div>
+                </div>
+			</div>
+    </section>	
+            <section class="contact-us-section ptb-100" id="contact">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-12">
+                        <div class="contact-us-form-wrap gray-light-bg position-relative">
+							{% if msg_page_errors is defined %}
+							<div class="alert alert-warning">
+								<i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;{% if msg_page_errors is defined %}{{ msg_page_errors|join('. ') }}{% endif %}
+							</div>
+							{% elseif msg_page_successes is defined %}
+							<div class="alert alert-warning">
+								<i class="fa fa-checks"></i>&nbsp;&nbsp;{% if msg_page_successes is defined %}{{ msg_page_successes|join('. ') }}{% endif %}
+							</div>
+							{% endif %}
+						{% if checkedUrls|length > 0 %}
+                        <ul class="list-group">
+                        {% for url,status in checkedUrls %}
+
+							<a class="list-group-item list-group-item-action {{ status == 'active'?'check':'times' }} list-group-item-{{ status == 'active'?'success':'danger' }}" href="{{ url }}" target="_blank"><i class="fas fa-{{ status == 'active'?'check':'times' }} text-{{ status == 'active'?'success':'danger' }}"></i>&nbsp;&nbsp;{{ url }}</a>
+                        {% endfor %}
+                        </ul>
+                        <br/>
+						<a class="btn btn-brand-01" href="{{ WEB_ROOT }}/link-checker">{{ t('check_again', 'Check again') }}</a>
+                    {% else %}		
+						<form method="post" role="form" action="{{ CORE_SITE_PATH }}/link-checker" autocomplete="off">			
+							<div class="form-row">			
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+											<textarea name="fileUrls" class="form-control" rows="20" cols="25" id="otherInformation" autocomplete="off" required="required" placeholder="{{ t('link_checker_list_of_file_download_urls', 'List of file download urls, 1 on each line.') }}">{{ fileUrls }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 mt-3 ">
+                                        <button type="submit" class="btn btn-brand-01" type="submit">
+                                            {{ t("check_files", "check files")|title }}
+                                        </button>
+                                    </div>
+                                </div>
+								<input type="hidden" value="1" name="submitme"/>
+                            </form>
+							{% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% endblock %}

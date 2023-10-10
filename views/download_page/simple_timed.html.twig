@@ -1,0 +1,92 @@
+{% extends "partial/oydisk_layout.html.twig" %}
+
+{% block title %}{{ file.originalFilename }}{% endblock %}
+{% block description %}{{ file.description|length > 0 ? file.description|slice(0, 250) : t("file_download_description", "Download file")~' - '~file.originalFilename }}{% endblock %}
+{% block keywords %}{{ file.getFileKeywords() }}{% endblock %}
+
+{% block body %}
+	<section class="ptb-120 gradient-overlay bg-image">
+            <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg')repeat center center;opacity: 1;"></div>
+			{% if UserHelper.showSiteAdverts() %}
+            <div class="container">
+                <div class="row justify-content-center text-center">		
+                    <div class="col-lg-12">
+                    {{ SITE_CONFIG_ADVERT_DELAYED_REDIRECT_TOP|raw }}
+                    </div>
+                </div>
+            </div>
+			{% endif %}
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-8">
+                        <div class="single-offer-box text-center">
+                            <div class="offer-header bg-white text-uppercase h6 p-2 mb-0">{{ t("file_information", "File Information") }}</div>
+                            <div class="offer-content text-white">
+								<img src="{{ file.getLargeIconPath()|raw }}" alt="{{ file.extension }}" style="max-height: 7.42857143em;"><br>
+                                <span>{{ file.originalFilename }}</span>                                       
+								<div class="h2 starting-price mb-0 text-white d-flex justify-content-center align-items-center">{{ file.getFormattedFilesize() }}</div>
+                                <span>Uploaded: {{ file.getFormattedUploadedDate() }}</span>
+								{% if UserHelper.showSiteAdverts() %}
+								<div class="mt-3 mb-2">
+									<div class="justify-content-center">		
+											{{ SITE_CONFIG_ADVERT_DELAYED_REDIRECT_BOTTOM|raw }}
+									</div>
+								</div>
+								{% endif %}
+                            </div>
+							<div class="download-timer" style="display:none;">
+                                <a href="#" onclick="return false;" class="btn btn-danger save-now-btn">{{ t('please_wait', 'please wait')|upper }} <span class="download-timer-seconds"></span>&nbsp;{{ t('seconds', 'seconds')|upper }}</a>
+                            </div>
+						</div>						
+					</div>					
+                </div>
+            </div>
+			{% if UserHelper.showSiteAdverts() %}
+		    <div class="ptb-20">
+                <div class="row justify-content-center text-center">		
+                    <div class="col-lg-12">{{ SITE_CONFIG_ADVERT_SITE_FOOTER|raw }}</div>
+                </div>
+            </div>
+			{% endif %}
+        </section>
+			{% include '@themePath/partial/_oydisk_premium.html.twig' %}
+{% endblock %}
+
+{% block footerjs %}
+<script>
+    var seconds = {{ additionalSettings['download_wait']|number_format }};
+    var started = false;
+    function display()
+    {
+        $('.download-timer').show();
+        if (seconds == 0)
+        {
+            $('.download-timer').html("<a class='btn btn-success save-now-btn' href='{{ file.getNextDownloadPageLink() }}'>{{ t("download_now", "download now")|upper }}</a>");
+        } else
+        {
+            $('.download-timer-seconds').html(seconds);
+        }
+        seconds--;
+    }
+    
+    function triggerFreeDownload() {
+        if(started === true) {
+            return;
+        }
+        
+        started = true;
+        display();
+        countdownTimer = setInterval('display()', 1000);
+    }
+
+    $(document).ready(function () {
+        display();
+        $('.download-timer-seconds').html({{ additionalSettings['download_wait']|number_format }});
+        countdownTimer = setInterval('display()', 1000);
+    });
+</script>
+
+{% if downloadPageData['additional_javascript_code'] is defined %}
+    {{ downloadPageData['additional_javascript_code']|raw }}
+{% endif %}
+{% endblock %}

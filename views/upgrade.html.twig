@@ -1,0 +1,110 @@
+{% extends "partial/oydisk_layout.html.twig" %}
+
+{% block title %}{{ pageTitlePrepend }} {{ t("account", "account")|title }}{% endblock %}
+{% block description %}{{ pageTitlePrepend }} {{ t("upgrade_meta_description", "Your Account") }}{% endblock %}
+{% block keywords %}{{ pageTitlePrepend|lower }}{{ t("upgrade_meta_keywords", ", account, paid, membership, upload, download, site") }}{% endblock %}
+{% block selected_navigation_link %}upgrade{% endblock %}
+
+{% block body %}
+	<section class="ptb-120 justify-content-center bg-image">
+        <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg')repeat center center;opacity: 1;"></div>
+		{% if Auth.loggedIn() == true %}
+		<div class="container">
+            <div class="row justify-content-center">  
+                <div class="col-md-8 col-lg-8">
+					<h1 class="text-white text-center">{{ t("account_status", "account status")|title }}</h1>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="single-offer-box text-center">
+                                <div class="offer-header text-uppercase h6 p-2 mb-3">{{ t('account_type', 'account type')|title }}</div>
+                                <div class="h5 starting-price mb-3 text-white d-flex justify-content-center align-items-center">{{ accountTypeLabel }}</div>                           
+                            </div>
+                        </div>
+						{% if accountType in ['paid', 'admin', 'moderator'] %}
+                        <div class="col-8">
+                            <div class="single-offer-box text-center">
+                                <div class="offer-header text-uppercase h6 p-2 mb-3">{{ t('expiry', 'Expiry')|title }}</div>
+                                <div class="h5 starting-price mb-3 text-white d-flex justify-content-center align-items-center">{{ accountExpiry }}</div>
+                            </div>
+                        </div>
+						{% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+		{% else %}
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-9 col-lg-8">
+                    <div class="hero-content-left text-white text-center">
+						<h1 class="text-white">{{ pageTitlePrepend }} {{ t("account", "account")|title }}</h1>
+                        <p class="lead">{{ t("upgrade_title_page_description_left_by_package", "Get more storage and faster access to your files with one of our premium accounts.") }}</p>
+                    </div>
+                </div>
+            </div>
+		</div>
+		{% endif %}
+    </section>	
+    {% if upgradePagePluginMiddle|length > 0 %}
+        {% for pluginKey,upgradePagePluginMiddleItem in upgradePagePluginMiddle %}
+            {{ upgradePagePluginMiddleItem['response_html']|raw }}
+        {% endfor %}
+    {% endif %}
+        <section id="pricing" class="pricing-section ptb-80 gray-light-bg">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-8">
+                        <div class="section-heading text-center mb-4">
+                            <h2>Premium Access Plan</h2>
+                        </div>
+                    </div>
+					{% if msg_page_errors is defined %}
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">
+							<i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;{% if msg_page_errors is defined %}{{ msg_page_errors|join('. ') }}{% endif %}
+						</div>
+                    </div>	
+					{% elseif msg_page_successes is defined %}
+                    <div class="col-md-12">
+						<div class="alert alert-success">
+							<i class="fa fa-check"></i>&nbsp;&nbsp;{% if msg_page_successes is defined %}{{ msg_page_successes|join('. ') }}{% endif %}
+						</div>
+                    </div>
+					{% endif %}
+                </div>
+                <div class="row align-items-center justify-content-md-center justify-content-center">
+					{% for pricingRow in pricingRows %}
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="bg-white single-pricing-pack mt-4 border">
+                            <div class="text-center pricing-header py-4">
+                                <h6 class="mb-2 text-uppercase">{{ pricingRow['_label'] }} {{ t('premium', 'premium') }}</h6>
+                                <div class="price mb-0 monthly-price color-secondary"><span>{{ SITE_CONFIG_COST_CURRENCY_SYMBOL }}</span>{{ pricingRow['price'] }}</div>
+								{% if pricingRow['_per_day_cost'] > 0 %}
+                                <span class="p-month"> {{ SITE_CONFIG_COST_CURRENCY_SYMBOL }}{{ pricingRow['_per_day_cost'] }} {{ t('upgrade_boxes_per_day', 'per day')|title }}</span>
+								{% endif %}
+                            </div>
+                            <div class="pricing-content text-center">
+                                <ul class="list-unstyled mb-4 pricing-feature-list">
+                                    <li>Maximum Speed</li>
+                                    <li>Unltimate Bandwidth</li>
+                                    <li>Watch Online</li>
+                                    <li>No Advertising</li>
+                                    <li>{{ t('secure_payment', 'secure payment')|title }}</li>
+									<li>{{ t('safe_and_anonymous', '100% Safe & Anonymous')|title }}</li>
+									<li><span>{{ t('select_payment_method', 'Select Payment Method:')|title }}</span></li>
+                                </ul>
+                                <div class="text-center">
+                                    {{ PluginHelper.outputPaymentLinks({'days': pricingRow['_days'], 'price': pricingRow['price'], 'user_level_pricing_id': pricingRow['id'], 'user_level_package_id': packageLevelId})|raw }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					{% endfor %}
+                </div>
+            </div>
+        </section>
+    </section>
+    
+
+        {% include '@themePath/partial/_faq.html.twig' %}
+{% endblock %}

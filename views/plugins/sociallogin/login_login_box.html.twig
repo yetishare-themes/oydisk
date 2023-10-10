@@ -1,0 +1,44 @@
+{% if pluginSettings['facebook_enabled'] == 1 %}
+    <a href="{{ PLUGIN_WEB_ROOT }}/{{ pluginConfig['folder_name'] }}/login/Facebook" class="btn block btn--icon bg--facebook type--uppercase">
+        <span class="btn__text">
+            <i class="socicon-facebook"></i>
+            {{ t('login_with_facebook', 'Login with Facebook') }}
+        </span>
+    </a>
+{% endif %}
+
+{% if pluginSettings['twitter_enabled'] == 1 %}
+    <a href="{{ PLUGIN_WEB_ROOT }}/{{ pluginConfig['folder_name'] }}/login/Twitter" class="btn block btn--icon bg--twitter type--uppercase">
+        <span class="btn__text">
+            <i class="socicon-twitter"></i>
+            {{ t('login_with_twitter', 'Login with Twitter') }}
+        </span>
+    </a>
+{% endif %}
+
+{% if pluginSettings['google_enabled'] == 1 %}
+    <a href="{{ PLUGIN_WEB_ROOT }}/{{ pluginConfig['folder_name'] }}/login/Google" class="btn block btn--icon bg--googleplus type--uppercase">
+        <span class="btn__text">
+            <i class="socicon-google"></i>
+            {{ t('login_with_google', 'Login with Google') }}
+        </span>
+    </a>
+{% endif %}
+
+{% if pluginSettings['foursquare_enabled'] == 1 %}
+    <a href="{{ PLUGIN_WEB_ROOT }}/{{ pluginConfig['folder_name'] }}/login/Foursquare" class="btn block btn--icon bg--behance type--uppercase">
+        <span class="btn__text">
+            <i class="socicon-foursquare"></i>
+            {{ t('login_with_foursquare', 'Login with Foursquare') }}
+        </span>
+    </a>
+{% endif %}
+
+{% if pluginSettings['linkedin_enabled'] == 1 %}
+    <a href="{{ PLUGIN_WEB_ROOT }}/{{ pluginConfig['folder_name'] }}/login/LinkedIn" class="btn block btn--icon bg--instagram type--uppercase">
+        <span class="btn__text">
+            <i class="socicon-linkedin"></i>
+            {{ t('login_with_linkedin', 'Login with LinkedIn') }}
+        </span>
+    </a>
+{% endif %}

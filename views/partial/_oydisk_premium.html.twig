@@ -1,0 +1,178 @@
+		<section id="pricing" class="pricing-section ptb-100 gray-light-bg">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-12">
+                        <div class="section-heading text-center mb-4">
+                            <h2>Premium Account</h2>
+                            <p class="lead">Get more storage and faster access to your files with one of our premium accounts 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-md-center justify-content-center">
+                    <div class="col-lg-4 col-md-6 col-sm-8">
+                        <div class="popular-price bg-white pricing-new-wrapper mt-4 p-5 shadow-sm border">
+                            <div class="pricing-price d-flex justify-content-between align-items-center">
+                                <div class="h4 mb-0 text-dark text-uppercase">Free</div>
+                            </div>
+                            <div class="pricing-content">
+                                <ul class="list-unstyled pricing-feature-list-2 mt-4">
+                                    <li>
+                                        <p><strong class="text-danger">1 Gigabyte</strong> Storage Cloud</p>
+                                    </li>
+                                    <li>
+                                        <p><strong class="text-danger">{{ UserHelper.getMaxUploadFilesize(1) > 0 ? CoreHelper.formatSize(UserHelper.getMaxUploadFilesize(1)) : t('unlimited', 'unlimited')|title }}</strong> Size File Upload</p>
+                                    </li>
+                                    <li>
+                                        <p><strong class="text-danger">{{ UserHelper.getMaxDownloadSpeed(1) > 0 ? ( CoreHelper.formatSize(UserHelper.getMaxDownloadSpeed(1)) ~ 'ps') : t('limited', 'limited')|title }}</strong> Download Speed</p>
+                                    </li>
+                                    <li>
+                                        <p><strong class="text-danger">40 Seconds</strong> Waiting Time</p>
+                                    </li>
+                                    <li>
+                                        <p><strong class="text-danger">7 Days</strong> Keep Files</p>
+                                    </li>
+                                    <li>
+                                        <p><strong class="text-danger">Limited</strong> Daily Bandwidth</p>
+                                    </li>
+                                    <li><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>
+                                        <p>Advertisements</p>
+                                    </li>
+
+                                    <li><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>
+                                        <p>Watch Online</p>
+                                    </li>
+                                    <li><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>
+                                        <p>Captcha Request</p>
+                                    </li>
+                                    <li><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>
+                                        <p>Download Concurrent</p>
+                                    </li>
+                                    <li><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>
+                                        <p>Download Slots</p>
+                                    </li>
+                                    <li><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>
+                                        <p>Non-Resumable</p>
+                                    </li>
+                                </ul>
+								{% if Auth.loggedIn() == true %}
+                                <a href="{{ CoreHelper.getCoreSitePath() }}/account?triggerUpload=1" class="btn btn-outline-brand-01 btn-block">Upload</a>
+								{% elseif UserHelper.getAllowedToUpload(0) == true and SITE_CONFIG_ENABLE_USER_REGISTRATION == 'yes' %}
+								<a href="{{ CoreHelper.getCoreSitePath() }}/register_non_user" class="btn btn-outline-brand-01 btn-block">Upload</a>
+								{% else %}
+									<a class="btn btn-secondary disabled btn-block " aria-disabled="true">Disable Upload</a>
+								{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-8">
+                        <div class="popular-price bg-white pricing-new-wrapper mt-4 p-5 shadow-sm border">
+                            <div class="pricing-price d-flex justify-content-between align-items-center">
+                                <div class="h4 mb-0 text-dark text-uppercase">Registered</div>
+                            </div>
+                            <div class="pricing-content">
+                                <ul class="list-unstyled pricing-feature-list-2 mt-4">
+                                    <li>
+                                        <p><strong class="text-danger">10 Gigabyte</strong> Storage Cloud</p>
+                                    </li>
+                                    <li>
+                                        <p><strong class="text-danger">{{ UserHelper.getMaxUploadFilesize(1) > 0 ? CoreHelper.formatSize(UserHelper.getMaxUploadFilesize(1)) : t('unlimited', 'unlimited')|title }}</strong> Size File Upload</p>
+                                    </li>
+                                    <li>
+                                        <p><strong class="text-danger">{{ UserHelper.getMaxDownloadSpeed(1) > 0 ? ( CoreHelper.formatSize(UserHelper.getMaxDownloadSpeed(1)) ~ 'ps') : t('limited', 'limited')|title }}</strong> Download Speed</p>
+                                    </li>
+                                    <li>
+                                        <p><strong class="text-danger">20 Seconds</strong> Waiting Time</p>
+                                    </li>
+                                    <li>
+                                        <p><strong class="text-danger">30 Days</strong> Keep Files</p>
+                                    </li>
+                                    <li>
+                                        <p><strong class="text-danger">Limited</strong> Daily Bandwidth</p>
+                                    </li>
+                                    <li><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>
+                                        <p>Advertisements</p>
+                                    </li>
+
+                                    <li><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>
+                                        <p>Watch Online</p>
+                                    </li>
+                                    <li><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>
+                                        <p>Captcha Request</p>
+                                    </li>
+                                    <li><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>
+                                        <p>Download Concurrent</p>
+                                    </li>
+                                    <li><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>
+                                        <p>Download Slots</p>
+                                    </li>
+                                    <li><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>
+                                        <p>Non-Resumable</p>
+                                    </li>
+                                </ul>
+								{% if Auth.loggedIn() == true %}
+									<a class="btn btn-brand-02 btn-block" href="{{ CORE_SITE_PATH }}/account">{{ t("your_account", "your account")|title }}</a>
+								{% elseif SITE_CONFIG_ENABLE_USER_REGISTRATION == 'yes' %}
+									<a class="btn btn-brand-02 btn-block" href="{{ CoreHelper.getCoreSitePath() }}/register">{{ t('register_index_button', 'Register') }}</a>
+								{% else %}
+									<a class="btn btn-brand-02 disabled btn-block" aria-disabled="true">{{ t('register_index_button', 'Register') }}</a>
+								{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-8">
+                        <div class="popular-price bg-white pricing-new-wrapper mt-4 p-5 shadow-sm border">
+                            <div class="pricing-price d-flex justify-content-between align-items-center">
+                                <div class="h4 mb-0 text-primary text-uppercase">Premium</div>
+                            </div>
+                            <div class="pricing-content">
+                                <ul class="list-unstyled pricing-feature-list-2 mt-4">
+                                    <li>
+                                        <p><strong class="text-success">Unlimited</strong> Storage Cloud</p>
+                                    </li>
+                                    <li>
+                                        <p><strong class="text-success">{{ UserHelper.getMaxUploadFilesize(2) > 0 ? CoreHelper.formatSize(UserHelper.getMaxUploadFilesize(2)) : t('unlimited', 'unlimited')|title }}</strong> Size File Upload</p>
+                                    </li>
+                                    <li>
+                                        <p><strong class="text-success">Maximum</strong> Download Speed</p>
+                                    </li>
+                                    <li>
+                                        <p><strong class="text-success">0 Seconds</strong> Waiting Time</p>
+                                    </li>
+                                    <li>
+                                        <p><strong class="text-success">Forever</strong> Keep Files</p>
+                                    </li>
+                                    <li>
+                                        <p><strong class="text-success">Unlimited</strong> Daily Bandwidth</p>
+                                    </li>
+                                    <li><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>
+                                        <p>Advertisements</p>
+                                    </li>
+
+                                    <li><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>
+                                        <p>Watch Online</p>
+                                    </li>
+                                    <li><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>
+                                        <p>Captcha Request</p>
+                                    </li>
+                                    <li><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>
+                                        <p>Download Concurrent</p>
+                                    </li>
+                                    <li><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>
+                                        <p>Download Slots</p>
+                                    </li>
+                                    <li><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>
+                                        <p>Non-Resumable</p>
+                                    </li>
+                                </ul>
+								{% if UserHelper.enableUpgradePage() == 'yes' %}
+                                <a class="btn btn-brand-03 btn-block" href="{{ CORE_SITE_PATH }}/upgrade">Upgrade Now</a>
+								{% else %}
+								<a class="btn btn-brand-03 btn-block disabled" aria-disabled="true">Upgrade Now</a>
+								{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>

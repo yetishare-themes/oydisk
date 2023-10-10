@@ -1,0 +1,1473 @@
+.file-upload-wrapper .modal-dialog
+{
+    /*max-width: 1000px;*/
+    width: 100%;
+	padding: 5px;
+	margin: 0px;
+}
+
+.nav-tabs > li {
+	float:none;
+	display:inline-block;
+	*display:inline; /* ie7 fix */
+	 zoom:1; /* hasLayout ie7 trigger */
+}
+
+.file-upload-wrapper .nav-tabs {
+    text-align:center;
+}
+
+.file-upload-wrapper .nav-tabs
+{
+    margin-top: 0px;
+}
+
+.file-upload-wrapper .nav-tabs.bordered + .tab-content
+{
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
+/* file uploader */
+.fileUploadMain
+{
+    width:				100%;
+    text-align:				left;
+}
+
+.fileUploadMainFull
+{
+    width:				100%;
+    text-align:				left;
+}
+
+.fileUploadMain .initialUploadSection
+{
+    cursor:                             pointer;
+}
+
+.fileUploadMain .initialUploadSection img:hover
+{
+	opacity: 0.7;
+    filter: alpha(opacity=70);
+}
+
+.fileUploadMain .initialUploadSection .initialUploadText .uploadText, .fileListingWrapper .introText
+{
+    padding-bottom:                     4px;
+    float:                              left;
+}
+
+.fileUploadMain .initialUploadSection .initialUploadText .uploadElement
+{
+    width:                              100%;
+    padding-bottom:                     34px;
+    color:                              #6e6e6e;
+    font-size:                          32px;
+}
+
+.fileUploadMain .initialUploadSection .uploadElement .internal
+{
+    text-align: center;
+    padding-top: 8px;
+	text-transform: uppercase;
+	font-weight: 700;
+	color: #6e6e6e;
+}
+
+.fileUploadMain .initialUploadSection .uploadElement .internal i
+{
+    font-size: 76px;
+    clear: both;
+    color: #bebebe;
+}
+
+.fileUploadContent
+{
+    width:				700px;
+    text-align:				left;
+    background:                         #ffffff;
+    float:                              left;
+}
+
+.fileUploadContentInternal
+{
+    padding:                            20px;
+}
+
+.fileUploadContentInternal p
+{
+    width:                              95%;
+}
+
+.fileupload-buttonbar .ui-button input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    border: solid transparent;
+    border-width: 0 0 100px 200px;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -o-transform: translate(250px, -50px) scale(1);
+    -moz-transform: translate(-300px, 0) scale(4);
+    direction: ltr;
+    cursor: pointer;
+}
+
+.fileinput-button {
+    overflow: hidden;
+}
+
+/* Fix for IE 6: */
+*html .fileinput-button {
+    padding: 2px 0;
+}
+
+/* Fix for IE 7: */
+*+html .fileinput-button {
+    padding: 2px 0;
+}
+
+.fileupload-buttonbar {
+    padding: 0.2em 0.4em;
+}
+
+.fileupload-buttonbar .ui-button {
+    vertical-align: middle;
+}
+
+.fileupload-content {
+    border-width: 0px;
+}
+
+.fileupload-content .ui-progressbar {
+    width: 100%;
+    height: 10px;
+}
+
+.fileupload-content .ui-progressbar .ui-progressbar-value {
+    background: url(../images/progress_bar.gif);
+    border: 1px solid #4297D7;
+}
+
+.fileupload-content .fileupload-progressbar {
+    margin: 10px 0;
+}
+
+.fileupload-content .initialUploadText {
+    font-size: 24px;
+}
+
+.fileupload-content label
+{
+    width: 100%;
+}
+
+.fileupload-progresstext
+{
+    color: #999;
+    width: 100%;
+}
+
+.files, .addFileRow {
+    border-collapse: collapse;
+    display: inline-block;
+}
+
+.files tr:hover
+{
+    background-color: #e7f0fa;
+}
+
+.files td, .addFileRow td {
+    padding-top: 3px;
+    border-spacing: 3px;
+}
+
+.files .cancel, .addFileRow .cancel
+{
+    width: 30px;
+    text-align: center;
+}
+
+.files .cancel
+{
+	position: relative;
+	float: right;
+}
+
+.files .cancel a{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+	width: 10px;
+	height: 10px;
+}
+
+.files .cancel a img {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+}
+
+.files .name, .addFileRow .name, .files .url a  {
+    text-align: left;
+    font-size: 14px;
+}
+
+.urlFileListingWrapper #urls.files tr:not(.template-download) .name
+{
+	width: 100%;
+}
+
+.files .rightArrow
+{
+    width: 14px;
+}
+
+.addFileRow td
+{
+    border-bottom: 1px solid #eee;
+}
+
+.fileupload-content .fileListingWrapper .fileSectionFooterText
+{
+    padding-top: 10px;
+}
+
+.sliderContent a
+{
+    text-decoration:                    none;
+}
+
+.sliderContent .odd
+{
+    border-top:                         1px solid #fff;
+    padding:                            5px;
+}
+
+.sliderContent .even
+{
+    border-top:                         1px solid #fff;
+    padding:                            5px;
+}
+
+.ui-state-disabled .ui-state-disabled {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+
+.ui-state-disabled input {
+    cursor: default;
+}
+
+.template-upload .preview
+{
+    text-align: right;
+    padding-right: 3px;
+}
+
+.sliderContent tr:hover, .sliderContent td:hover
+{
+    background-color:                   #fff;
+    cursor:                             default;
+}
+
+.file-upload-wrapper .fileListingWrapper
+{
+    width: 100%;
+}
+
+.file-upload-wrapper .baseText
+{
+    color:                              #aaaaaa;
+    width:                              100%;
+    text-align:                         center;
+    margin-top:                         4px;
+	text-transform: uppercase;
+	font-size: 13px;
+	letter-spacing: 1px;
+	font-weight: 700;
+    font-family: 'Raleway', sans-serif;
+}
+
+.file-upload-wrapper .uploadFooter
+{
+    padding-top:                        18px;
+}
+
+.files .template-download:hover
+{
+    background-color:                   #dedede;
+    cursor:                             pointer;
+}
+
+.fileListingWrapper .urlOff
+{
+    background: url('../images/blue_down_arrow.png') 98% 55% no-repeat;
+}
+
+.initialUploadText h2
+{
+    display: none;
+}
+
+.tab-content .tab-pane
+{
+    padding: 10px;
+}
+
+.additional-options-wrapper
+{
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #ffffff;
+    padding-top: 6px;
+}
+
+.additional-options-wrapper .panel
+{
+    margin-bottom: 0px;
+}
+
+.additional-options-wrapper .footer-buttons
+{
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.file-upload-wrapper .upload-button
+{
+    text-align: center;
+    margin-bottom: 12px;
+    margin-top: 5px;
+}
+
+.file-upload-wrapper #completedSection .upload-button
+{
+    text-align: right;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.fileListingWrapper .globalProgressWrapper
+{
+    width:                              99%;
+    height:                             10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fileListingWrapper .globalProgressWrapper .progress
+{
+    margin-bottom: 0px;
+    margin-top: 5px;
+}
+
+.fileListingWrapper .globalProgressWrapper .file-upload-progress-right
+{
+    float: right;
+}
+
+.sliderContent
+{
+    position:                           absolute;
+    border-bottom:                      1px solid #ebebeb;
+    border-left:                        1px solid #ebebeb;
+    border-right:                       1px solid #ebebeb;
+    font-size:                          10px;
+    margin-left:                        21px;
+    margin-right:                       21px;
+    z-index:                            999999;
+}
+.sliderContent table
+{
+    background-color:                   #fff;
+}
+.sliderContent label
+{
+    font-weight:                        bold;
+}
+.sliderContent tr
+{
+    cursor:                             default;
+}
+
+.file-upload-wrapper
+{
+    z-index: 1045;
+}
+
+.file-upload-wrapper .copyAllLinkWrapper
+{
+    text-align: left;
+    margin-top: 4px;
+}
+
+.file-upload-wrapper .table .first
+{
+    width: 140px;
+}
+
+.file-upload-wrapper textarea.form-control
+{
+    height: 140px;
+}
+
+.file-upload-wrapper .urlUploadFooter
+{
+    padding-top: 10px;
+}
+
+#urlUpload .progressWrapper
+{
+    float: right;
+}
+
+.urlUploadFooter .transferFilesButton
+{
+    display: none;
+}
+
+.ftp-file-uploader
+{
+    padding-bottom: 14px;
+}
+
+.urlUploadMainInternal .accountStateTable
+{
+    margin-top: 16px;
+    border-bottom: 1px solid #ebebeb;
+}
+
+.txtCenter
+{
+    text-align: center;
+}
+
+@media (max-width: 1023px){
+    .fileListingWrapper .globalProgressWrapper {float: none !important; height: 10px !important; margin-left: auto !important; margin-right: auto !important; width: 100% !important;}
+    .file-upload-wrapper .upload-button {float:none !important; text-align:center !important;}
+    .file-upload-wrapper .copyAllLinkWrapper {text-align:center !important;}
+    .files .rightArrow {display:none;}
+    .fileupload-progresstext {width:100% !important; line-height:18px;}
+}
+
+.template-upload-img, .template-download-img
+{
+    display: inline-block;
+    width: 162px;
+    height: 162px;
+	margin: 2px;
+	border: 1px solid #efefef;
+
+	background: rgba(255, 255, 255, .5) url(../images/loading_small.gif) center 40% no-repeat;
+    vertical-align: middle;
+    max-height: 100%;
+    max-width: 100%;
+    overflow: hidden;
+	position: relative;
+}
+
+.template-download-img img
+{
+	max-width: 162px;
+    max-height: 162px;
+}
+
+.addFileRow .template-upload-img
+{
+	background: inherit;
+}
+
+.template-download-img
+{
+    cursor: pointer;
+}
+
+.template-download-img:hover
+{
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+}
+
+#fileListingWrapper #files
+{
+	border-bottom: 0px;
+	display: inline;
+}
+
+.template-upload-img .previewOverlay
+{
+    width: 160px;
+    height: 160px;
+    position: absolute;
+}
+
+.template-upload-img div.faded
+{
+    background: rgba(255, 255, 255, .70);
+}
+
+.template-upload-img .previewOverlay .progressText
+{
+    width: 100%;
+    display: none;
+    text-align: center;
+    padding-top: 22%;
+    font-size: 30px;
+    font-weight: bold;
+    height: 113px;
+    color: #fff;
+	text-shadow: 1px 1px #666666;
+}
+
+.template-upload-img .previewOverlay .progress
+{
+	margin: 5px;
+    height: 10px;
+	margin-top: 118px;
+	border-radius: 0px;
+	-webkit-border-radius: 0px;
+}
+
+.template-upload-img .previewOverlay .progress .progress-bar
+{
+    background-color: #1ABC9C;
+}
+
+.addFileRow
+{
+	display: inline;
+}
+
+.addFileRow a
+{
+	display: block;
+    height: 100%;
+    text-align: center;
+    padding-top: 46px;
+    color: #efefef;
+    font-size: 54px;
+}
+
+.addFileRow a:hover
+{
+	color: #1ABC9C;
+}
+
+.template-upload-img .error
+{
+	padding: 5px;
+	color: red;
+	text-align: center;
+	vertical-align: middle;
+	height: 160px;
+	display: table-cell;
+	opacity: 0.8;
+    filter: alpha(opacity=80); /* For IE8 and earlier */
+}
+
+.fileupload-content .errorText .cancel
+{
+	float: none;
+	width: inherit;
+	cursor: pointer;
+}
+
+.template-download-img.errorText
+{
+    color: red;
+    font-size: 13px;
+    background: transparent;
+    padding: 16px;
+    background: white url(../images/red_error_small.png) center 90% no-repeat !important;
+}
+
+.fileSection
+{
+	/*max-height: 300px;
+	overflow: auto;
+	padding-bottom: 5px;*/
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.globalProgressWrapper .progress
+{
+    border-radius: 0px;
+}
+
+.globalProgressWrapper .progress-bar-info
+{
+    background-color: #1ABC9C;
+}
+
+.showAdditionalOptionsLink
+{
+    cursor: pointer;
+}
+
+.file-upload-wrapper .fileListingWrapper .name
+{
+    word-wrap: normal;
+	word-break: break-all;
+	min-width: 130px;
+}
+
+.file-upload-wrapper .fileListingWrapper .url
+{
+    word-wrap: normal;
+	word-break: break-all;
+}
+
+.image-upload-thumb-check
+{
+	position:absolute;
+    bottom: 0px;
+    left: 0px;
+	top: 0px;
+    width: 100%;  
+    background-color: transparent;
+    font-size: 80px;
+    color: white;
+	padding-top: 32px;
+	opacity: 0.9; /* transparency */  
+    filter: alpha(opacity=90); /* IE transparency */  
+	text-shadow: 0px 0px 2px #999;
+}
+
+.upload-complete-btns
+{
+	margin-top: 14px;
+	text-align: center;
+}
+
+.files > [title*=".AAI"], .files > [title*=".aai"], .files > [title*=".ART"], .files > [title*=".art"], .files > [title*=".ARW"], .files > [title*=".arw"], .files > [title*=".AVS"], .files > [title*=".avs"], .files > [title*=".BGR"], .files > [title*=".bgr"], .files > [title*=".BGRA"], .files > [title*=".bgra"], .files > [title*=".BRF"], .files > [title*=".brf"], .files > [title*=".CAL"], .files > [title*=".cal"], .files > [title*=".CALS"], .files > [title*=".cals"], .files > [title*=".CANVAS"], .files > [title*=".canvas"], .files > [title*=".CAPTION"], .files > [title*=".caption"], .files > [title*=".CIN"], .files > [title*=".cin"], .files > [title*=".CIP"], .files > [title*=".cip"], .files > [title*=".CLIP"], .files > [title*=".clip"], .files > [title*=".CMYK"], .files > [title*=".cmyk"], .files > [title*=".CMYKA"], .files > [title*=".cmyka"], .files > [title*=".CUT"], .files > [title*=".cut"], .files > [title*=".DCM"], .files > [title*=".dcm"], .files > [title*=".DCX"], .files > [title*=".dcx"], .files > [title*=".DDS"], .files > [title*=".dds"], .files > [title*=".DFONT"], .files > [title*=".dfont"], .files > [title*=".DPX"], .files > [title*=".dpx"], .files > [title*=".DXT1"], .files > [title*=".dxt1"], .files > [title*=".DXT5"], .files > [title*=".dxt5"], .files > [title*=".EPDF"], .files > [title*=".epdf"], .files > [title*=".EPI"], .files > [title*=".epi"], .files > [title*=".EPT"], .files > [title*=".ept"], .files > [title*=".EPT2"], .files > [title*=".ept2"], .files > [title*=".EPT3"], .files > [title*=".ept3"], .files > [title*=".ERF"], .files > [title*=".erf"], .files > [title*=".EXR"], .files > [title*=".exr"], .files > [title*=".FAX"], .files > [title*=".fax"], .files > [title*=".FITS"], .files > [title*=".fits"], .files > [title*=".FRACTAL"], .files > [title*=".fractal"], .files > [title*=".FTS"], .files > [title*=".fts"], .files > [title*=".G3"], .files > [title*=".g3"], .files > [title*=".GRADIENT"], .files > [title*=".gradient"], .files > [title*=".GRAY"], .files > [title*=".gray"], .files > [title*=".GROUP4"], .files > [title*=".group4"], .files > [title*=".GV"], .files > [title*=".gv"], .files > [title*=".HALD"], .files > [title*=".hald"], .files > [title*=".HDR"], .files > [title*=".hdr"], .files > [title*=".HISTOGRAM"], .files > [title*=".histogram"], .files > [title*=".HRZ"], .files > [title*=".hrz"], .files > [title*=".ICB"], .files > [title*=".icb"], .files > [title*=".IIQ"], .files > [title*=".iiq"], .files > [title*=".INFO"], .files > [title*=".info"], .files > [title*=".INLINE"], .files > [title*=".inline"], .files > [title*=".IPL"], .files > [title*=".ipl"], .files > [title*=".JNG"], .files > [title*=".jng"], .files > [title*=".JNX"], .files > [title*=".jnx"], .files > [title*=".JSON"], .files > [title*=".json"], .files > [title*=".K25"], .files > [title*=".k25"], .files > [title*=".LABEL"], .files > [title*=".label"], .files > [title*=".M2V"], .files > [title*=".m2v"], .files > [title*=".MAC"], .files > [title*=".mac"], .files > [title*=".MAP"], .files > [title*=".map"], .files > [title*=".MASK"], .files > [title*=".mask"], .files > [title*=".MAT"], .files > [title*=".mat"], .files > [title*=".MATTE"], .files > [title*=".matte"], .files > [title*=".MIFF"], .files > [title*=".miff"], .files > [title*=".MNG"], .files > [title*=".mng"], .files > [title*=".MONO"], .files > [title*=".mono"], .files > [title*=".MP4"], .files > [title*=".mp4"], .files > [title*=".MPC"], .files > [title*=".mpc"], .files > [title*=".MSL"], .files > [title*=".msl"], .files > [title*=".MSVG"], .files > [title*=".msvg"], .files > [title*=".MTV"], .files > [title*=".mtv"], .files > [title*=".MVG"], .files > [title*=".mvg"], .files > [title*=".NRW"], .files > [title*=".nrw"], .files > [title*=".NULL"], .files > [title*=".null"], .files > [title*=".OTB"], .files > [title*=".otb"], .files > [title*=".OTF"], .files > [title*=".otf"], .files > [title*=".PAL"], .files > [title*=".pal"], .files > [title*=".PALM"], .files > [title*=".palm"], .files > [title*=".PAM"], .files > [title*=".pam"], .files > [title*=".PANGO"], .files > [title*=".pango"], .files > [title*=".PATTERN"], .files > [title*=".pattern"], .files > [title*=".PBM"], .files > [title*=".pbm"], .files > [title*=".PCD"], .files > [title*=".pcd"], .files > [title*=".PCDS"], .files > [title*=".pcds"], .files > [title*=".PCL"], .files > [title*=".pcl"], .files > [title*=".PCT"], .files > [title*=".pct"], .files > [title*=".PCX"], .files > [title*=".pcx"], .files > [title*=".PDB"], .files > [title*=".pdb"], .files > [title*=".PES"], .files > [title*=".pes"], .files > [title*=".PFA"], .files > [title*=".pfa"], .files > [title*=".PFB"], .files > [title*=".pfb"], .files > [title*=".PFM"], .files > [title*=".pfm"], .files > [title*=".PGM"], .files > [title*=".pgm"], .files > [title*=".PICON"], .files > [title*=".picon"], .files > [title*=".PICT"], .files > [title*=".pict"], .files > [title*=".PIX"], .files > [title*=".pix"], .files > [title*=".PJPEG"], .files > [title*=".pjpeg"], .files > [title*=".PLASMA"], .files > [title*=".plasma"], .files > [title*=".PNM"], .files > [title*=".pnm"], .files > [title*=".PPM"], .files > [title*=".ppm"], .files > [title*=".PREVIEW"], .files > [title*=".preview"], .files > [title*=".PS2"], .files > [title*=".ps2"], .files > [title*=".PS3"], .files > [title*=".ps3"], .files > [title*=".PSB"], .files > [title*=".psb"], .files > [title*=".PTIF"], .files > [title*=".ptif"], .files > [title*=".PWP"], .files > [title*=".pwp"], .files > [title*=".RADIAL-GRADIENT"], .files > [title*=".radial-gradient"], .files > [title*=".RAS"], .files > [title*=".ras"], .files > [title*=".RGB"], .files > [title*=".rgb"], .files > [title*=".RGBA"], .files > [title*=".rgba"], .files > [title*=".RGBO"], .files > [title*=".rgbo"], .files > [title*=".RGF"], .files > [title*=".rgf"], .files > [title*=".RLA"], .files > [title*=".rla"], .files > [title*=".RLE"], .files > [title*=".rle"], .files > [title*=".RMF"], .files > [title*=".rmf"], .files > [title*=".SCR"], .files > [title*=".scr"], .files > [title*=".SCT"], .files > [title*=".sct"], .files > [title*=".SFW"], .files > [title*=".sfw"], .files > [title*=".SGI"], .files > [title*=".sgi"], .files > [title*=".SHTML"], .files > [title*=".shtml"], .files > [title*=".SIX"], .files > [title*=".six"], .files > [title*=".SIXEL"], .files > [title*=".sixel"], .files > [title*=".SPARSE-COLOR"], .files > [title*=".sparse-color"], .files > [title*=".SRF"], .files > [title*=".srf"], .files > [title*=".STEGANO"], .files > [title*=".stegano"], .files > [title*=".SUN"], .files > [title*=".sun"], .files > [title*=".TEXT"], .files > [title*=".text"], .files > [title*=".TGA"], .files > [title*=".tga"], .files > [title*=".THUMBNAIL"], .files > [title*=".thumbnail"], .files > [title*=".TILE"], .files > [title*=".tile"], .files > [title*=".TIM"], .files > [title*=".tim"], .files > [title*=".TTC"], .files > [title*=".ttc"], .files > [title*=".UBRL"], .files > [title*=".ubrl"], .files > [title*=".UIL"], .files > [title*=".uil"], .files > [title*=".UYVY"], .files > [title*=".uyvy"], .files > [title*=".VDA"], .files > [title*=".vda"], .files > [title*=".VICAR"], .files > [title*=".vicar"], .files > [title*=".VID"], .files > [title*=".vid"], .files > [title*=".VIFF"], .files > [title*=".viff"], .files > [title*=".VIPS"], .files > [title*=".vips"], .files > [title*=".VST"], .files > [title*=".vst"], .files > [title*=".WEBP"], .files > [title*=".webp"], .files > [title*=".WMZ"], .files > [title*=".wmz"], .files > [title*=".WPG"], .files > [title*=".wpg"], .files > [title*=".X"], .files > [title*=".x"], .files > [title*=".XBM"], .files > [title*=".xbm"], .files > [title*=".XC"], .files > [title*=".xc"], .files > [title*=".XCF"], .files > [title*=".xcf"], .files > [title*=".XPM"], .files > [title*=".xpm"], .files > [title*=".XPS"], .files > [title*=".xps"], .files > [title*=".XV"], .files > [title*=".xv"], .files > [title*=".XWD"], .files > [title*=".xwd"], .files > [title*=".YCbCr"], .files > [title*=".ycbcr"], .files > [title*=".YCbCrA"], .files > [title*=".ycbcra"], .files > [title*=".YUV"], .files > [title*=".yuv"], .files > [title*="."]
+{
+	background: white url("../images/file_icons/48px/_page.png") center 40% no-repeat;
+}
+
+
+.files > [title*=".3FR"], .files > [title*=".3fr"] {
+    background: white url("../images/file_icons/48px/3fr.png") center 40% no-repeat;
+}
+
+.files > [title*=".AI"], .files > [title*=".ai"] {
+    background: white url("../images/file_icons/48px/ai.png") center 40% no-repeat;
+}
+
+.files > [title*=".AVI"], .files > [title*=".avi"] {
+    background: white url("../images/file_icons/48px/avi.png") center 40% no-repeat;
+}
+
+.files > [title*=".BMP"], .files > [title*=".bmp"] {
+    background: white url("../images/file_icons/48px/bmp.png") center 40% no-repeat;
+}
+
+.files > [title*=".BMP2"], .files > [title*=".bmp2"] {
+    background: white url("../images/file_icons/48px/bmp.png") center 40% no-repeat;
+}
+
+.files > [title*=".BMP3"], .files > [title*=".bmp3"] {
+    background: white url("../images/file_icons/48px/bmp.png") center 40% no-repeat;
+}
+
+.files > [title*=".CR2"], .files > [title*=".cr2"] {
+    background: white url("../images/file_icons/48px/cr2.png") center 40% no-repeat;
+}
+
+.files > [title*=".CRW"], .files > [title*=".crw"] {
+    background: white url("../images/file_icons/48px/crw.png") center 40% no-repeat;
+}
+
+.files > [title*=".CUR"], .files > [title*=".cur"] {
+    background: white url("../images/file_icons/48px/cur.png") center 40% no-repeat;
+}
+
+.files > [title*=".DCR"], .files > [title*=".dcr"] {
+    background: white url("../images/file_icons/48px/dcr.png") center 40% no-repeat;
+}
+
+.files > [title*=".DNG"], .files > [title*=".dng"] {
+    background: white url("../images/file_icons/48px/dng.png") center 40% no-repeat;
+}
+
+.files > [title*=".DOT"], .files > [title*=".dot"] {
+    background: white url("../images/file_icons/48px/dot.png") center 40% no-repeat;
+}
+
+.files > [title*=".EPS"], .files > [title*=".eps"] {
+    background: white url("../images/file_icons/48px/eps.png") center 40% no-repeat;
+}
+
+.files > [title*=".EPS2"], .files > [title*=".eps2"] {
+    background: white url("../images/file_icons/48px/eps.png") center 40% no-repeat;
+}
+
+.files > [title*=".EPS3"], .files > [title*=".eps3"] {
+    background: white url("../images/file_icons/48px/eps.png") center 40% no-repeat;
+}
+
+.files > [title*=".EPSF"], .files > [title*=".epsf"] {
+    background: white url("../images/file_icons/48px/eps.png") center 40% no-repeat;
+}
+
+.files > [title*=".EPSI"], .files > [title*=".epsi"] {
+    background: white url("../images/file_icons/48px/eps.png") center 40% no-repeat;
+}
+
+.files > [title*=".GIF"], .files > [title*=".gif"] {
+    background: white url("../images/file_icons/48px/gif.png") center 40% no-repeat;
+}
+
+.files > [title*=".GIF87"], .files > [title*=".gif87"] {
+    background: white url("../images/file_icons/48px/gif.png") center 40% no-repeat;
+}
+
+.files > [title*=".HTM"], .files > [title*=".htm"] {
+    background: white url("../images/file_icons/48px/htm.png") center 40% no-repeat;
+}
+
+.files > [title*=".HTML"], .files > [title*=".html"] {
+    background: white url("../images/file_icons/48px/html.png") center 40% no-repeat;
+}
+
+.files > [title*=".ICO"], .files > [title*=".ico"] {
+    background: white url("../images/file_icons/48px/ico.png") center 40% no-repeat;
+}
+
+.files > [title*=".ICON"], .files > [title*=".icon"] {
+    background: white url("../images/file_icons/48px/ico.png") center 40% no-repeat;
+}
+
+.files > [title*=".ISOBRL"], .files > [title*=".isobrl"] {
+    background: white url("../images/file_icons/48px/iso.png") center 40% no-repeat;
+}
+
+.files > [title*=".JPE"], .files > [title*=".jpe"] {
+    background: white url("../images/file_icons/48px/jpg.png") center 40% no-repeat;
+}
+
+.files > [title*=".JPEG"], .files > [title*=".jpeg"] {
+    background: white url("../images/file_icons/48px/jpg.png") center 40% no-repeat;
+}
+
+.files > [title*=".JPG"], .files > [title*=".jpg"] {
+    background: white url("../images/file_icons/48px/jpg.png") center 40% no-repeat;
+}
+
+.files > [title*=".KDC"], .files > [title*=".kdc"] {
+    background: white url("../images/file_icons/48px/kdc.png") center 40% no-repeat;
+}
+
+.files > [title*=".M4V"], .files > [title*=".m4v"] {
+    background: white url("../images/file_icons/48px/m4v.png") center 40% no-repeat;
+}
+
+.files > [title*=".MEF"], .files > [title*=".mef"] {
+    background: white url("../images/file_icons/48px/mef.png") center 40% no-repeat;
+}
+
+.files > [title*=".MOV"], .files > [title*=".mov"] {
+    background: white url("../images/file_icons/48px/mov.png") center 40% no-repeat;
+}
+
+.files > [title*=".MPEG"], .files > [title*=".mpeg"] {
+    background: white url("../images/file_icons/48px/mpg.mpg") center 40% no-repeat;
+}
+
+.files > [title*=".MPG"], .files > [title*=".mpg"] {
+    background: white url("../images/file_icons/48px/mpg.png") center 40% no-repeat;
+}
+
+.files > [title*=".MRW"], .files > [title*=".mrw"] {
+    background: white url("../images/file_icons/48px/mrw.png") center 40% no-repeat;
+}
+
+.files > [title*=".NEF"], .files > [title*=".nef"] {
+    background: white url("../images/file_icons/48px/nef.png") center 40% no-repeat;
+}
+
+.files > [title*=".ORF"], .files > [title*=".orf"] {
+    background: white url("../images/file_icons/48px/orf.png") center 40% no-repeat;
+}
+
+.files > [title*=".PDF"], .files > [title*=".pdf"] {
+    background: white url("../images/file_icons/48px/pdf.png") center 40% no-repeat;
+}
+
+.files > [title*=".PDFA"], .files > [title*=".pdfa"] {
+    background: white url("../images/file_icons/48px/pdf.png") center 40% no-repeat;
+}
+
+.files > [title*=".PEF"], .files > [title*=".pef"] {
+    background: white url("../images/file_icons/48px/pef.png") center 40% no-repeat;
+}
+
+.files > [title*=".PNG"], .files > [title*=".png"] {
+    background: white url("../images/file_icons/48px/png.png") center 40% no-repeat;
+}
+
+.files > [title*=".PNG00"], .files > [title*=".png00"] {
+    background: white url("../images/file_icons/48px/png.png") center 40% no-repeat;
+}
+
+.files > [title*=".PNG24"], .files > [title*=".png24"] {
+    background: white url("../images/file_icons/48px/png.png") center 40% no-repeat;
+}
+
+.files > [title*=".PNG32"], .files > [title*=".png32"] {
+    background: white url("../images/file_icons/48px/png.png") center 40% no-repeat;
+}
+
+.files > [title*=".PNG48"], .files > [title*=".png48"] {
+    background: white url("../images/file_icons/48px/png.png") center 40% no-repeat;
+}
+
+.files > [title*=".PNG64"], .files > [title*=".png64"] {
+    background: white url("../images/file_icons/48px/png.png") center 40% no-repeat;
+}
+
+.files > [title*=".PNG8"], .files > [title*=".png8"] {
+    background: white url("../images/file_icons/48px/png.png") center 40% no-repeat;
+}
+
+.files > [title*=".PSD"], .files > [title*=".psd"] {
+    background: white url("../images/file_icons/48px/psd.png") center 40% no-repeat;
+}
+
+.files > [title*=".RAF"], .files > [title*=".raf"] {
+    background: white url("../images/file_icons/48px/raf.png") center 40% no-repeat;
+}
+
+.files > [title*=".RAW"], .files > [title*=".raw"] {
+    background: white url("../images/file_icons/48px/raw.png") center 40% no-repeat;
+}
+
+.files > [title*=".RW2"], .files > [title*=".rw2"] {
+    background: white url("../images/file_icons/48px/rw2.png") center 40% no-repeat;
+}
+
+.files > [title*=".SR2"], .files > [title*=".sr2"] {
+    background: white url("../images/file_icons/48px/sr2.png") center 40% no-repeat;
+}
+
+.files > [title*=".SVG"], .files > [title*=".svg"] {
+    background: white url("../images/file_icons/48px/svg.png") center 40% no-repeat;
+}
+
+.files > [title*=".SVGZ"], .files > [title*=".svgz"] {
+    background: white url("../images/file_icons/48px/svg.png") center 40% no-repeat;
+}
+
+.files > [title*=".TIFF"], .files > [title*=".tiff"] {
+    background: white url("../images/file_icons/48px/tiff.png") center 40% no-repeat;
+}
+
+.files > [title*=".TIFF64"], .files > [title*=".tiff64"] {
+    background: white url("../images/file_icons/48px/tiff.png") center 40% no-repeat;
+}
+
+.files > [title*=".TTF"], .files > [title*=".ttf"] {
+    background: white url("../images/file_icons/48px/ttf.png") center 40% no-repeat;
+}
+
+.files > [title*=".TXT"], .files > [title*=".txt"] {
+    background: white url("../images/file_icons/48px/txt.png") center 40% no-repeat;
+}
+
+.files > [title*=".WMF"], .files > [title*=".wmf"] {
+    background: white url("../images/file_icons/48px/wmf.png") center 40% no-repeat;
+}
+
+.files > [title*=".WMV"], .files > [title*=".wmv"] {
+    background: white url("../images/file_icons/48px/wmv.png") center 40% no-repeat;
+}
+
+.files > [title*=".X3F"], .files > [title*=".x3f"] {
+    background: white url("../images/file_icons/48px/x3f.png") center 40% no-repeat;
+}
+
+
+.files > [title*=".WBMP"], .files > [title*=".wbmp"] {
+    background: white url("../images/file_icons/48px/bmp.png") center 40% no-repeat;
+}
+
+.files > [title*=".MP4"], .files > [title*=".mp4"] {
+    background: white url("../images/file_icons/48px/mp4.png") center 40% no-repeat;
+}
+
+.files > [title*=".WAV"], .files > [title*=".wav"] {
+    background: white url("../images/file_icons/48px/wav.png") center 40% no-repeat;
+}
+
+.files > [title*=".OTF"], .files > [title*=".otf"] {
+    background: white url("../images/file_icons/48px/otf.png") center 40% no-repeat;
+}
+
+.files > [title*=".M3U"], .files > [title*=".m3u"] {
+    background: white url("../images/file_icons/48px/m3u.png") center 40% no-repeat;
+}
+
+.files > [title*=".PPTM"], .files > [title*=".pptm"] {
+    background: white url("../images/file_icons/48px/pptm.png") center 40% no-repeat;
+}
+
+.files > [title*=".MAX"], .files > [title*=".max"] {
+    background: white url("../images/file_icons/48px/max.png") center 40% no-repeat;
+}
+
+.files > [title*=".FCPX"], .files > [title*=".fcpx"] {
+    background: white url("../images/file_icons/48px/fcpx.png") center 40% no-repeat;
+}
+
+.files > [title*=".MPEG"], .files > [title*=".mpeg"] {
+    background: white url("../images/file_icons/48px/mpeg.png") center 40% no-repeat;
+}
+
+.files > [title*=".ASP"], .files > [title*=".asp"] {
+    background: white url("../images/file_icons/48px/asp.png") center 40% no-repeat;
+}
+
+.files > [title*=".INI"], .files > [title*=".ini"] {
+    background: white url("../images/file_icons/48px/ini.png") center 40% no-repeat;
+}
+
+.files > [title*=".QT"], .files > [title*=".qt"] {
+    background: white url("../images/file_icons/48px/qt.png") center 40% no-repeat;
+}
+
+.files > [title*=".IBOOKS"], .files > [title*=".ibooks"] {
+    background: white url("../images/file_icons/48px/ibooks.png") center 40% no-repeat;
+}
+
+.files > [title*=".PPM"], .files > [title*=".ppm"] {
+    background: white url("../images/file_icons/48px/ppm.png") center 40% no-repeat;
+}
+
+.files > [title*=".DAT"], .files > [title*=".dat"] {
+    background: white url("../images/file_icons/48px/dat.png") center 40% no-repeat;
+}
+
+.files > [title*=".WMA"], .files > [title*=".wma"] {
+    background: white url("../images/file_icons/48px/wma.png") center 40% no-repeat;
+}
+
+.files > [title*=".ASPX"], .files > [title*=".aspx"] {
+    background: white url("../images/file_icons/48px/aspx.png") center 40% no-repeat;
+}
+
+.files > [title*=".FLA"], .files > [title*=".fla"] {
+    background: white url("../images/file_icons/48px/fla.png") center 40% no-repeat;
+}
+
+.files > [title*=".XLS"], .files > [title*=".xls"] {
+    background: white url("../images/file_icons/48px/xls.png") center 40% no-repeat;
+}
+
+.files > [title*=".DOC"], .files > [title*=".doc"] {
+    background: white url("../images/file_icons/48px/doc.png") center 40% no-repeat;
+}
+
+.files > [title*=".SMI"], .files > [title*=".smi"] {
+    background: white url("../images/file_icons/48px/smi.png") center 40% no-repeat;
+}
+
+.files > [title*=".PL"], .files > [title*=".pl"] {
+    background: white url("../images/file_icons/48px/pl.png") center 40% no-repeat;
+}
+
+.files > [title*=".M4A"], .files > [title*=".m4a"] {
+    background: white url("../images/file_icons/48px/m4a.png") center 40% no-repeat;
+}
+
+.files > [title*=".TORRENT"], .files > [title*=".torrent"] {
+    background: white url("../images/file_icons/48px/torrent.png") center 40% no-repeat;
+}
+
+.files > [title*=".OGG"], .files > [title*=".ogg"] {
+    background: white url("../images/file_icons/48px/ogg.png") center 40% no-repeat;
+}
+
+.files > [title*=".THMX"], .files > [title*=".thmx"] {
+    background: white url("../images/file_icons/48px/thmx.png") center 40% no-repeat;
+}
+
+.files > [title*=".SWF"], .files > [title*=".swf"] {
+    background: white url("../images/file_icons/48px/swf.png") center 40% no-repeat;
+}
+
+.files > [title*=".DIVX"], .files > [title*=".divx"] {
+    background: white url("../images/file_icons/48px/divx.png") center 40% no-repeat;
+}
+
+.files > [title*=".AU"], .files > [title*=".au"] {
+    background: white url("../images/file_icons/48px/au.png") center 40% no-repeat;
+}
+
+.files > [title*=".MKV"], .files > [title*=".mkv"] {
+    background: white url("../images/file_icons/48px/mkv.png") center 40% no-repeat;
+}
+
+.files > [title*=".MOBI"], .files > [title*=".mobi"] {
+    background: white url("../images/file_icons/48px/mobi.png") center 40% no-repeat;
+}
+
+.files > [title*=".JSP"], .files > [title*=".jsp"] {
+    background: white url("../images/file_icons/48px/jsp.png") center 40% no-repeat;
+}
+
+.files > [title*=".SDR"], .files > [title*=".sdr"] {
+    background: white url("../images/file_icons/48px/sdr.png") center 40% no-repeat;
+}
+
+.files > [title*=".MP3"], .files > [title*=".mp3"] {
+    background: white url("../images/file_icons/48px/mp3.png") center 40% no-repeat;
+}
+
+.files > [title*=".XML"], .files > [title*=".xml"] {
+    background: white url("../images/file_icons/48px/xml.png") center 40% no-repeat;
+}
+
+.files > [title*=".BAT"], .files > [title*=".bat"] {
+    background: white url("../images/file_icons/48px/bat.png") center 40% no-repeat;
+}
+
+.files > [title*=".MDB"], .files > [title*=".mdb"] {
+    background: white url("../images/file_icons/48px/mdb.png") center 40% no-repeat;
+}
+
+.files > [title*=".7Z"], .files > [title*=".7z"] {
+    background: white url("../images/file_icons/48px/7z.png") center 40% no-repeat;
+}
+
+.files > [title*=".ONE"], .files > [title*=".one"] {
+    background: white url("../images/file_icons/48px/one.png") center 40% no-repeat;
+}
+
+.files > [title*=".XLSB"], .files > [title*=".xlsb"] {
+    background: white url("../images/file_icons/48px/xlsb.png") center 40% no-repeat;
+}
+
+.files > [title*=".TMP"], .files > [title*=".tmp"] {
+    background: white url("../images/file_icons/48px/tmp.png") center 40% no-repeat;
+}
+
+.files > [title*=".DOCX"], .files > [title*=".docx"] {
+    background: white url("../images/file_icons/48px/docx.png") center 40% no-repeat;
+}
+
+.files > [title*=".DB"], .files > [title*=".db"] {
+    background: white url("../images/file_icons/48px/db.png") center 40% no-repeat;
+}
+
+.files > [title*=".JPE"], .files > [title*=".jpe"] {
+    background: white url("../images/file_icons/48px/jpe.png") center 40% no-repeat;
+}
+
+.files > [title*=".XLTM"], .files > [title*=".xltm"] {
+    background: white url("../images/file_icons/48px/xltm.png") center 40% no-repeat;
+}
+
+.files > [title*=".SRT"], .files > [title*=".srt"] {
+    background: white url("../images/file_icons/48px/srt.png") center 40% no-repeat;
+}
+
+.files > [title*=".CSV"], .files > [title*=".csv"] {
+    background: white url("../images/file_icons/48px/csv.png") center 40% no-repeat;
+}
+
+.files > [title*=".PAGES"], .files > [title*=".pages"] {
+    background: white url("../images/file_icons/48px/pages.png") center 40% no-repeat;
+}
+
+.files > [title*=".MPP"], .files > [title*=".mpp"] {
+    background: white url("../images/file_icons/48px/mpp.png") center 40% no-repeat;
+}
+
+.files > [title*=".MIX"], .files > [title*=".mix"] {
+    background: white url("../images/file_icons/48px/mix.png") center 40% no-repeat;
+}
+
+.files > [title*=".ICNS"], .files > [title*=".icns"] {
+    background: white url("../images/file_icons/48px/icns.png") center 40% no-repeat;
+}
+
+.files > [title*=".APP"], .files > [title*=".app"] {
+    background: white url("../images/file_icons/48px/app.png") center 40% no-repeat;
+}
+
+.files > [title*=".RTF"], .files > [title*=".rtf"] {
+    background: white url("../images/file_icons/48px/rtf.png") center 40% no-repeat;
+}
+
+.files > [title*=".BAK"], .files > [title*=".bak"] {
+    background: white url("../images/file_icons/48px/bak.png") center 40% no-repeat;
+}
+
+.files > [title*=".BIN"], .files > [title*=".bin"] {
+    background: white url("../images/file_icons/48px/bin.png") center 40% no-repeat;
+}
+
+.files > [title*=".FCP"], .files > [title*=".fcp"] {
+    background: white url("../images/file_icons/48px/fcp.png") center 40% no-repeat;
+}
+
+.files > [title*=".IDX"], .files > [title*=".idx"] {
+    background: white url("../images/file_icons/48px/idx.png") center 40% no-repeat;
+}
+
+.files > [title*=".ZIP"], .files > [title*=".zip"] {
+    background: white url("../images/file_icons/48px/zip.png") center 40% no-repeat;
+}
+
+.files > [title*=".VBP"], .files > [title*=".vbp"] {
+    background: white url("../images/file_icons/48px/vbp.png") center 40% no-repeat;
+}
+
+.files > [title*=".PPS"], .files > [title*=".pps"] {
+    background: white url("../images/file_icons/48px/pps.png") center 40% no-repeat;
+}
+
+.files > [title*=".XLSM"], .files > [title*=".xlsm"] {
+    background: white url("../images/file_icons/48px/xlsm.png") center 40% no-repeat;
+}
+
+.files > [title*=".FON"], .files > [title*=".fon"] {
+    background: white url("../images/file_icons/48px/fon.png") center 40% no-repeat;
+}
+
+.files > [title*=".VOB"], .files > [title*=".vob"] {
+    background: white url("../images/file_icons/48px/vob.png") center 40% no-repeat;
+}
+
+.files > [title*=".DRV"], .files > [title*=".drv"] {
+    background: white url("../images/file_icons/48px/drv.png") center 40% no-repeat;
+}
+
+.files > [title*=".CTB"], .files > [title*=".ctb"] {
+    background: white url("../images/file_icons/48px/ctb.png") center 40% no-repeat;
+}
+
+.files > [title*=".SQL"], .files > [title*=".sql"] {
+    background: white url("../images/file_icons/48px/sql.png") center 40% no-repeat;
+}
+
+.files > [title*=".EMF"], .files > [title*=".emf"] {
+    background: white url("../images/file_icons/48px/emf.png") center 40% no-repeat;
+}
+
+.files > [title*=".JAVA"], .files > [title*=".java"] {
+    background: white url("../images/file_icons/48px/java.png") center 40% no-repeat;
+}
+
+.files > [title*=".ITL"], .files > [title*=".itl"] {
+    background: white url("../images/file_icons/48px/itl.png") center 40% no-repeat;
+}
+
+.files > [title*=".CMD"], .files > [title*=".cmd"] {
+    background: white url("../images/file_icons/48px/cmd.png") center 40% no-repeat;
+}
+
+.files > [title*=".IPA"], .files > [title*=".ipa"] {
+    background: white url("../images/file_icons/48px/ipa.png") center 40% no-repeat;
+}
+
+.files > [title*=".POTM"], .files > [title*=".potm"] {
+    background: white url("../images/file_icons/48px/potm.png") center 40% no-repeat;
+}
+
+.files > [title*=".DEFAULT"], .files > [title*=".default"] {
+    background: white url("../images/file_icons/48px/default.png") center 40% no-repeat;
+}
+
+.files > [title*=".EXE"], .files > [title*=".exe"] {
+    background: white url("../images/file_icons/48px/exe.png") center 40% no-repeat;
+}
+
+.files > [title*=".CSS"], .files > [title*=".css"] {
+    background: white url("../images/file_icons/48px/css.png") center 40% no-repeat;
+}
+
+.files > [title*=".PPSX"], .files > [title*=".ppsx"] {
+    background: white url("../images/file_icons/48px/ppsx.png") center 40% no-repeat;
+}
+
+.files > [title*=".AAC"], .files > [title*=".aac"] {
+    background: white url("../images/file_icons/48px/aac.png") center 40% no-repeat;
+}
+
+.files > [title*=".MID"], .files > [title*=".mid"] {
+    background: white url("../images/file_icons/48px/mid.png") center 40% no-repeat;
+}
+
+.files > [title*=".TGZ"], .files > [title*=".tgz"] {
+    background: white url("../images/file_icons/48px/tgz.png") center 40% no-repeat;
+}
+
+.files > [title*=".CDR"], .files > [title*=".cdr"] {
+    background: white url("../images/file_icons/48px/cdr.png") center 40% no-repeat;
+}
+
+.files > [title*=".NUMBERS"], .files > [title*=".numbers"] {
+    background: white url("../images/file_icons/48px/numbers.png") center 40% no-repeat;
+}
+
+.files > [title*=".PPTX"], .files > [title*=".pptx"] {
+    background: white url("../images/file_icons/48px/pptx.png") center 40% no-repeat;
+}
+
+.files > [title*=".CUE"], .files > [title*=".cue"] {
+    background: white url("../images/file_icons/48px/cue.png") center 40% no-repeat;
+}
+
+.files > [title*=".XMP"], .files > [title*=".xmp"] {
+    background: white url("../images/file_icons/48px/xmp.png") center 40% no-repeat;
+}
+
+.files > [title*=".M4R"], .files > [title*=".m4r"] {
+    background: white url("../images/file_icons/48px/m4r.png") center 40% no-repeat;
+}
+
+.files > [title*=".IFO"], .files > [title*=".ifo"] {
+    background: white url("../images/file_icons/48px/ifo.png") center 40% no-repeat;
+}
+
+.files > [title*=".TRM"], .files > [title*=".trm"] {
+    background: white url("../images/file_icons/48px/trm.png") center 40% no-repeat;
+}
+
+.files > [title*=".DIC"], .files > [title*=".dic"] {
+    background: white url("../images/file_icons/48px/dic.png") center 40% no-repeat;
+}
+
+.files > [title*=".POTX"], .files > [title*=".potx"] {
+    background: white url("../images/file_icons/48px/potx.png") center 40% no-repeat;
+}
+
+.files > [title*=".SLDX"], .files > [title*=".sldx"] {
+    background: white url("../images/file_icons/48px/sldx.png") center 40% no-repeat;
+}
+
+.files > [title*=".XLSX"], .files > [title*=".xlsx"] {
+    background: white url("../images/file_icons/48px/xlsx.png") center 40% no-repeat;
+}
+
+.files > [title*=".BZ2"], .files > [title*=".bz2"] {
+    background: white url("../images/file_icons/48px/bz2.png") center 40% no-repeat;
+}
+
+.files > [title*=".DVD"], .files > [title*=".dvd"] {
+    background: white url("../images/file_icons/48px/dvd.png") center 40% no-repeat;
+}
+
+.files > [title*=".CHM"], .files > [title*=".chm"] {
+    background: white url("../images/file_icons/48px/chm.png") center 40% no-repeat;
+}
+
+.files > [title*=".PPT"], .files > [title*=".ppt"] {
+    background: white url("../images/file_icons/48px/ppt.png") center 40% no-repeat;
+}
+
+.files > [title*=".CP"], .files > [title*=".cp"] {
+    background: white url("../images/file_icons/48px/cp.png") center 40% no-repeat;
+}
+
+.files > [title*=".DLL"], .files > [title*=".dll"] {
+    background: white url("../images/file_icons/48px/dll.png") center 40% no-repeat;
+}
+
+.files > [title*=".DMG"], .files > [title*=".dmg"] {
+    background: white url("../images/file_icons/48px/dmg.png") center 40% no-repeat;
+}
+
+.files > [title*=".TAR"], .files > [title*=".tar"] {
+    background: white url("../images/file_icons/48px/tar.png") center 40% no-repeat;
+}
+
+.files > [title*=".MOS"], .files > [title*=".mos"] {
+    background: white url("../images/file_icons/48px/mos.png") center 40% no-repeat;
+}
+
+.files > [title*=".KEY"], .files > [title*=".key"] {
+    background: white url("../images/file_icons/48px/key.png") center 40% no-repeat;
+}
+
+.files > [title*=".DWG"], .files > [title*=".dwg"] {
+    background: white url("../images/file_icons/48px/dwg.png") center 40% no-repeat;
+}
+
+.files > [title*=".ENC"], .files > [title*=".enc"] {
+    background: white url("../images/file_icons/48px/enc.png") center 40% no-repeat;
+}
+
+.files > [title*=".C++"], .files > [title*=".c++"] {
+    background: white url("../images/file_icons/48px/c++.png") center 40% no-repeat;
+}
+
+.files > [title*=".MMF"], .files > [title*=".mmf"] {
+    background: white url("../images/file_icons/48px/mmf.png") center 40% no-repeat;
+}
+
+.files > [title*=".URL"], .files > [title*=".url"] {
+    background: white url("../images/file_icons/48px/url.png") center 40% no-repeat;
+}
+
+.files > [title*=".CAB"], .files > [title*=".cab"] {
+    background: white url("../images/file_icons/48px/cab.png") center 40% no-repeat;
+}
+
+.files > [title*=".M3U8"], .files > [title*=".m3u8"] {
+    background: white url("../images/file_icons/48px/m3u8.png") center 40% no-repeat;
+}
+
+.files > [title*=".ARE"], .files > [title*=".are"] {
+    background: white url("../images/file_icons/48px/are.png") center 40% no-repeat;
+}
+
+.files > [title*=".Z"], .files > [title*=".z"] {
+    background: white url("../images/file_icons/48px/z.png") center 40% no-repeat;
+}
+
+.files > [title*=".HLP"], .files > [title*=".hlp"] {
+    background: white url("../images/file_icons/48px/hlp.png") center 40% no-repeat;
+}
+
+.files > [title*=".MPG2"], .files > [title*=".mpg2"] {
+    background: white url("../images/file_icons/48px/mpg2.png") center 40% no-repeat;
+}
+
+.files > [title*=".SYS"], .files > [title*=".sys"] {
+    background: white url("../images/file_icons/48px/sys.png") center 40% no-repeat;
+}
+
+.files > [title*=".STB"], .files > [title*=".stb"] {
+    background: white url("../images/file_icons/48px/stb.png") center 40% no-repeat;
+}
+
+.files > [title*=".PPSM"], .files > [title*=".ppsm"] {
+    background: white url("../images/file_icons/48px/ppsm.png") center 40% no-repeat;
+}
+
+.files > [title*=".RAR"], .files > [title*=".rar"] {
+    background: white url("../images/file_icons/48px/rar.png") center 40% no-repeat;
+}
+
+.files > [title*=".EPUB"], .files > [title*=".epub"] {
+    background: white url("../images/file_icons/48px/epub.png") center 40% no-repeat;
+}
+
+.files > [title*=".LOG"], .files > [title*=".log"] {
+    background: white url("../images/file_icons/48px/log.png") center 40% no-repeat;
+}
+
+.files > [title*=".PPAM"], .files > [title*=".ppam"] {
+    background: white url("../images/file_icons/48px/ppam.png") center 40% no-repeat;
+}
+
+.files > [title*=".JS"], .files > [title*=".js"] {
+    background: white url("../images/file_icons/48px/js.png") center 40% no-repeat;
+}
+
+.files > [title*=".PHP"], .files > [title*=".php"] {
+    background: white url("../images/file_icons/48px/php.png") center 40% no-repeat;
+}
+
+.files > [title*=".TIF"], .files > [title*=".tif"] {
+    background: white url("../images/file_icons/48px/tif.png") center 40% no-repeat;
+}
+
+.files > [title*=".AIFF"], .files > [title*=".aiff"] {
+    background: white url("../images/file_icons/48px/aiff.png") center 40% no-repeat;
+}
+
+.files > [title*=".INDD"], .files > [title*=".indd"] {
+    background: white url("../images/file_icons/48px/indd.png") center 40% no-repeat;
+}
+
+.files > [title*=".AIF"], .files > [title*=".aif"] {
+    background: white url("../images/file_icons/48px/aif.png") center 40% no-repeat;
+}
+
+.files > [title*=".DOCM"], .files > [title*=".docm"] {
+    background: white url("../images/file_icons/48px/docm.png") center 40% no-repeat;
+}
+
+.files > [title*=".CDF"], .files > [title*=".cdf"] {
+    background: white url("../images/file_icons/48px/cdf.png") center 40% no-repeat;
+}
+
+.files > [title*=".ITDB"], .files > [title*=".itdb"] {
+    background: white url("../images/file_icons/48px/itdb.png") center 40% no-repeat;
+}
+
+.files > [title*=".GZ"], .files > [title*=".gz"] {
+    background: white url("../images/file_icons/48px/gz.png") center 40% no-repeat;
+}
+
+.files > [title*=".SKP"], .files > [title*=".skp"] {
+    background: white url("../images/file_icons/48px/skp.png") center 40% no-repeat;
+}
+
+.files > [title*=".RSS"], .files > [title*=".rss"] {
+    background: white url("../images/file_icons/48px/rss.png") center 40% no-repeat;
+}
+
+.files > [title*=".MIDI"], .files > [title*=".midi"] {
+    background: white url("../images/file_icons/48px/midi.png") center 40% no-repeat;
+}
+
+
+.urlUploadMain .template-download .name, .urlUploadMain .template-download  .url
+{
+	width: 50%;
+	text-align: left;
+}
+
+.template-upload-img .previewWrapper canvas
+{
+	background-color: #ffffff;
+}
+
+.template-upload-img .previewWrapper .filename, .template-download-img .filename
+{
+	overflow: hidden;
+    text-overflow: ellipsis;
+	display: block;
+    width: 100%;
+    white-space: nowrap;
+	padding: 0px 5px;
+	bottom: 4px;
+    position: absolute;
+}
+
+.upload-icon-image
+{
+	max-height: 180px;
+	margin: 10px 10px 20px 10px;
+}
+
+.file-upload-wrapper .tab-content
+{
+    min-height: 200px;
+}
+
+.files .processing {
+    background: rgba(255, 255, 255, .5) url(../images/loading_small.gif) center 40% no-repeat !important;
+}
+
+.urlFileListingWrapper .template-upload-img .previewOverlay .progressText {
+    display: block;
+    font-size: 12px;
+    text-shadow: none;
+    color: #001737;
+    font-weight: normal;
+    bottom: -14px;
+    position: absolute;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

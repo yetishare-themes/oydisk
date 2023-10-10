@@ -1,0 +1,141 @@
+{% extends "partial/oydisk_layout.html.twig" %}
+
+{% block title %}{{ file.originalFilename }}{% endblock %}
+{% block description %}{{ file.description|length > 0 ? file.description|slice(0, 250) : t("file_download_description", "Download file")~' - '~file.originalFilename }}{% endblock %}
+{% block keywords %}{{ file.getFileKeywords() }}{% endblock %}
+
+{% block body %}
+	<section class="ptb-120 gradient-overlay bg-image">
+            <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg')repeat center center;opacity: 1;"></div>
+            <div class="container">
+                <div class="row justify-content-center">		
+                    <div class="col-md-12">
+					<div class="hero-content-wrap text-white text-center position-relative">
+                            <h4 class="text-white">{{ file.originalFilename }}</h4>
+                            <p class="lead">Size: {{ file.getFormattedFilesize() }} - Uploaded: {{ file.getFormattedUploadedDate() }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			{% if UserHelper.showSiteAdverts() %}
+            <div class="container">
+                <div class="row justify-content-center text-center">		
+                    <div class="col-lg-12">
+                    {{ SITE_CONFIG_ADVERT_DELAYED_REDIRECT_TOP|raw }}
+                    </div>
+                </div>
+            </div>
+			{% endif %}
+			<div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-8">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="single-offer-box text-center">
+                                <div class="offer-header text-primary bg-white text-uppercase h6 p-2 mb-0">Free Download</div>
+                                <div class="offer-content text-white">
+                                <ul class="list-unstyled tech-feature-list">
+                                <li class="py-2"><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>Captcha request</li>
+                                <li class="py-2"><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>Waiting Time: {{ additionalSettings['download_wait'] > 0 ? ( additionalSettings['download_wait'] ~ ' ' ~ t('seconds', 'seconds')|title) : t('instant', 'instant')|title }}</li>
+                                <li class="py-2"><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>Download Speed: {{ UserHelper.getMaxDownloadSpeed(1) > 0 ? ( CoreHelper.formatSize(UserHelper.getMaxDownloadSpeed(1)) ~ 'ps') : t('limited', 'limited')|title }}</li>
+                                <li class="py-2"><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>Estimated Download Time</li>
+                                <li class="py-2"><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>Annoying advertisements</li>
+								<li class="py-2"><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>Only 1 download thread concurrent</li>
+								<li class="py-2"><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>Limited download slots</li>
+								<li class="py-2"><span class="text-danger"><i class="fas fa-times-circle mr-2"></i></span>Downloads are non-resumable</li>
+                            </ul>
+                                    </div>
+									<div class="slow-download">
+                                        <a href="#" onclick="triggerFreeDownload(); return false;" class="btn btn-secondary save-now-btn">{{ t('slow_download', 'slow download')|upper }}
+                                        </a>
+									</div>
+                                    <div class="download-timer" style="display:none;">
+                                        <a href="#" onclick="return false;" class="btn btn-success save-now-btn">
+                                                {{ t('please_wait', 'please wait')|upper }} <span class="download-timer-seconds"></span>&nbsp;{{ t('sec', 'sec')|upper }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="single-offer-box text-center">
+                                    <div class="offer-header bg-white text-uppercase text-primary h6 p-2 mb-0" >Premium Download</div>
+                                    <div class="offer-content text-white">
+                                        <ul class="list-unstyled tech-feature-list">
+                                <li class="py-2"><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>Start immediately</li>
+                                <li class="py-2"><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>Waiting Time: 0 Seconds</li>
+                                <li class="py-2"><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>Unlimited download speed</li>
+                                <li class="py-2"><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>Estimated Download Time</li>
+                                <li class="py-2"><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>No advertisements</li>
+								<li class="py-2"><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>Concurrent downloads</li>
+								<li class="py-2"><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>Highest priority for download sessions</li>
+								<li class="py-2"><span class="text-success"><i class="fas fa-check-circle mr-2"></i></span>Resumable downloads</li>
+                            </ul>
+                                    </div>
+                                    <a href="{{ upgradeUrl }}" class="btn btn-brand-03 save-now-btn">FAST DOWNLOAD</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		{% if UserHelper.showSiteAdverts() %}
+		    <div class="container" style="padding-top: 20px">
+                <div class="row justify-content-center text-center">		
+                    <div class="col-lg-12">
+                    {{ SITE_CONFIG_ADVERT_DELAYED_REDIRECT_BOTTOM|raw }}
+                    </div>
+                </div>
+            </div>
+		{% endif %}
+    </section>
+		{% include '@themePath/partial/_oydisk_premium.html.twig' %}
+	{% if UserHelper.showSiteAdverts() %}
+	<section class="ptb-20 gradient-overlaye">
+        <div class="row justify-content-center text-center">		
+            <div class="col-lg-12">
+                {{ SITE_CONFIG_ADVERT_SITE_FOOTER|raw }}
+            </div>
+        </div>
+    </section>
+	{% endif %}	
+{% endblock %}
+
+{% block footerjs %}
+<script>
+    var seconds = {{ additionalSettings['download_wait']|number_format }};
+    var started = false;
+    function display()
+    {
+        $('.slow-download').hide();
+        $('.download-timer').show();
+        if (seconds == 0)
+        {
+            $('.download-timer').html("<a class='btn btn-success save-now-btn' href='{{ file.getNextDownloadPageLink() }}'>{{ t("download_slow", "download slow")|upper }}</a>");
+        } else
+        {
+            $('.download-timer-seconds').html(seconds);
+        }
+        seconds--;
+    }
+    
+    function triggerFreeDownload() {
+        if(started === true) {
+            return;
+        }
+        
+        started = true;
+        display();
+        countdownTimer = setInterval('display()', 1000);
+    }
+
+    //$(document).ready(function () {
+    //    display();
+    //    $('.download-timer-seconds').html({{ additionalSettings['download_wait']|number_format }});
+    //    countdownTimer = setInterval('display()', 1000);
+    //});
+</script>
+
+{% if downloadPageData['additional_javascript_code'] is defined %}
+    {{ downloadPageData['additional_javascript_code']|raw }}
+{% endif %}
+{% endblock %}

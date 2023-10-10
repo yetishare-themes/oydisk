@@ -1,0 +1,79 @@
+{% if pendingUrlDownloads|length > 0 %}
+<div class="urlUploadMainInternal contentPageWrapper" style="width: auto;">
+    <div>
+        <div class="initialUploadText">
+            <div class="uploadText">
+                <h2>{{ t('pending_transfers', 'Pending Transfers') }}:</h2>
+            </div>
+            <div class="clearLeft"><!-- --></div>
+
+            <div class="dataTables_wrapper">
+                <table cellspacing="0" cellpadding="0" width="100%" id="existingBackgroundUrlDownloadTable" class="table table-striped files">
+                    <thead>
+                    <th style="width: 16px;"></th>
+                    <th>{{ t('url', 'url')|title }}</th>
+                    <th style="width: 100px; text-align:center;">{{ t('progress', 'progress')|title }}</th>
+                    <th style="width: 120px; text-align:center;">{{ t('status', 'status')|title }}</th>
+                    </thead>
+                    <tbody>
+                        {% for pendingUrlDownload in pendingUrlDownloads %}
+                            {% set downloadSpeed = 0 %}
+                            {% if pendingUrlDownload['job_status'] == 'downloading' and pendingUrlDownload['startedAgo'] > 0 %}
+                                {% set downloadSpeed = (pendingUrlDownload['downloaded_size'] / pendingUrlDownload['startedAgo'])|number_format(2, '.', ',') %}
+                            {% endif %}
+
+                            <tr {{ i % 2 == 0 ? 'class="odd"' : '' }} title="{{ pendingUrlDownload['notes']|escape("js") }}">
+ 
+                            {% set icon = 'processing_small.gif' %}
+                            {% if pendingUrlDownload['job_status'] == 'complete' %}
+                                {% set icon = 'green_tick_small.png' %}
+                            {% elseif pendingUrlDownload['job_status'] == 'cancelled' %}
+                                {% set icon = 'red_error_small.png' %}
+                            {% elseif pendingUrlDownload['job_status'] == 'failed' %}
+                                {% set icon = 'red_error_small.png' %}
+                            {% endif %}
+                            
+                            <td><img src="{{ SITE_IMAGE_PATH }}/{{ icon }}" width="16" height="16" alt="{{ pendingUrlDownload['job_status']|title }}" title="{{ pendingUrlDownload['job_status']|title }}"/></td>
+                            <td class="name">
+                                {{ pendingUrlDownload['url'] }}
+                                {% if pendingUrlDownload['total_size'] > 0 %} ({{ pendingUrlDownload['downloaded_size']|number_format(2, '.', ',') }}){% endif %}
+                            {% if pendingUrlDownload['notes']|length > 0 %}
+                                <br/>{{ pendingUrlDownload['notes'] }}
+                            {% else %}
+                                {% if pendingUrlDownload['new_file_id'] > 0 %}
+                                    <br/>{{ t('download', 'Download')|title }}: <a href="{{ pendingUrlDownload['file_short_url'] }}" target="_blank">{{ pendingUrlDownload['file_original_filename'] }}</a>
+                                {% endif %}
+                            {% endif %}
+                            </td>
+                            <td>
+                            {% if pendingUrlDownload['job_status'] == 'cancelled' or pendingUrlDownload['job_status'] == 'failed' %}-{% else %}
+                                {{ pendingUrlDownload['download_percent']|number_format(2, '.', ',') }}%
+                                {% if downloadSpeed > 0 %}
+                                    <br/>{{ CoreHelper.formatSize(downloadSpeed) }}s
+                                {% endif %}
+                            {% endif %}
+                            </td>
+                            <td class="name" style="text-align: center">
+                            {{ pendingUrlDownload['job_status']|title }}<br/>
+                            {% if pendingUrlDownload['job_status'] == 'pending' %}
+                                <a href="#" onClick="confirmRemoveBackgroundUrl('{{ pendingUrlDownload['id'] }}');">({{ t('cancel', 'cancel') }})</a>
+                            {% elseif pendingUrlDownload['job_status'] == 'downloading' %}
+                                <a href="#" onClick="confirmRemoveBackgroundUrl('{{ pendingUrlDownload['id'] }}');">({{ t('cancel', 'cancel') }})</a>
+                            {% elseif pendingUrlDownload['job_status'] == 'cancelled' %}
+                                <a href="#" onClick="removeBackgroundUrl('{{ pendingUrlDownload['id'] }}');">({{ t('remove', 'remove') }})</a>
+                            {% elseif pendingUrlDownload['job_status'] == 'complete' or pendingUrlDownload['job_status'] == 'failed' %}
+                                <a href="#" onClick="removeBackgroundUrl('{{ pendingUrlDownload['id'] }}');">({{ t('clear', 'clear') }})</a>
+                            {% endif %}
+                            </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="clear"><!-- --></div>
+    </div>
+
+    <div class="clear"><!-- --></div>
+</div>
+{% endif %}

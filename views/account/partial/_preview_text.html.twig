@@ -1,0 +1,6 @@
+{% if file.fileSize > filePreviewerObj.getTextMaxDisplaySize() %}
+    <div class="alert alert-warning" role="alert">{{ t('text_file_can_not_be_previewed', 'File can not be previewed as it is too big or can not be loaded. Please download the file to view it.') }}</div>
+	{% include '@themePath/account/partial/_preview_download.html.twig' %}
+{% else %}
+    <iframe src="{{ WEB_ROOT }}/text/view/{{ file.generateDirectDownloadTokenForMedia() }}/{{ file.shortUrl }}" height="700" width="100%" frameborder="0" style="border: 0px solid #ddd;" class="background-loader" scrolling="no"></iframe>
+{% endif %}

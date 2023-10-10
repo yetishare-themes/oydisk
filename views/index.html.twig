@@ -1,0 +1,213 @@
+{% extends "partial/oydisk_layout.html.twig" %}
+
+{% block title %}{{ t("index_page_name", "Free Cloud Storage Personal") }}{% endblock %}
+{% block description %}{{ t("index_meta_description", "Upload, share, track and backup manage your files in one simple to use file hosting free.") }}{% endblock %}
+{% block keywords %}{{ t("index_meta_keywords", "upload, share, track, file, hosting, host") }}{% endblock %}
+{% block selected_navigation_link %}home{% endblock %}
+
+{% block body %}
+		<section class="ptb-120 justify-content-center bg-image">
+            <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg')repeat center center;opacity: 1;"></div>
+            <div class="container">
+                <div class="row align-items-center justify-content-lg-between justify-content-md-center justify-content-sm-center">
+                    <div class="col-md-12 col-lg-6">
+                        <div class="hero-slider-content text-white py-5">
+                            <div class="headline mb-4">
+                                <p class="mb-0"><i class="fas fa-bell rounded-circle mr-2"></i> <span class="font-weight-bold">30% Discount </span> upgrade premium</p>
+                            </div>
+                            <h1 class="text-white">Personal Cloud Storage Secure and simple to use</h1>
+                            <p class="lead">Store, share, and collaborate on files and folders from any mobile device, tablet, or computer.</p>
+							
+                            <div class="action-btns mt-4">
+								{% if Auth.loggedIn() == true %}
+                                <a href="{{ CoreHelper.getCoreSitePath() }}/account?triggerUpload=1" class="btn btn-brand-03">{{ t('upload_account', 'Upload') }}</a>
+								
+								{% elseif UserHelper.getAllowedToUpload(0) == true and SITE_CONFIG_ENABLE_USER_REGISTRATION == 'yes' %}
+								
+								<a href="{{ CoreHelper.getCoreSitePath() }}/register_non_user" class="btn btn-brand-03">{{ t('upload_free', 'Upload Free') }}</a>
+								{% endif %}
+								{% if Auth.loggedIn() == false and SITE_CONFIG_ENABLE_USER_REGISTRATION == 'yes' %}
+								<a href="{{ CoreHelper.getCoreSitePath() }}/register" class="btn btn-brand-03">{{ t('register_index_button', 'Register') }}</a>
+								{% endif %}
+								
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 col-lg-6">
+                        <div class="img-wrap">
+                            <img src="{{ theme.OyDiskImgPath() }}/hero-img.png" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+		<section class="ptb-100 justify-content-center gray-light-bg">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-8">
+                        <div class="section-heading text-center mb-2">
+                            <h2>Store And Manage All Your Files</h2>
+                            <p>Upload multiple files at once and keep them forever on this site. If you're using FireFox or Chrome, you can simply drag & drop your files to begin uploading.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="bg-white rounded shadow-sm p-4 mt-sm-4 mt-md-5 mt-lg-4">
+                            
+                            <div class="pb-2">
+                                    <span class="fas fa-laptop icon-size-lg color-primary"></span>
+                                </div>
+                                <div class="pt-2 pb-3">
+                                    <h5>Access on all devices</h5>
+                                    <p class="mb-0">Save your files and have them on your laptop, phone or the web</p>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="bg-white rounded shadow-sm p-4 mt-sm-4 mt-md-5 mt-lg-4">
+                            <div class="pb-2">
+                                    <span class="fas fa-share-square icon-size-lg color-primary"></span>
+                                </div>
+                            <div class="pt-2 pb-3">
+                                    <h5>Share and collaborate</h5>
+                                    <p class="mb-0">Send, receive and work together with your friends on every file</p>
+                                </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="bg-white rounded shadow-sm p-4 mt-sm-4 mt-md-5 mt-lg-4">
+                            
+                            <div class="pb-2">
+                                    <span class="fas fa-shield-alt icon-size-lg color-primary"></span>
+                                </div>
+                                <div class="pt-2 pb-3">
+                                    <h5>Unbreakable security</h5>
+                                    <p class="mb-0">Keep your private files confidential with the highest level of encryption</p>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="ptb-60 justify-content-center bg-image">
+            <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg')repeat center center;opacity: 1;"></div>
+            <div class="container">
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-md-7 col-lg-6">
+                        <div class="cta-content-wrap text-white">
+                            <h2 class="text-white">Experience cloud Storage <br> On Any Device</h2>
+                            <p>Cloud Storage works on all major platforms, enabling you to work seamlessly across your browser, mobile device, tablet, and computer. </p>
+                        </div>
+						{% if SITE_CONFIG_ENABLE_USER_REGISTRATION == 'yes' %}
+                        <div class="action-btns mt-4">
+                            <a href="{{ CoreHelper.getCoreSitePath() }}/register" class="btn btn-brand-03">{{ t('register_index_button', 'Register') }}</a>
+                        </div>
+						{% endif %}
+						
+						
+                    </div>
+                    <div class="col-md-5 col-lg-4">
+                        <div class="cta-img-wrap text-center">
+                            <img src="{{ theme.OyDiskImgPath() }}/home-img-new.svg" class="img-fluid" alt="server room">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% include '@themePath/partial/_oydisk_premium.html.twig' %}
+        <section class="feature-section ptb-100 ">
+            <div class="container">
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-md-7 col-lg-6">
+                        <div class="feature-content-wrap">
+                            <h2>Fast And Instant Downloading</h2>
+                            <p>Our premium members benefit from no waiting time and direct downloads for all of their files. Unlike other file hosts we don't limit the transfer speed of our downloads.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-lg-5 d-none d-md-block d-lg-block">
+                        <div class="feature-img-wrap text-center">
+                            <img src="{{ theme.OyDiskImgPath() }}/feature-new-1.svg" class="img-fluid" alt="server room">
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-between mt-5">
+                    <div class="col-md-5 col-lg-5 d-none d-md-block d-lg-block">
+                        <div class="feature-img-wrap text-center">
+                            <img src="{{ theme.OyDiskImgPath() }}/feature-new-2.svg" class="img-fluid" alt="server room">
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-lg-6">
+                        <div class="feature-content-wrap">
+                            <h2>Safe and Secure</h2>
+                            <p>Safely store and backup all your essential files. From family photos & videos to important documents, you can rely on us to store all your media securely and forever.</p>
+                           <!-- <a href="#" class="btn btn-outline-brand-01 mt-3" target="_blank">Learn More</a>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+		<section class="feature-section ptb-100 gray-light-bg">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-8">
+                        <div class="section-heading text-center">
+                            <h2>All Your Files Always With You</h2>
+                            <p class="lead">The complete, secure platform to store, sync and collaborate on your business files with your colleagues</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-lg-4 mt-4">
+                        <div class="features-box p-4">
+                            <div class="features-box-content">
+                                <h5>Teams & access levels</h5>
+                                <p>Organize your employees in teams and set group permissions or give individual access levels, where needed.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mt-4">
+                        <div class="features-box p-4">
+                            <div class="features-box-content">
+                                <h5>Shared folders</h5>
+                                <p>Optimize your teams’ workflow with organized shared folders to control data access in and outside the company.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mt-4">
+                        <div class="features-box p-4">
+                            <div class="features-box-content">
+                                <h5>Comments to files & folders</h5>
+                                <p>Take the opportunity to comment on files to ease user collaboration and skip using unsecured chat platforms.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mt-4">
+                        <div class="features-box p-4">
+                            <div class="features-box-content">
+                                <h5>Activity monitoring</h5>
+                                <p>Have all of your account activity recorded in detailed logs and access any previous versions of your files.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mt-4">
+                        <div class="features-box p-4">
+                            <div class="features-box-content">
+                                <h5>Enhanced search</h5>
+                                <p>You can search the contents of your documents and find files the way you remember them.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mt-4">
+                        <div class="features-box p-4">
+                            <div class="features-box-content">
+                                <h5>Scalable system</h5>
+                                <p>Add up more users whenever you need. Easily sets up to your business requirements.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% endblock %}

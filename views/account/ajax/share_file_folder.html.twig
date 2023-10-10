@@ -1,0 +1,176 @@
+{% set share_urls_template %}
+    <!-- just add href= for your links, like this: -->
+    <a onclick="return checkSocialLink(this);" href="https://www.facebook.com/sharer/sharer.php?u={{ shareLink }}" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ t("share_on", "Share On") }} Facebook" target="_blank" class="btn btn-social-icon btn-facebook"><i class="fa fa-facebook"></i></a>
+    <a onclick="return checkSocialLink(this);" href="https://twitter.com/share?url={{ shareLink }}" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ t("share_on", "Share On") }} Twitter" target="_blank" class="btn btn-social-icon btn-twitter"><i class="fa fa-twitter"></i></a>							
+    <a onclick="return checkSocialLink(this);" href="https://www.linkedin.com/cws/share?url={{ shareLink }}" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ t("share_on", "Share On") }} Linkedin" target="_blank" class="btn btn-social-icon btn-linkedin"><i class="fa fa-linkedin"></i></a>
+
+    <a onclick="return checkSocialLink(this);" href="http://reddit.com/submit?url={{ shareLink }}&title={{ fileFolder.folderName }}" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ t("share_on", "Share On") }} Reddit" target="_blank" class="btn btn-social-icon btn-reddit"><i class="fa fa-reddit-alien"></i></a>
+    <a onclick="return checkSocialLink(this);" href="http://www.stumbleupon.com/submit?url={{ shareLink }}&title={{ fileFolder.folderName }}" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ t("share_on", "Share On") }} StumbleUpon" target="_blank" class="btn btn-social-icon btn-stumbleupon"><i class="fa fa-stumbleupon"></i></a>
+    <a onclick="return checkSocialLink(this);" href="http://digg.com/submit?url={{ shareLink }}&title={{ fileFolder.folderName }}" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ t("share_on", "Share On") }} Digg" target="_blank" class="btn btn-social-icon btn-digg"><i class="fa fa-digg"></i></a>
+    <a onclick="return checkSocialLink(this);" href="https://www.tumblr.com/widgets/share/tool?canonicalUrl={{ shareLink }}&title={{ fileFolder.folderName }}&caption={{ fileFolder.folderName }}" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ t("share_on", "Share On") }} Tumblr" target="_blank" class="btn btn-social-icon btn-tumblr"><i class="fa fa-tumblr"></i></a>
+    {% endset %}
+
+<script>loadExistingInternalShareTable({{ fileIds|json_encode }}, {{ folderIds|json_encode }});</script>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">
+        {{ t("share", "share")|title }} 
+        {% if fileFolderCount > 0 %}{{ fileFolderCount }} 
+            {% if fileFolderCount == 1 %}
+                {{ t("folder", "folder")|title }}
+            {% else %}
+                {{ t("folders", "folders")|title }}
+            {% endif %}
+        {% endif %}
+        {% if fileFolderCount > 0 and fileCount > 0 %} &amp; {% endif %}
+        {% if fileCount > 0 %}{{ fileCount }} 
+            {% if fileCount == 1 %}
+                {{ t("file", "file")|title }}
+            {% else %}
+                {{ t("files", "files")|title }}
+            {% endif %}
+        {% endif %}
+    </h4>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="modal-icon-left"><img src="{{ theme.getAccountImagePath() }}/modal_icons/share.png"/></div>
+        </div>
+
+        <div class="col-md-9">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#publicshare" aria-controls="publicshare" role="tab" data-toggle="tab"><i class="entypo-share"></i> {{ t("externally_share", "Externally Share") }}</a></li>
+                <li role="presentation"><a href="#usershare" aria-controls="usershare" role="tab" data-toggle="tab"><i class="entypo-user-add"></i> {{ t("internal_user", "Internal User") }}</a></li>
+                <li role="presentation"><a href="#viaemail" aria-controls="viaemail" role="tab" data-toggle="tab"><i class="entypo-mail"></i> {{ t("share_send_via_email", "Send via Email") }}</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane" id="usershare">
+                    <div class="row">
+                        <div class="col-md-12" style="margin-bottom: 20px;">
+                            <p>{{ t("edit_folder_internal_share_intro", "You can internally share this folder with other users on the site. Simply enter their email address and permission level below. They'll see the new folder listed, along with any sub-folders, within their file manager.") }}</p>
+                            <p>{{ t("edit_folder_internal_share_intro_2", "You can share with more than 1 user at a time by comma separating each email address.") }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <form action="{{ theme.getAccountWebRoot() }}/ajax/email_folder_url" autocomplete="off">
+                            <div class="col-md-12">
+                                <div class="form-group" style="margin-bottom: 7px;">
+                                    <label for="registeredEmailAddress" class="control-label">{{ t('edit_folder_internal_share_email', 'Registered Email Address:') }}</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="registeredEmailAddress" id="registeredEmailAddress" placeholder="{{ t("recipient_email_address", "recipient email address")|title }}"/>
+                                        <span class="input-group-btn">
+                                            <button id="shareFolderInternallyBtn" type="button" class="btn btn-info" onClick="shareFolderInternally({{ fileIds|json_encode }}, {{ folderIds|json_encode }}); return false;">{{ t("grant_access", "grant access")|title }} <i class="entypo-lock"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12" style="margin: 6px;">
+                                            <div class="radio radio-replace color-blue" style="display: inline-block;"> <input type="radio" id="permission_radio_view" name="permission_radio" value="view" checked=""><label> {{ t("view_only", "View Only") }}</label> </div>
+                                            <div class="radio radio-replace color-blue" style="display: inline-block; margin-left: 20px;"> <input type="radio" id="permission_radio_upload_download" name="permission_radio" value="upload_download"> <label> {{ t("upload_download_and_view", "Upload, Download & View") }}</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="row">
+                        <div id="existingInternalShareTable" class="col-md-12" style="margin-top: 20px;"></div>
+                    </div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane active" id="publicshare">
+                    <div class="row">
+                        <div class="col-md-12" style="margin-bottom: 20px;">
+                            <p>
+                                {{ t("share_items_intro_text_non_account", "Use the form below to generate a unique sharing url for the selected items. This will provide access to view and download the files without needing an account. Note that sharing a folder will also grant access to any sub-folders/files.") }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="folderName" class="control-label">{{ t('edit_folder_sharing_url', 'Sharing Url:') }}</label>
+                                <div class="input-group">
+                                    <pre style="margin: 0px; cursor: pointer; white-space: normal;"><section id="sharingUrlInput" onClick="selectAllText(this); return false;">{{ t("click_refresh_button_to_generate", "Click 'refresh' button to generate...") }}</section></pre>
+                                    <span class="input-group-btn" style="vertical-align: top;">
+                                        <button type="button" class="btn btn-primary" onClick="generateFolderSharingUrl({{ fileIds|json_encode }}, {{ folderIds|json_encode }}); return false;" title="{{ t("click_to_generate_sharing_url", "Click to generate the sharing url...") }}" style="padding: 7px 12px;"><i class="glyphicon glyphicon-refresh"></i></button>
+                                    </span>
+                                </div>
+
+                                <div id="nonPublicSharingUrls" class="social-wrapper disabled">
+                                    {{ share_urls_template }}
+                                </div>
+
+                                <div class="social-wrapper-template" style="display: none;">
+                                    {{ share_urls_template }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12" style="margin-top: 14px;">
+                            <p>{{ t("sharing_you_can_also_set_a_folder_as_public_text", "You can also set individual folders as 'public' so they can be accessed without the need to generate sharing urls. See the 'edit folder' popup to enable this.") }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="viaemail">					
+                    <div class="row">
+                        <form action="{{ theme.getAccountWebRoot() }}/ajax/email_folder_url" autocomplete="off">
+                            <div class="col-md-12">
+                                <div class="form-group" style="margin-bottom: 7px;">
+                                    <label for="shareEmailAddress" class="control-label">{{ t('edit_folder_send_via_email', 'Send via Email:') }}</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="shareEmailAddress" id="shareEmailAddress" placeholder="{{ t("recipient_email_address", "recipient email address")|title }}"/>
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-info" onClick="processAjaxForm(this, function () {
+                                                                                                    $('#shareEmailAddress').val('');
+                                                                                                    $('#shareExtraMessage').val('');
+                                                                                                });
+                                                                                                return false;">{{ t("send_email", "send email")|title }} <i class="entypo-mail"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <textarea id="shareExtraMessage" name="shareExtraMessage" class="form-control" placeholder="{{ t("extra_message", "extra message (optional)")|title }}"></textarea>
+                                    <input type="hidden" name="submitme" id="submitme" value="1"/>
+                                    {% for fileId in fileIds %}
+                                        <input type="hidden" value="{{ fileId }}" name="fileIds[]"/>
+                                    {% endfor %}
+                                    {% for folderId in folderIds %}
+                                        <input type="hidden" value="{{ folderId }}" name="folderIds[]"/>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12" style="margin-top: 14px;">
+                            <p>{{ t("sharing_you_can_also_set_a_folder_as_public_text", "You can also set individual folders as 'public' so they can be accessed without the need to generate sharing urls. See the 'edit folder' popup to enable this.") }}</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-info" data-dismiss="modal">{{ t("close", "close") }}</button>
+</div>

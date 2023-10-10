@@ -1,0 +1,120 @@
+{% extends "partial/oydisk_layout.html.twig" %}
+
+{% block title %}{{ t("report_abuse_page_name", "Report Abuse") }}{% endblock %}
+{% block description %}{{ t("report_abuse_meta_description", "Report Abuse or Copyright Infringement") }}{% endblock %}
+{% block keywords %}{{ t("report_abuse_meta_keywords", "report, abuse, copyright, infringement, file, hosting") }}{% endblock %}
+
+{% block body %}
+	<section class="ptb-120 justify-content-center bg-image">
+        <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg')repeat center center;opacity: 1;"></div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-8">
+                        <div class="hero-content-left text-white text-center">
+							<h1 class="text-white">{{ t("report_abuse_page_name", "Report Abuse") }}</h1>
+							<p class="lead">{{ t("report_file_intro", "Please use the following form to report any copyright infringements ensuring you supply all the following information") }}</p>
+                        </div>
+                    </div>
+                </div>
+			</div>
+    </section>	
+            <section class="contact-us-section ptb-100" id="contact">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="contact-us-form-wrap gray-light-bg position-relative">
+                            <form method="post" role="form" action="{{ CORE_SITE_PATH }}/report-abuse" autocomplete="off">
+                                <div class="form-row">
+                                    <div class="col-12">
+										{% if msg_page_errors is defined %}
+                    <div class="alert alert-danger">
+                        <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;{% if msg_page_errors is defined %}{{ msg_page_errors|join('. ') }}{% endif %}
+                    </div>
+                    {% elseif msg_page_successes is defined %}
+                    <div class="alert alert-success">
+                        <i class="fa fa-checks"></i>&nbsp;&nbsp;{% if msg_page_successes is defined %}{{ msg_page_successes|join('. ') }}{% endif %}
+                    </div>
+                    {% endif %}
+                                    </div>
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+											<input name="fileUrl" class="form-control" id="fileUrl" type="text" value="{{ fileUrl }}" placeholder="{{ t('report_file_full_file_url', 'Full file url') }}" autofocus autocomplete="off" required="required"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+											<textarea name="otherInformation" class="form-control" rows="5" cols="25" id="otherInformation" autocomplete="off" required="required" placeholder="{{ t('report_file_description_of_the_works', 'Description of the copyrighted works and supporting information') }}">{{ otherInformation }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-6">
+                                        <div class="form-group">
+                                            <input name="reportedByName" class="form-control" id="reportedByName" value="{{ reportedByName }}" type="text" autocomplete="off" required="required" placeholder="{{ t('report_file_your_name', 'Your name') }}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-6">
+                                        <div class="form-group">
+                                            <input name="reportedByEmail" class="form-control" id="reportedByEmail" value="{{ reportedByEmail }}" type="email" autocomplete="off" required="required" placeholder="{{ t('report_file_email_address', 'Email address') }}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-6">
+                                        <div class="form-group">
+                                            <input name="reportedByAddress" class="form-control" id="reportedByAddress" value="{{ reportedByAddress }}" type="text" autocomplete="off" required="required" placeholder="{{ t('report_file_postal_address', 'Postal address') }}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-6">
+                                        <div class="form-group">
+                                            <input name="reportedByTelephoneNumber" class="form-control" id="reportedByTelephoneNumber" value="{{ reportedByTelephoneNumber }}" type="tel" autocomplete="off" required="required" placeholder="{{ t('report_file_phone_number', 'Phone number') }}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+                                            <input name="digitalSignature" class="form-control" id="digitalSignature" value="{{ digitalSignature }}" type="text" autocomplete="off" required="required" placeholder="{{ t('electronic_signature_of_the_copyright owner_or_the_person_authorized', 'Electronic signature of the copyright owner or the person authorized') }}"/>
+                                        </div>
+                                    </div>	
+									<div class="col-md-9 col-9">
+                                        <div class="form-group">
+                                            <span><strong>{{ t('report_file_confirm_1', 'Confirm 1') }}:</strong> {{ t('report_file_you_have_a_good_faith_belief', 'You have a good faith belief that use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law.') }}</span>
+                                        </div>
+										
+                                    </div>
+									<div class="col-md-3 col-3">
+                                <select id="confirm1" class="form-control" name="confirm1">
+                                    {% for k,confirmOption in confirmOptions %}
+                                        <option value="{{ k }}" {{ (confirm1 == k) ? 'SELECTED' : '' }}>{{ confirmOption }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+							<div class="col-md-9 col-9">
+                                        <div class="form-group">
+                                            <span><strong>{{ t('report_file_confirm_2', 'Confirm 2') }}:</strong> {{ t('report_file_the_information_in_this_noticiation', 'The information in the notification is accurate, and, under the pains and penalties of perjury, that you are authorized to act on behalf of the copyright owner.') }}</span>
+                                        </div>
+										
+                                    </div>
+									<div class="col-md-3 col-3">
+                                <select id="confirm2" class="form-control" name="confirm2">
+                                    {% for k,confirmOption in confirmOptions %}
+                                        <option value="{{ k }}" {{ (confirm2 == k) ? 'SELECTED' : '' }}>{{ confirmOption }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+							{% if SITE_CONFIG_CAPTCHA_REPORT_FILE_FORM == 'yes' %}
+                            <div class="col-md-12 col-12">
+                                <div class="input-group" style="overflow: hidden;">
+                                    {{ CoreHelper.outputCaptcha()|raw }}
+                                </div>
+                            </div>
+                            {% endif %}
+                                    <div class="col-sm-12 mt-3 ">
+                                        <button type="submit" class="btn btn-danger btn-lg mb-3">
+                                            {{ t("submit_report", "submit report")|title }}
+                                        </button>
+                                    </div>
+                                </div>
+								<input type="hidden" value="1" name="submitme"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% endblock %}

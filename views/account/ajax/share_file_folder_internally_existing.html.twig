@@ -1,0 +1,18 @@
+{% if folderShares|length > 0 %}
+    <p>{{ t('edit_folder_internal_share_existing_intro', 'Existing Shares:') }}</p>
+    <table class="table table-striped table-bordered">
+        <thead>
+        <th>{{ t('edit_folder_internal_share_email', 'Registered Email Address:') }}</th>
+        <th class="center" style="width: 140px;">{{ t('edit_folder_internal_access_level', 'Access Level:') }}</th>
+        <th class="center" style="width: 50px;"></th>
+    </thead>
+    <tbody>
+        {% for folderShare in folderShares %}
+        <tr>
+            <td>{{ folderShare['email'] }}</td>
+            <td class="center">{{ t('folder_share_permission_'~folderShare['share_permission_level'], folderShare['share_permission_level']|replace({'%this%': "_", '%that%': " "}))|title }} </td>
+            <td class="center"><a href="#" onClick="shareFolderInternallyRemove({{ folderShare['id'] }}, {{ fileIds|json_encode }}, {{ folderIds|json_encode }});"><span class="glyphicon glyphicon-remove text-danger"></span></a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+{% endif %}

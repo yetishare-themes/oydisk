@@ -1,0 +1,23 @@
+{% extends "partial/oydisk_layout_error.html.twig" %}
+
+{% block title %}{{ t("payment_complete_page_name", "Payment Complete") }}{% endblock %}
+{% block description %}{{ t("payment_complete_meta_description", "Payment Complete") }}{% endblock %}
+{% block keywords %}{{ t("payment_complete_meta_keywords", "payment, complete, file, hosting, site") }}{% endblock %}
+
+{% block body %}
+<section class="ptb-120 justify-content-center full-height bg-image">
+    <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg') repeat center center;opacity: 1;"></div>
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+				<div class="col-md-9 col-lg-7">
+					<div class="error-content-wrap text-center text-white">
+						<h1 class="text-white">{{ t("payment_complete_page_name", "Payment Complete") }}</h1>
+						<p class="lead">{{ t('once_we_receive_notication_from_gateway_your_account_will_be_upgraded', 'Once we receive notification from the payment gateway, your account will be upgraded/extended. Please allow up to an hour for this to complete.') }}</p>
+						<a  href="{{ WEB_ROOT }}/upgrade" class="btn btn-brand-03">{{ t('check_status', 'Check Status') }}</a>
+						<a  href="{{ CORE_SITE_PATH }}/account" class="btn btn-brand-03">{{ t('go_to_your_account', 'Go to your account') }}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+</section>
+{% endblock %}

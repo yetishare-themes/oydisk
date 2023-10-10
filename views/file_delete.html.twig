@@ -1,0 +1,62 @@
+{% extends "partial/oydisk_layout.html.twig" %}
+
+{% block title %}{{ t("delete_file_page_name", "Delete File") }}{% endblock %}
+{% block description %}{{ t("delete_file_meta_description", "Delete File") }}{% endblock %}
+{% block keywords %}{{ t("delete_file_meta_keywords", "delete, remove, file") }}{% endblock %}
+
+{% block body %}
+<section class="ptb-120 gradient-overlay bg-image">
+            <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg') repeat center center;opacity: 1;"></div>
+            <div class="container">
+			<form method="post" role="form" action="{{ file.getDeleteUrl(false, true) }}" autocomplete="off">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-8">
+                        <div class="hero-content-left text-white text-center">
+                            <h3 class="text-white">{{ t("delete_file_page_name", "Delete File") }}</h3>
+							{% if file.status == 'active' %}
+                            <p>{{ t("file_delete_title_page_description_left", "Please confirm whether to delete the file below") }}</p>
+							{% endif %}
+							{% if msg_page_errors is defined %}
+							<div class="alert alert-danger">
+							<i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;{% if msg_page_errors is defined %}{{ msg_page_errors|join('. ') }}{% endif %}
+							</div>
+							{% elseif msg_page_successes is defined %}
+							<div class="alert alert-success">
+							<i class="fa fa-checks"></i>&nbsp;&nbsp;{% if msg_page_successes is defined %}{{ msg_page_successes|join('. ') }}{% endif %}
+							</div>
+							{% endif %}
+							<img src="{{ file.getLargeIconPath()|raw }}" alt="{{ file.extension }}"  style="max-height: 7.42857143em;" class="mb-3">
+							<h3 class="text-white mb-5">{{ file.originalFilename }}</h3>
+                            <div class="fileinfo-wrap-2 mb-5">
+								<div class="row">
+									<div class="col">
+										<p class="mb-3">Filesize</p>
+										<h5 class="text-white">{{ file.getFormattedFilesize() }}</h5>
+									</div>
+									<div class="col">
+										<p class="mb-3">Uploaded</p>
+										<h5 class="text-white">{{ file.getFormattedUploadedDate() }}</h5>
+									</div>
+									<div class="col">
+										<p class="mb-3">Status</p>
+										<h5 class="text-white">{{ file.getStatusLabel()|title }}</h5>
+									</div>
+								</div>
+							</div>
+                    {% if file.status == 'active' %}
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <button class="btn btn-brand-03 save-now-btn" type="submit">{{ t("delete_file", "Delete File") }}</button>
+                            </div>
+                        </div>
+                    {% endif %}
+                        </div>
+                    </div>
+                </div>
+				                <input type="hidden" name="submitted" value="1"/>
+				            </form>
+            </div>
+        </section>
+			{% include '@themePath/partial/_oydisk_premium.html.twig' %}
+{% endblock %}

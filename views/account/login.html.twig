@@ -1,0 +1,77 @@
+{% extends "partial/oydisk_layout_account.html.twig" %}
+
+{% block title %}{{ t("login_page_name", "Login") }}{% endblock %}
+{% block description %}{{ t("login_meta_description", "Login to your account") }}{% endblock %}
+{% block keywords %}{{ t("login_meta_keywords", "login, register, image, picture, pic, img, hosting, sharing, upload, storage, site, website") }}{% endblock %}
+
+{% block body %}
+<section class="ptb-120 justify-content-center full-height bg-image">
+    <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg') repeat center center;opacity: 1;"></div>
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <div class="login-signup-wrap p-5 gray-light-bg rounded shadow">
+                        <div class="login-signup-header text-center">
+                            <a class="navbar-brand pt-0" href="{{ CORE_SITE_PATH }}"><img style="max-height: 1.85714286em;" src="{{ theme.getMainLogoUrl() }}" alt="logo"/></a>
+                            <h5 class="mb-3">Login Your Account</h5>
+					{% if msg_page_errors is defined %}
+                    <div class="alert alert-danger">
+                        <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;{% if msg_page_errors is defined %}{{ msg_page_errors|join('. ') }}{% endif %}
+                    </div>
+                    {% elseif msg_page_successes is defined %}
+                    <div class="alert alert-success">
+                        <i class="fa fa-check"></i>&nbsp;&nbsp;{% if msg_page_successes is defined %}{{ msg_page_successes|join('. ') }}{% endif %}
+                    </div>
+                    {% endif %}					
+                        </div>
+						<form class="login-signup-form" method="post" role="form" id="form_login" action="{{ CORE_SITE_PATH }}/account/login" autocomplete="off">
+                            <div class="form-group">
+                                <label class="pb-1">Username</label>
+                                <div class="input-group input-group-merge">
+                                    <div class="input-icon">
+                                        <span class="ti-user"></span>
+                                    </div>
+									<input class="form-control" name="username" id="username" type="text" placeholder="{{ t("username", "username")|title }}" autocomplete="off" autofocus value="{{ username }}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="pb-1">Password</label>
+                                <div class="input-group input-group-merge">
+                                    <div class="input-icon">
+                                        <span class="ti-lock"></span>
+                                    </div>
+									<input class="form-control" name="password" id="password" type="password" placeholder="Enter your password" autocomplete="off" value="{{ password }}"/>
+                                </div>
+                            </div>
+							{% if SITE_CONFIG_CAPTCHA_LOGIN_SCREEN_NORMAL == 'yes' %}
+                            <div class="col-md-12">
+                                <div class="input-group" style="display: block; overflow: hidden;">
+                                    {{ CoreHelper.outputCaptcha()|raw }}
+                                </div>
+                            </div>
+                            {% endif %}
+                            <button class="btn btn-block btn-brand-02 border-radius mt-4 mb-3" type="submit">{{ t("login_now", "login now")|title }}</button>
+							<input type="hidden" value="1" name="submitme"/>
+                        </form>
+                        <div class="other-login-signup my-3">
+                            <div class="or-login-signup text-center">
+                                <strong>Or Login With</strong>
+                            </div>
+                        </div>
+                        <ul class="list-inline social-login-signup text-center">
+                            {{ HookLoginLoginBoxHtml|raw }}
+                        </ul>
+                        <p class="text-center mb-0"><a href="{{ CORE_SITE_PATH }}/register">{{ t("register", "register")|title }}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{{ CORE_SITE_PATH }}/account/forgot_password">{{ t("forgot_password", "forgot password")|title }}</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="copyright-wrap small-text text-center mt-5 text-white">
+                     <p class="mb-0">{{ t("copyright", "copyright")|title }} &copy; {{ "now"|date("Y") }} - {{ SITE_CONFIG_SITE_NAME }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

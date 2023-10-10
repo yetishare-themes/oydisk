@@ -1,0 +1,1 @@
+Replace the logo via your admin area, theme settings. The logo.png file in this folder is just the fallback/original one if another is not set.

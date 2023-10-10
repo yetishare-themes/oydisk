@@ -1,0 +1,127 @@
+<div id="playerContainer"></div>
+<script type="text/javascript">
+//<![CDATA[
+    $(document).ready(function () {
+        //FWDUVPUtils.onReady(function(){
+            // remove any existing
+            if(typeof(videoPlayer) !== "undefined") {
+                delete videoPlayer;
+            }
+            
+            new FWDUVPlayer({		
+                //main settings
+                instanceName:"videoPlayer",
+                parentId:"playerContainer",
+                playlistsId:"playlists",
+                mainFolderPath:"{{ PLUGIN_WEB_ROOT }}/filepreviewer/assets/players/ultimate/content",
+                skinPath:"minimal_skin_white",
+                initializeOnlyWhenVisible:"no",
+                useVectorIcons:"no",
+                fillEntireVideoScreen:"no",
+                fillEntireposterScreen:"yes",
+                goFullScreenOnButtonPlay:"no",
+                playsinline:"yes",
+                showPlaylistsByDefault:"no",
+                useHEXColorsForSkin:"no",
+                normalHEXButtonsColor:"#666666",
+                googleAnalyticsTrackingCode:"",
+                useResumeOnPlay: "no",
+                showPreloader: "yes",
+                preloaderBackgroundColor: "#000000",
+                preloaderFillColor: "#FFFFFF",
+                addKeyboardSupport: "yes",
+                autoScale: "yes",
+                showButtonsToolTip: "yes",
+                stopVideoWhenPlayComplete: "no",
+                playAfterVideoStop: "no",
+                autoPlay: "{{ audioAutoPlay == true ? "yes" : "no" }}",
+                loop: "no",
+                shuffle: "no",
+                showErrorInfo: "no",
+                maxWidth: {{ playerMaxWidth is defined ? playerMaxWidth : '2000' }},
+                maxHeight: {{ playerMaxHeight is defined ? playerMaxHeight : '700' }},
+                buttonsToolTipHideDelay: 1.5,
+                volume: .8,
+                backgroundColor: "#000000",
+                videoBackgroundColor: "#000000",
+                posterBackgroundColor: "#000000",
+                buttonsToolTipFontColor: "#5a5a5a",
+                //logo settings
+                showLogo: "no",
+                //playlist settings
+                showPlaylistsButtonAndPlaylists: "no",
+                showPlaylistButtonAndPlaylist: "no",
+                showPlaylistByDefault: "no",
+                //controller settings
+                showController: "yes",
+                showControllerWhenVideoIsStopped: "yes",
+                showNextAndPrevButtonsInController: "no",
+                showRewindButton: "yes",
+                showPlaybackRateButton: "yes",
+                showVolumeButton: "yes",
+                showTime: "yes",
+                showQualityButton: "yes",
+                showInfoButton: "yes",
+                showDownloadButton: "no",
+                showShareButton: "no",
+                showEmbedButton: "no",
+                showChromecastButton: "no",
+                showFullScreenButton: "yes",
+                disableVideoScrubber: "no",
+                showScrubberWhenControllerIsHidden: "yes",
+                showMainScrubberToolTipLabel: "yes",
+                showDefaultControllerForVimeo: "no",
+                repeatBackground: "yes",
+                controllerHeight: 42,
+                controllerHideDelay: 3,
+                startSpaceBetweenButtons: 7,
+                spaceBetweenButtons: 8,
+                scrubbersOffsetWidth: 2,
+                mainScrubberOffestTop: 14,
+                timeOffsetLeftWidth: 5,
+                timeOffsetRightWidth: 3,
+                timeOffsetTop: 0,
+                volumeScrubberHeight: 80,
+                volumeScrubberOfsetHeight: 12,
+                timeColor: "#888888",
+                youtubeQualityButtonNormalColor: "#888888",
+                youtubeQualityButtonSelectedColor: "#FFFFFF",
+                scrubbersToolTipLabelBackgroundColor: "#FFFFFF",
+                scrubbersToolTipLabelFontColor: "#5a5a5a",
+                //audio visualizer
+                audioVisualizerLinesColor: "#21a9e1",
+                audioVisualizerCircleColor: "#FFFFFF",
+                //a to b loop
+                useAToB: "no",
+                //thumbnails preview
+                thumbnailsPreviewWidth: 196,
+                thumbnailsPreviewHeight: 110,
+                thumbnailsPreviewBackgroundColor: "#000000",
+                thumbnailsPreviewBorderColor: "#666",
+                thumbnailsPreviewLabelBackgroundColor: "#666",
+                thumbnailsPreviewLabelFontColor: "#FFF",
+                // context menu
+                showContextmenu: 'no',
+                showScriptDeveloper: "no",
+                contextMenuBackgroundColor: "#1f1f1f",
+                contextMenuBorderColor: "#1f1f1f",
+                contextMenuSpacerColor: "#333",
+                contextMenuItemNormalColor: "#666666",
+                contextMenuItemSelectedColor: "#FFFFFF",
+                contextMenuItemDisabledColor: "#444"
+            });
+        //});
+    });
+    //]]>
+</script>
+
+<!--  Playlists -->
+<ul id="playlists" style="display: none;">
+    <li data-source="playlist1" data-playlist-name="PLAYLIST 1" data-thumbnail-path="{{ PLUGIN_WEB_ROOT }}/filepreviewer/assets/players/ultimate/content/images/thumbnail.jpg">
+   </li>
+</ul>
+
+<!--  HTML playlist -->
+<ul id="playlist1" style="display: none;">
+    <li data-thumb-source="{{ PLUGIN_WEB_ROOT }}/filepreviewer/assets/players/ultimate/content/images/thumbnail.jpg" data-video-source="[{source:'{{ downloadUrlForMedia|raw }}', label:'Original'}]" data-start-at-video="0" data-downloadable="yes"></li>
+</ul>

@@ -1,0 +1,22 @@
+{% extends "partial/oydisk_layout.html.twig" %}
+
+{% block title %}{{ t("faq_page_name", "FAQ") }}{% endblock %}
+{% block description %}{{ t("faq_meta_description", "Frequently Asked Questions") }}{% endblock %}
+{% block keywords %}{{ t("faq_meta_keywords", "faq, frequently, asked, questions, file, hosting, site") }}{% endblock %}
+{% block selected_navigation_link %}faq{% endblock %}
+
+{% block body %}
+		<section class="ptb-120 justify-content-center bg-image">
+            <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg')repeat center center;opacity: 1;"></div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-8">
+                        <div class="hero-content-left text-white text-center">
+                            <h1 class="text-white">Frequently Asked Queries</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>	
+        {% include '@themePath/partial/_faq.html.twig' %}
+{% endblock %}

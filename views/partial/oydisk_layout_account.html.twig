@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" dir="{{ SITE_LANGUAGE_DIRECTION == "RTL" ? "RTL" : "LTR" }}" class="direction{{ SITE_LANGUAGE_DIRECTION == "RTL" ? "RTL" : "LTR" }}">
+    <head>
+        <meta charset="utf-8">
+        <title>{{ block('title') }} - {{ SITE_CONFIG_SITE_NAME }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="{{ block('description') }}"/>
+        <meta name="keywords" content="{{ block('keywords') }}" />
+
+        <link href="{{ theme.OyDiskCssPath() }}/main.css" rel="stylesheet" type="text/css" media="all" />
+          
+        <link rel="icon" type="image/x-icon" href="{{ theme.OyDiskImgPath() }}/favicon/favicon.png" />
+
+        {{ theme.outputCustomCSSCode()|raw }}
+        <script>
+            var LOGGED_IN = {% if Auth.loggedIn() == 'true' %}true{% else %}false{% endif %};
+        </script>
+        {{ theme.outputHeadJSCode()|raw }}
+<style>
+.g-recaptcha > div > div
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+.g-recaptcha > div {
+    margin: auto;
+}
+</style>
+    </head>
+    <body>
+	<div id="preloader">
+        <div class="preloader-wrap">
+            <div class="preloader">
+                <i>.</i>
+                <i>.</i>
+                <i>.</i>
+            </div>
+        </div>
+    </div>
+
+	{% block body %}{% endblock %}
+
+    <div class="scroll-top scroll-to-target primary-bg text-white" data-target="html">
+        <span class="fas fa-angle-double-up"></span>
+    </div>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/jquery-3.5.1.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/popper.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/bootstrap.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/bootstrap-slider.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/jquery.easing.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/owl.carousel.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/countdown.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/jquery.waypoints.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/jquery.rcounterup.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/magnific-popup.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/validator.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/hs.megamenu.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/app.js"></script>
+    </body>
+</html>

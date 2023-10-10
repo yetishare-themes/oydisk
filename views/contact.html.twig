@@ -1,0 +1,133 @@
+{% extends "partial/oydisk_layout.html.twig" %}
+
+{% block title %}{{ t("contact_page_name", "Contact Us") }}{% endblock %}
+{% block description %}{{ t("contact_meta_description", "Contact us") }}{% endblock %}
+{% block keywords %}{{ t("contact_meta_keywords", "contact, us, questions, queries, file, hosting") }}{% endblock %}
+
+{% block body %}
+		<section class="ptb-120 justify-content-center bg-image">
+            <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg')repeat center center;opacity: 1;"></div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-8">
+                        <div class="hero-content-left text-white text-center">
+                            <h1 class="text-white">{{ t("contact_page_name", "Contact Us") }}</h1>
+                            <p class="lead">{{ t("please_use_the_following_form_to_contact_us_with_any_queries", "Please use the following form to contact us with any queries") }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>	
+        <section class="contact-us-section ptb-100" id="contact">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-lg-9">
+                        <div class="contact-us-form-wrap gray-light-bg position-relative">
+                            <form method="post" role="form" action="{{ CORE_SITE_PATH }}/contact" autocomplete="off">
+                                <div class="form-row">
+                                    <div class="col-md-9 col-12">
+                                        <h2>Send Us a Message</h2>
+										{% if msg_page_errors is defined %}
+						<div class="alert alert-danger">
+							<i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;{% if msg_page_errors is defined %}{{ msg_page_errors|join('. ') }}{% endif %}
+						</div>
+						{% elseif msg_page_successes is defined %}
+						<div class="alert alert-success">
+							<i class="fa fa-check"></i>&nbsp;&nbsp;{% if msg_page_successes is defined %}{{ msg_page_successes|join('. ') }}{% endif %}
+						</div>
+						{% endif %}
+                                    </div>
+                                    <div class="col-md-9 col-12">
+                                        <div class="form-group">
+											<input name="fullName" id="fullName" value="{{ fullName }}" class="form-control" type="text" autocomplete="off" required="required" placeholder="{{ t('contact_full_name', 'Your Full Name') }}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9 col-12">
+                                        <div class="form-group">
+                                            <input name="emailAddress" id="emailAddress" value="{{ emailAddress }}" class="form-control" type="email" autocomplete="off" required="required" placeholder="{{ t('contact_email_address', 'Email address') }}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9 col-12">
+                                        <div class="form-group">
+                                            <select id="queryType" class="form-control" name="queryType" onChange="selectTypeItem(); return false;">
+                                    {% for k,queryTypeOption in queryTypes %}
+                                        <option value="{{ k }}" {{ (queryType == k) ? 'SELECTED' : '' }}>{{ queryTypeOption }}</option>
+                                    {% endfor %}
+                                </select>
+                                        </div>
+                                    </div>
+									<div class="col-md-9 col-12">
+                                        <div class="form-group">
+                                            <textarea name="query" id="query" class="form-control" rows="5" cols="25" placeholder="Message" autocomplete="off" required="required">{{ query }}</textarea>
+                                        </div>
+                                    </div>
+									{% if SITE_CONFIG_CONTACT_FORM_SHOW_CAPTCHA == 'yes' %}
+									<div class="col-md-12">
+										<div class="input-group" style="overflow: hidden;">
+											{{ CoreHelper.outputCaptcha()|raw }}
+										</div>
+									</div>
+                            {% endif %}
+                                    <div class="col-sm-12 mt-3">
+                                        <button type="submit" class="btn btn-brand-01">
+                                            {{ t("send_message", "Send Message")|title }}
+                                        </button>
+                                    </div>
+                                </div>
+								<input type="hidden" value="1" name="submitme"/>
+                            </form>
+                            <div class="contact-us-content dark-bg text-white shadow-lg mt-5 mt-md-0 mt-lg-0">
+                                <h3 class="text-white">Submitting the contact form on our site</h3>
+                                <p>We'll review the query as soon as possible and get back to your within the next 24 hours.</p>
+                                <ul class="contact-info-list mt-3">
+                                    <li class="d-flex py-3">
+                                        <div class="contact-text">
+                                            <h6 class="mb-1 text-white font-weight-normal">Copyright</h6>
+                                            <small>
+                                                dmca@yoursite.com
+                                            </small>
+                                        </div>
+                                    </li>
+                                    <li class="d-flex py-3">
+                                        <div class="contact-text">
+                                            <h6 class="mb-1 text-white font-weight-normal">Email Address</h6>
+                                            <small>
+                                                support@yoursite.com
+                                            </small>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="list-inline social-list-default background-color social-hover-2 mt-2">
+                                    <li class="list-inline-item"><a class="twitter" href="#"><i class="fab fa-twitter"></i></a></li>
+                                    <li class="list-inline-item"><a class="youtube" href="#"><i class="fab fa-youtube"></i></a></li>
+                                    <li class="list-inline-item"><a class="linkedin" href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                                    <li class="list-inline-item"><a class="dribbble" href="#"><i class="fab fa-dribbble"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+{% endblock %}
+
+{% block footerjs %}
+<script>
+function selectTypeItem()
+{
+    if ($('#queryType').val() == 'contact_query_type_abuse_report')
+    {
+        if (confirm({{ t('contact_abuse_report_popup_notice', 'Please submit all abuse reports via our dedicated abuse report page. Click OK to continue to it now.')|json_encode()|raw }}))
+        {
+            $('#queryType').val('contact_query_type_site_support');
+            window.location = '{{ WEB_ROOT }}/report-abuse';
+        }
+        else
+        {
+            $('#queryType').val('contact_query_type_site_support');
+        }
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "partial/oydisk_layout_error.html.twig" %}
+
+{% block title %}{{ t("error_page_name", "Error") }}{% endblock %}
+{% block description %}{{ t("error_meta_description", "Error") }}{% endblock %}
+{% block keywords %}{{ t("error_meta_keywords", "error, image, picture, pic, img, hosting, sharing, upload, storage, site, website") }}{% endblock %}
+
+{% block body %}
+<section class="ptb-120 justify-content-center full-height bg-image">
+    <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg') repeat center center;opacity: 1;"></div>
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+				<div class="col-md-9 col-lg-7">
+					<div class="error-content-wrap text-center text-white">
+						<h1 class="text-white">{{ t("error_page_name", "Error") }}</h1>
+						<p class="lead">{{ error_msg }}</p>
+						<a  href="{{ CORE_SITE_PATH }}" class="btn btn-brand-03">{{ t('go_back_to_home', 'Go back to home') }}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+</section>
+{% endblock %}

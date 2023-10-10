@@ -1,0 +1,1433 @@
+<link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/file_browser_sprite_48px.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript">
+    var cur = -1, prv = -1;
+    var pageStart = 0;
+    var perPage = 30;
+    var fileId = 0;
+    var intialLoad = true;
+    var uploaderShown = false;
+    var fromFilterModal = false;
+    var doubleClickTimeout = null;
+    var backgroundFolderLoading = false;
+    var clipboard = null;
+    var triggerTreeviewLoad = true;
+    $(function () {
+        // initial button state
+        updateFileActionButtons();
+        {% if initialFileId is defined and initialFileId > 0 %}
+            showFileInformation({{ initialFileId }});
+            backgroundFolderLoading = true;
+        {% endif %}
+
+        {% if Auth.loggedIn == true %}
+        // load folder listing
+        $("#folderTreeview").jstree({
+            "plugins": [
+                "themes", "json_data", "ui", "types", "crrm", "contextmenu", "cookies"
+            ],
+            "themes": {
+                "theme": "default",
+                "dots": false,
+                "icons": true
+            },
+            "core": {"animation": 150},
+            "json_data": {
+                "data": [
+                    {
+                        "data": "{{ t('my_files', 'My Files') }}{% if totalRootFiles > 0 %} ({{totalRootFiles}}){% endif %}",
+                        "state": "closed",
+                        "attr": {"pageType": "folder", "id": "-1", "rel": "home", "original-text": {{ t('my_files', 'My Files')|json_encode()|raw }}}
+                    },
+                    {
+                        "data": "{{ t('shared_with_me', 'Shared With Me') }}{% if totalSharedWithMeFiles > 0 %} ({{totalSharedWithMeFiles}}){% endif %}",
+                        "attr": {"pageType": "shared", "id": "shared", "rel": "shared", "original-text": {{ t('shared_with_me', 'Shared With Me')|json_encode()|raw }}}
+                    },
+                    {
+                        "data": "{{ t('recent_files', 'Recent Files') }}",
+                        "attr": {"pageType": "recent", "id": "recent", "rel": "recent", "original-text": {{ t('recent_files', 'Recent Files')|json_encode()|raw }}}
+                    },
+                    {
+                        "data": "{{ t('all_files', 'All Files') }}{% if totalActiveFiles > 0 %} ({{totalActiveFiles}}){% endif %}",
+                        "attr": {"pageType": "all", "id": "all", "rel": "all", "original-text": {{ t('all_files', 'All Files')|json_encode()|raw }}}
+                    },
+                    {
+                        "data": "{{ t('trash_can', 'Trash Can') }}{% if totalTrash > 0 %} ({{totalTrash}}){% endif %}",
+                        "attr": {"pageType": "trash", "id": "trash", "rel": "bin", "original-text": {{ t('trash_can', 'Trash Can')|json_encode()|raw }}}
+                    }
+                ],
+                "ajax": {
+                    "url": function (node) {
+                        var nodeId = "";
+                        var url = ""
+                        if (node == -1)
+                        {
+                            url = "{{ ACCOUNT_WEB_ROOT }}/ajax/home_v2_folder_listing";
+                        }
+                        else
+                        {
+                            nodeId = node.attr('id');
+                            url = "{{ ACCOUNT_WEB_ROOT }}/ajax/home_v2_folder_listing?folder=" + nodeId;
+                        }
+
+                        return url;
+                    }
+                }
+            },
+            "contextmenu": {
+                "items": buildTreeViewContextMenu
+            },
+            'progressive_render': true
+        }).bind("dblclick.jstree", function (event, data) {
+            var node = $(event.target).closest("li");
+            if ($(node).hasClass('jstree-leaf') == true)
+            {
+                return false;
+            }
+
+            //$("#folderTreeview").jstree("toggle_node", node.data("jstree"));
+        }).bind("select_node.jstree", function (event, data) {
+            // use this to stop the treeview from triggering a reload of the file manager
+            if(triggerTreeviewLoad == false)
+            {
+                triggerTreeviewLoad = true;
+                return false;
+            }
+
+            // add a slight delay encase this is a double click
+            if (intialLoad == false)
+            {
+                // wait before loading the files, just encase this is a double click
+                clickTreeviewNode(event, data);
+                return false;
+            }
+
+            clickTreeviewNode(event, data);
+        }).bind("load_node.jstree", function (event, data) {
+            // assign click to icon
+            assignNodeExpandClick();
+            reSelectFolder();
+        }).bind("open_node.jstree", function (event, data) {
+            // reassign drag crop for sub-folder
+            setupTreeviewDropTarget();
+        }).delegate("a", "click", function (event, data) {
+            event.preventDefault();
+        }).bind('loaded.jstree', function (e, data) {
+            // load default view if not stored in cookie
+            var doIntial = true;
+            if (typeof ($.cookie("jstree_open")) != "undefined")
+            {
+                if ($.cookie("jstree_open").length > 0)
+                {
+                    doIntial = false;
+                }
+            }
+
+            if (doIntial == true)
+            {
+                $("#folderTreeview").jstree("open_node", $("#-1"));
+            }
+
+            // reload stats
+            updateStatsViaAjax();
+        });
+
+        var doIntial = true;
+        if (typeof ($.cookie("jstree_select")) != "undefined")
+        {
+            if ($.cookie("jstree_select").length > 0)
+            {
+                doIntial = false;
+            }
+        }
+        if (doIntial == true)
+        {
+            // load file listing
+            $('#nodeId').val('-1');
+        }
+
+        $("#fileManager").click(function (event) {
+            if (ctrlPressed == false)
+            {
+                if ($(event.target).is('ul') || $(event.target).hasClass('fileManager')) {
+                    clearSelectedItems();
+                }
+            }
+        });
+
+        setupFileDragSelect();
+        
+        // load the uploader ready in the background. This also enables the drag and drop upload
+        loadUploader(false);
+        {% endif %}
+    });
+
+    function assignNodeExpandClick()
+    {
+        $('.jstree-icon').off('click');
+        $('.jstree-icon').on('click', function (event) {
+            var node = $(event.target).parent().parent();
+            if ($(node).hasClass('jstree-leaf') != true)
+            {
+                // expand
+                $("#folderTreeview").jstree("toggle_node", $(node));
+
+                // stop the node from being selected
+                event.stopPropagation();
+                event.preventDefault();
+            }
+        });
+    }
+
+    function clickTreeviewNode(event, data)
+    {
+        clearSelectedItems();
+        clearSearchFilters(false);
+	cancelPendingNetworkRequests();
+
+        // load via ajax
+        if (intialLoad == true)
+        {
+            intialLoad = false;
+        }
+        else
+        {
+            $('#nodeId').val(data.rslt.obj.attr("id"));
+            $('#folderIdDropdown').val($('#nodeId').val());
+            if (typeof (setUploadFolderId) === 'function')
+            {
+                setUploadFolderId($('#nodeId').val());
+            }
+            loadImages(data.rslt.obj.attr("pageType"), data.rslt.obj.attr("id"));
+        }
+    }
+	
+    function cancelPendingNetworkRequests()
+    {
+        // disabled due to adverse side effects on refresh
+        return false;
+
+        // don't cancel if we're uploading files
+        if(uploadComplete == false)
+        {
+            return false;
+        }
+
+        if(window.stop !== undefined)
+        {
+            window.stop();
+        }
+        else if(document.execCommand !== undefined)
+        {
+            document.execCommand("Stop", false);
+        }
+    }
+
+    function updateFolderDropdownMenuItems()
+    {
+        // not a sub folder
+        if (isPositiveInteger($('#nodeId').val()) == false)
+        {
+            $('#subFolderOptions').hide();
+            $('#topFolderOptions').show();
+        }
+        // all sub folders / menu options
+        else
+        {
+            $('#topFolderOptions').hide();
+            $('#subFolderOptions').show();
+        }
+    }
+
+    function reloadDragItems()
+    {
+        $('.fileIconLi, .folderIconLi')
+                .drop("start", function () {
+                    $(this).removeClass("active");
+                    if ($(this).hasClass("selected") == false)
+                    {
+                        $(this).addClass("active");
+                    }
+                })
+                .drop(function (ev, dd) {
+                    if(typeof($(this).attr('fileId')) != 'undefined') {
+                        selectFile($(this).attr('fileId'), true);
+                    }
+                    else {
+                        selectFolder($(this).attr('folderId'), true);
+                    }
+                })
+                .drop("end", function () {
+                    $(this).removeClass("active");
+                });
+        $.drop({multi: true});
+    }
+
+    function refreshFolderListing(triggerLoad)
+    {
+        if(typeof(triggerLoad) != "undefined")
+        {
+            triggerTreeviewLoad = triggerLoad;
+        }
+		
+        $("#folderTreeview").jstree("refresh");
+    }
+
+    function buildTreeViewContextMenu(node)
+    {
+        var items = {
+            "Open": {
+                "label": "{{ t('open_folder', 'Open Folder') }}",
+                                    "icon": "glyphicon glyphicon-folder-open",
+                "separator_after": false,
+                "action": function (obj) {
+                    loadImages(obj.attr("pageType"), obj.attr("id"));
+                }
+            }
+        };
+
+        if ($(node).attr('id') == 'trash')
+        {
+            items["Empty"] = {
+                    "label": "{{ t('empty_trash', 'Empty Trash') }}",
+					"icon": "glyphicon glyphicon-trash",
+                    "action": function (obj) {
+                        confirmEmptyTrash();
+                    }
+                };
+        }
+        else if ($(node).attr('id') == '-1')
+        {
+            items["Upload"] = {
+                    "label": "{{ t('upload_files', 'Upload Files') }}",
+					"icon": "glyphicon glyphicon-cloud-upload",
+                    "separator_after": true,
+                    "action": function (obj) {
+                        uploadFiles('');
+                    }
+                };
+                
+            items["Add"] = {
+                    "label": "{{ t('add_folder', 'Add Folder') }}",
+					"icon": "glyphicon glyphicon-plus",
+                    "action": function (obj) {
+                        showAddFolderForm(obj.attr("id"));
+                    }
+                };
+        }
+        else if ($.isNumeric($(node).attr('id')))
+        {
+            if($(node).attr('permission') != 'view')
+            {
+                items["Upload"] = {
+                        "label": "{{ t('upload_files', 'Upload Files') }}",
+                                            "icon": "glyphicon glyphicon-cloud-upload",
+                        "separator_after": true,
+                        "action": function (obj) {
+                            uploadFiles(obj.attr("id"));
+                        }
+                    };
+            }
+                
+            if($(node).attr('permission') == 'all')
+            {
+                items["Add"] = {
+                        "label": "{{ t('add_sub_folder', 'Add Sub Folder') }}",
+                                            "icon": "glyphicon glyphicon-plus",
+                        "action": function (obj) {
+                            showAddFolderForm(obj.attr("id"));
+                        }
+                    };
+                items["Edit"] = {
+                        "label": "{{ t('edit_folder', 'Edit') }}",
+                                            "icon": "glyphicon glyphicon-pencil",
+                        "action": function (obj) {
+                            showAddFolderForm(null, obj.attr("id"));
+                        }
+                    };
+                items["Delete"] = {
+                        "label": "{{ t('delete_folder', 'Delete') }}",
+                                            "icon": "glyphicon glyphicon-trash",
+                        "action": function (obj) {
+                            confirmTrashFolder(obj.attr("id"));
+                        }
+                    };
+            }
+            
+            if($(node).attr('permission') != 'view')
+            {
+                items["Download"] = {
+                        "label": "{{ t('download_all_files', 'Download All Files (Zip)') }}",
+                        "icon": "glyphicon glyphicon-floppy-save",
+                        "separator_before": true,
+                        "action": function (obj) {
+                            downloadAllFilesFromFolder(obj.attr("id"));
+                        }
+                    };
+            }
+
+            if($(node).attr('permission') == 'all')
+            {
+                items["Share"] = {
+                        "label": "{{ t('share_folder', 'Share Folder') }}",
+                        "icon": "glyphicon glyphicon-share",
+                        "action": function (obj) {
+                            showSharingForm(obj.attr("id"));
+                        }
+                    };
+            }
+            
+            items["HtmlMenuSection"] = {
+                    "label": "<span class='menu-folder-details'><ul><li>Owner: "+$(node).attr('owner')+"</li><li>Access Rights: "+uCWords($(node).attr('permission').replace('_', ' '))+"</li><li>Size: "+$(node).attr('total_size')+"</li></ul></span>",
+                    "separator_before": true,
+                    "action": function (obj) {
+                        loadImages(obj.attr("pageType"), obj.attr("id"));
+                    }
+                };
+        }
+
+        return items;
+    }
+
+    function confirmTrashFolder(folderId)
+    {
+        // only allow actual sub folders
+        if (isPositiveInteger(folderId) == false)
+        {
+            return false;
+        }
+
+        if (confirm({{ t('are_you_sure_you_want_to_trash_this_folder_inc_files', 'Are you sure you want to send this folder to trash? Any files within the folder will also be sent to trash.')|json_encode()|raw }}))
+        {
+            trashFolder(folderId);
+        }
+
+        return false;
+    }
+
+    function trashFolder(folderId)
+    {
+        // trash files
+	$.ajax({
+		type: "POST",
+		url: ACCOUNT_WEB_ROOT+"/ajax/trash_files",
+		data: {fileIds: '', folderIds: folderId},
+		dataType: 'json',
+		success: function(json) {
+                    if (json.error == true)
+                    {
+                        showErrorNotification('Error', json.msg);
+                    }
+                    else
+                    {
+                        // refresh treeview
+                        showSuccessNotification('Success', json.msg);
+                        refreshFolderListing();
+                    }
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    showErrorNotification('Error', 'General error');
+		}
+	});
+    }
+
+
+    function confirmEmptyTrash()
+    {
+        if (confirm({{ t('are_you_sure_you_want_to_empty_the_trash', 'Are you sure you want to empty the trash can? Any statistics and other file information will be permanently deleted.')|json_encode()|raw }}))
+        {
+            emptyTrash();
+        }
+
+        return false;
+    }
+
+    function emptyTrash()
+    {
+        $.ajax({
+            dataType: "json",
+            url: "{{ ACCOUNT_WEB_ROOT }}/ajax/empty_trash",
+            success: function (data) {
+                if (data.error == true)
+                {
+                    alert(data.msg);
+                }
+                else
+                {
+                    // reload file listing
+                    loadImages('trash');
+
+                    // reload stats
+                    updateStatsViaAjax();
+                }
+            }
+        });
+    }
+
+    var hideLoader = false;
+    function loadFiles(folderId)
+    {
+        // get variables
+        if (typeof (folderId) == 'undefined')
+        {
+            folderId = $('#nodeId').val();
+        }
+
+        loadImages('folder', folderId);
+    }
+
+    function dblClickFile(fileId)
+    {
+
+    }
+	
+    function clearExistingHoverFileItem()
+    {
+        $('.hoverItem').removeClass('hoverItem');
+    }
+
+    function showFileMenu(liEle, clickEvent)
+    {
+        clickEvent.stopPropagation();
+        hideOpenContextMenus();
+		
+        fileId = $(liEle).attr('fileId');
+        downloadUrl = $(liEle).attr('dtfullurl');
+        statsUrl = $(liEle).attr('dtstatsurl');
+        isDeleted = $(liEle).hasClass('fileDeletedLi');
+        fileName = $(liEle).attr('dtfilename');
+        extraMenuItems = $(liEle).attr('dtextramenuitems');
+        var items = {
+            "Stats": {
+                "label": "{{ t('account_file_details_stats', 'Stats')|title }}",
+                "icon": "glyphicon glyphicon-stats",
+                "action": function (obj) {
+                    showStatsPopup(fileId);
+                }
+            },
+            "Select": {
+                "label": "{{ t('account_file_details_select_file', 'Select File')|title }} ",
+                "icon": "glyphicon glyphicon-check",
+                "action": function (obj) {
+                    selectFile(fileId, true);
+                }
+            },
+            "Restore": {
+                "label": "{{ t('restore', 'Restore') }}",
+                "icon": "glyphicon glyphicon-export",
+                "separator_after": false,
+                "action": function (obj) {
+                    selectFile(fileId, true);
+                    restoreItems();
+                }
+            },
+            "Delete": {
+                "label": "{{ t('permanently_delete', 'Permanently Delete') }}",
+                "icon": "glyphicon glyphicon-remove",
+                "separator_after": false,
+                "action": function (obj) {
+                    selectFile(fileId, true);
+                    deleteFiles();
+                }
+            }
+        };
+
+        if (isDeleted == false)
+        {
+            var items = {};
+
+            items["View"] = {
+                "label": "{{ t('account_file_details_view', 'View')|title }}",
+                "icon": "glyphicon glyphicon-zoom-in",
+                "action": function (obj) {
+                    showFile(fileId);
+                }
+            };
+
+            items["Download"] = {
+                "label": "{{ t('account_file_details_download', 'Download')|title }} " + htmlEntities(fileName),
+                "icon": "glyphicon glyphicon-download-alt",
+                "action": function (obj) {
+                    openUrl('{{ ACCOUNT_WEB_ROOT }}/direct_download/' + fileId);
+                }
+            };
+            
+            items["Share"] = {
+                "label": "{{ t('account_file_details_share', 'Share')|title }}",
+                "icon": "glyphicon glyphicon-share",
+                "separator_after": true,
+                "action": function (obj) {
+                    selectFile(fileId, true);
+                    showSharingForm();
+                }
+            };
+
+            items["Edit"] = {
+                "label": "{{ t('account_file_details_edit_file_info', 'Edit File Info')|title }}",
+                "icon": "glyphicon glyphicon-pencil",
+                "action": function (obj) {
+                    showEditFileForm(fileId);
+                }
+            };
+			
+            items["Duplicate"] = {
+                "label": "{{ t('account_file_details_create_copy', 'Create Copy')|title }}",
+                "icon": "glyphicon glyphicon-plus-sign",
+                "action": function (obj) {
+                selectFile(fileId, true);
+                    duplicateFiles();
+                }
+            };
+
+            items["Delete"] = {
+                "label": "{{ t('account_file_details_delete', 'Delete')|title }}",
+                "icon": "glyphicon glyphicon-trash",
+                "separator_after": true,
+                "action": function (obj) {
+                    selectFile(fileId, true);
+                    trashFiles();
+                }
+            };
+			
+            items["Copy"] = {
+                "label": "{{ t('copy_urls_to_clipboard', 'Copy Urls to Clipboard') }}",
+                "icon": "entypo entypo-clipboard",
+                "classname": "fileMenuItem"+fileId,
+                "separator_after": true,
+                "action": function (obj) {
+                    selectFile(fileId, true);
+                    copySelectedFolderAndFileUrls('.fileMenuItem'+fileId);
+                }
+            };
+
+            items["Select"] = {
+                "label": "{{ t('account_file_details_select_file', 'Select File')|title }} ",
+                "icon": "glyphicon glyphicon-check",
+                "action": function (obj) {
+                    selectFile(fileId, true);
+                }
+            };
+
+            items["Links"] = {
+                "label": "{{ t('file_manager_links', 'Links')|title }}",
+                "icon": "glyphicon glyphicon-link",
+                "action": function (obj) {
+                    selectFile(fileId, true);
+                    viewFileLinks();
+                    // clear selected if only 1
+                    if (countSelected() == 1)
+                    {
+                        clearSelectedItems();
+                    }
+                }
+            };
+
+            items["Stats"] = {
+                "label": "{{ t('account_file_details_stats', 'Stats')|title }}",
+                "icon": "glyphicon glyphicon-stats",
+                "action": function (obj) {
+                    showStatsPopup(fileId);
+                }
+            };
+
+            // replace any items for overwriting (plugins)
+            if (extraMenuItems.length > 0)
+            {
+                itemsArr = JSON.parse(extraMenuItems);
+                for (i in itemsArr)
+                {
+                    // append item
+                    items[i] = itemsArr[i];
+                    
+                    // setup click action on menu item
+                    eval("items['" + i + "']['action'] = " + itemsArr[i]['action']);
+                }
+            }
+        }
+        $.vakata.context.show(items, $(liEle), clickEvent.pageX - 5, clickEvent.pageY - 3, liEle);
+        return false;
+    }
+	
+    function showFolderMenu(liEle, clickEvent)
+    {
+        clickEvent.stopPropagation();
+        var folderId = $(liEle).attr('folderId');
+        var isDeleted = $(liEle).hasClass('folderDeletedLi');
+        if(isDeleted == false) {
+            var items = {
+                "Upload": {
+                    "label": "{{ t('upload_files', 'Upload Files') }}",
+                    "icon": "glyphicon glyphicon-cloud-upload",
+                    "separator_after": true,
+                    "action": function (obj) {
+                        uploadFiles(folderId);
+                    }
+                },
+                "Add": {
+                    "label": "{{ t('add_sub_folder', 'Add Sub Folder') }}",
+                    "icon": "glyphicon glyphicon-plus",
+                    "action": function (obj) {
+                        showAddFolderForm(folderId);
+                    }
+                },
+                "Edit": {
+                    "label": "{{ t('edit_folder', 'Edit') }}",
+                    "icon": "glyphicon glyphicon-pencil",
+                    "action": function (obj) {
+                        showAddFolderForm(null, folderId);
+                    }
+                },
+                "Delete": {
+                    "label": "{{ t('delete_folder', 'Delete') }}",
+                    "icon": "glyphicon glyphicon-trash",
+                    "action": function (obj) {
+                        selectFolder(folderId, true);
+                        trashFiles();
+                    }
+                },
+                "Download": {
+                    "label": "{{ t('download_all_files', 'Download All Files (Zip)') }}",
+                    "icon": "glyphicon glyphicon-floppy-save",
+                    "separator_before": true,
+                    "action": function (obj) {
+                        downloadAllFilesFromFolder(folderId);
+                    }
+                },
+                "Copy": {
+                    "label": "{{ t('copy_urls_to_clipboard', 'Copy Urls to Clipboard') }}",
+                    "icon": "entypo entypo-clipboard",
+                    "classname": "folderMenuItem"+folderId,
+                    "separator_before": true,
+                    "action": function (obj) {
+                        selectFolder(folderId, true);
+                        copySelectedFolderAndFileUrls('.folderMenuItem'+folderId);
+                    }
+                },
+                "Share": {
+                    "label": "{{ t('account_file_details_share', 'Share') }}",
+                    "icon": "glyphicon glyphicon-share",
+                    "action": function (obj) {
+                        selectFolder(folderId, true);
+                        showSharingForm();
+                    }
+                }
+            };
+        }
+        else {
+            var items = {
+                "Select": {
+                    "label": "{{ t('account_file_details_select_folder', 'Select Folder')|title }} ",
+                    "icon": "glyphicon glyphicon-check",
+                    "action": function (obj) {
+                        selectFolder(folderId, true);
+                    }
+                },
+                "Restore": {
+                    "label": "{{ t('restore', 'Restore') }}",
+                    "icon": "glyphicon glyphicon-export",
+                    "separator_after": false,
+                    "action": function (obj) {
+                        selectFolder(folderId, true);
+                        restoreItems();
+                    }
+                },
+                "Delete": {
+                    "label": "{{ t('permanently_delete', 'Permanently Delete') }}",
+                    "icon": "glyphicon glyphicon-remove",
+                    "separator_after": false,
+                    "action": function (obj) {
+                        selectFolder(folderId, true);
+                        deleteFiles();
+                    }
+                }
+            }
+        }
+
+        $.vakata.context.show(items, $(liEle), clickEvent.pageX - 5, clickEvent.pageY - 3, liEle);
+        return false;
+    }
+
+    function selectFile(fileId, onlySelectOn)
+    {
+        if (typeof (onlySelectOn) == "undefined")
+        {
+            onlySelectOn = false;
+        }
+
+        // clear any selected if ctrl key not pressed
+        if ((ctrlPressed == false) && (onlySelectOn == false))
+        {
+            showFileInformation(fileId);
+
+            return false;
+        }
+
+        elementId = 'fileItem' + fileId;
+        if (($('.' + elementId).hasClass('selected')) && (onlySelectOn == false))
+        {
+            $('.' + elementId).removeClass('selected');
+            if (typeof (selectedFiles['k' + fileId]) != 'undefined')
+            {
+                delete selectedFiles['k' + fileId];
+            }
+        }
+        else
+        {
+            $('.' + elementId + '.owned-image').addClass('selected');
+            if ($('.' + elementId).hasClass('selected'))
+            {
+                selectedFiles['k' + fileId] = [fileId, $('.' + elementId).attr('dttitle'), $('.' + elementId).attr('dtsizeraw'), $('.' + elementId).attr('dtfullurl'), $('.' + elementId).attr('dturlhtmlcode'), $('.' + elementId).attr('dturlbbcode')];
+            }
+        }
+
+        updateSelectedItemsStatusText();
+        updateFileActionButtons();
+    }
+    
+    function selectFolder(folderId, onlySelectOn)
+    {
+        if (typeof (onlySelectOn) == "undefined")
+        {
+            onlySelectOn = false;
+        }
+
+        // clear any selected if ctrl key not pressed
+        if ((ctrlPressed == false) && (onlySelectOn == false))
+        {
+            loadFolderFiles(folderId);
+
+            return false;
+        }
+
+        elementId = 'folderItem' + folderId;
+        if (($('.' + elementId).hasClass('selected')) && (onlySelectOn == false))
+        {
+            $('.' + elementId).removeClass('selected');
+            if (typeof (selectedFolders['k' + folderId]) != 'undefined')
+            {
+                delete selectedFolders['k' + folderId];
+            }
+        } else
+        {
+            $('.' + elementId).addClass('selected');
+            if ($('.' + elementId).hasClass('selected'))
+            {
+                selectedFolders['k' + folderId] = [folderId, $('.' + elementId).attr('sharing-url')];
+            }
+        }
+
+        updateSelectedItemsStatusText();
+        updateFileActionButtons();
+    }
+
+    var ctrlPressed = false;
+    $(window).keydown(function (evt) {
+        if (evt.which == 17) {
+            ctrlPressed = true;
+        }
+    }).keyup(function (evt) {
+        if (evt.which == 17) {
+            ctrlPressed = false;
+        }
+    });
+
+    $(window).keydown(function (evt) {
+        if (evt.which == 65) {
+            if (ctrlPressed == true)
+            {
+                selectAllFiles();
+                return false;
+            }
+        }
+    })
+
+    function updateFileActionButtons()
+    {
+        totalSelected = countSelected();
+        if (totalSelected > 0)
+        {
+            $('.fileActionLinks').removeClass('disabled');
+
+        }
+        else
+        {
+            $('.fileActionLinks').addClass('disabled');
+        }
+    }
+
+    function viewFileLinks()
+    {
+        count = countSelected();
+        if (count > 0)
+        {
+            fileUrlText = '';
+            htmlUrlText = '';
+            bbCodeUrlText = '';
+            for (i in selectedFiles)
+            {
+                fileUrlText += selectedFiles[i][3] + "<br/>";
+                htmlUrlText += selectedFiles[i][4] + "&lt;br/&gt;<br/>";
+                bbCodeUrlText += selectedFiles[i][5];
+            }
+
+            $('#popupContentUrls').html(fileUrlText);
+            $('#popupContentHTMLCode').html(htmlUrlText);
+            $('#popupContentBBCode').html(bbCodeUrlText);
+
+            jQuery('#fileLinksModal').modal('show', {backdrop: 'static'}).on('shown.bs.modal');
+        }
+    }
+
+    function showLightboxNotice()
+    {
+        jQuery('#generalModal').modal('show', {backdrop: 'static'}).on('shown.bs.modal', function () {
+            $('.general-modal .modal-body').html($('#filePopupContentWrapperNotice').html());
+        });
+    }
+
+    function showFileInformation(fileId)
+    {
+        // hide any context menus
+        hideOpenContextMenus();
+
+        // load overlay
+        showFileInline(fileId);
+    }
+
+    function loadPage(startPos)
+    {
+        cancelPendingNetworkRequests();
+        $('html, body').animate({
+            scrollTop: $(".page-body").offset().top
+        }, 700);
+        pageStart = startPos;
+        refreshFileListing();
+    }
+
+    function downloadAllFilesFromFolder(folderId)
+    {
+        // only allow actual sub folders
+        if (isPositiveInteger(folderId) == false)
+        {
+            return false;
+        }
+
+        if (confirm("{{ t('account_home_are_you_sure_download_all_files', 'Are you sure you want to download all the files in this folder? This may take some time to complete.') }}"))
+        {
+            downloadAllFilesFromFolderConfirm(folderId);
+        }
+
+        return false;
+    }
+
+    function downloadAllFilesFromFolderConfirm(folderId)
+    {
+        $('.download-folder-modal .modal-body .col-md-9').html('');
+        jQuery('#downloadFolderModal').modal('show', {backdrop: 'static'}).on('shown.bs.modal', function () {
+            $('.download-folder-modal .modal-body .col-md-9').html('<iframe src="{{ ACCOUNT_WEB_ROOT }}/ajax/download_all_as_zip/' + folderId + '" style="zoom:0.60" width="99.6%" height="730" frameborder="0"></iframe>');
+        });
+    }
+	
+    function downloadAllFilesFromFolderShared(folderId)
+    {
+        if(typeof(folderId) === 'undefined') {
+            folderId = 0;
+        }
+        
+        msg = "{{ t('account_home_are_you_sure_download_all_files_in_share', 'Are you sure you want to download all the files in this share? This may take some time to complete.') }}";
+        if(folderId > 0) {
+            msg = "{{ t('account_home_are_you_sure_download_all_files_in_folder', 'Are you sure you want to download all the files in this folder? This may take some time to complete.') }}";
+        }
+        if (confirm(msg))
+        {
+            downloadAllFilesFromFolderSharedConfirm(folderId);
+        }
+
+        return false;
+    }
+	
+    function downloadAllFilesFromFolderSharedConfirm(folderId)
+    {
+        $('.download-folder-modal .modal-body .col-md-9').html('');
+        jQuery('#downloadFolderModal').modal('show', {backdrop: 'static'}).on('shown.bs.modal', function () {
+            $('.download-folder-modal .modal-body .col-md-9').html('<iframe src="{{ WEB_ROOT }}/ajax/non_account_download_all_as_zip?folderId='+folderId+'" style="zoom:0.60" width="99.6%" height="440" frameborder="0"></iframe>');
+        });
+    }
+</script>
+
+
+<script>
+    function showAddFolderForm(parentId, editFolderId)
+    {
+        // only allow actual sub folders on edit
+        if ((typeof (editFolderId) != 'undefined') && (isPositiveInteger(editFolderId) == false))
+        {
+            return false;
+        }
+
+        showLoaderModal();
+        if (typeof (parentId) == 'undefined')
+        {
+            parentId = $('#nodeId').val();
+        }
+
+        if (typeof (editFolderId) == 'undefined')
+        {
+            editFolderId = 0;
+        }
+
+        jQuery('#addEditFolderModal .modal-content').load("{{ ACCOUNT_WEB_ROOT }}/ajax/add_edit_folder", {parentId: parentId, editFolderId: editFolderId}, function () {
+            hideLoaderModal();
+            jQuery('#addEditFolderModal').modal('show', {backdrop: 'static'}).on('shown.bs.modal', function () {
+                assignModalEnterKey();
+                $('#addEditFolderModal input').first().focus();
+            });
+        });
+    }
+
+    var folderArray = {{ folderListingArr|json_encode()|raw }};
+    function markInternalNotificationsRead()
+    {
+        $.ajax({
+            dataType: "json",
+            url: "{{ ACCOUNT_WEB_ROOT }}/ajax/internal_notification_mark_all_read",
+            success: function (data) {
+                $('.internal-notification .unread').addClass('read').removeClass('unread');
+                $('.internal-notification .text-bold').removeClass('text-bold');
+                $('.internal-notification .badge').hide();
+                $('.internal-notification .unread-count').html('You have 0 new notifications.');
+                $('.internal-notification .mark-read-link').hide();
+            }
+        });
+    }
+
+    progressWidget = null;
+    function showProgressWidget(intialText, title, complete, timeout)
+    {
+		if(typeof(timeout) == "undefined")
+		{
+			timeout = 0;
+		}
+		
+        if (progressWidget != null)
+        {
+            progressWidget.hide();
+        }
+
+        var opts = {
+            "closeButton": false,
+            "debug": false,
+            "positionClass": "toast-bottom-right",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": timeout,
+            "extendedTimeOut": "0",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+            "onclick": function () {
+                showUploaderPopup();
+            }
+        };
+
+        if (complete == true)
+        {
+            progressWidget = toastr.success(intialText, title, opts);
+        }
+        else
+        {
+            progressWidget = toastr.info(intialText, title, opts);
+        }
+    }
+
+    function updateProgressWidgetText(text)
+    {
+        if (progressWidget == null)
+        {
+            return false;
+        }
+
+        $(progressWidget).find('.toast-message').html(text);
+    }
+
+    function checkShowUploadProgressWidget()
+    {
+        if (uploadComplete == false)
+        {
+            showProgressWidget({{ t('file_manager_uploading', 'Uploading...')|json_encode()|raw }}, {{ t('file_manager_upload_progress', 'Upload Progress:')|json_encode()|raw }}, false);
+        }
+    }
+
+    function checkShowUploadFinishedWidget()
+    {
+        showProgressWidget({{ t('file_manager_upload_complete', 'Upload complete.')|json_encode()|raw }}, {{ t('file_manager_upload_progress', 'Upload Progress:')|json_encode()|raw }}, true, 6000);
+    }
+
+    function updateStatsViaAjax()
+    {
+        // first request stats via ajax
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "{{ ACCOUNT_WEB_ROOT }}/ajax/get_account_file_stats",
+            success: function (data) {
+                updateOnScreenStats(data);
+            }
+        });
+    }
+
+    function updateOnScreenStats(data)
+    {
+        // update list of folders for breadcrumbs
+        folderArray = jQuery.parseJSON(data.folderArray);
+
+        // update folder drop-down list in the popup uploader
+        $("#folder_id").html(data.folderSelectForUploader);
+
+        // update root folder stats
+        if (data.totalRootFiles > 0)
+        {
+            $("#folderTreeview").jstree('set_text', '#-1', $('#-1').attr('original-text') + ' (' + data.totalRootFiles + ')');
+        }
+        else
+        {
+            $("#folderTreeview").jstree('set_text', '#-1', $('#-1').attr('original-text'));
+        }
+
+        // update trash folder stats
+        if (data.totalTrashFiles > 0)
+        {
+            $("#folderTreeview").jstree('set_text', '#trash', $('#trash').attr('original-text') + ' (' + data.totalTrashFiles + ')');
+        }
+        else
+        {
+            $("#folderTreeview").jstree('set_text', '#trash', $('#trash').attr('original-text'));
+        }
+        
+        // update trash folder stats
+        if (data.totalShareWithMeFiles > 0)
+        {
+            $("#folderTreeview").jstree('set_text', '#shared', $('#shared').attr('original-text') + ' (' + data.totalShareWithMeFiles + ')');
+        }
+        else
+        {
+            $("#folderTreeview").jstree('set_text', '#shared', $('#shared').attr('original-text'));
+        }
+
+        // update all folder stats
+        $("#folderTreeview").jstree('set_text', '#all', $('#all').attr('original-text') + ' (' + data.totalActiveFiles + ')');
+
+        // update total storage stats
+        $(".remaining-storage .progress .progress-bar").attr('aria-valuenow', data.totalStoragePercentage);
+        $(".remaining-storage .progress .progress-bar").width(data.totalStoragePercentage + '%');
+        $("#totalActiveFileSizeFormatted").html(data.totalActiveFileSizeFormatted);
+        $("#totalFileStorageFormatted").html(data.totalFileStorageFormatted);
+        $("#totalUsageTextLoading").hide();
+        $("#totalUsageText").show();
+    }
+
+    function isDesktopUser()
+    {
+        if ((getBrowserWidth() <= 1024) && (getBrowserWidth() > 0))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    function getBrowserWidth()
+    {
+        return $(window).width();
+    }
+
+    function duplicateFiles()
+    {
+        return copyItems();
+    }
+</script>
+
+<script type="text/javascript">
+    function showFileInline(fileId)
+    {
+        showFile(fileId);
+    }
+
+    function showImageBrowseSlide(folderId)
+    {
+        $('#imageBrowseWrapper').show();
+        $('#albumBrowseWrapper').hide();
+        loadFiles(folderId);
+    }
+
+    function handleTopSearch(event, ele, isAdvSearch)
+    {
+		// make sure we have a default setting for advance search
+		if(typeof(isAdvSearch) == 'undefined')
+		{
+			isAdvSearch = false;
+		}
+		
+		searchText = $(ele).val();
+        $('#filterText').val(searchText);
+
+        // check for enter key
+		doSearch = false;
+		if(event == null)
+		{
+			doSearch = true;
+		}
+		else
+		{
+			var charCode = (typeof event.which === "number") ? event.which : event.keyCode;
+			if (charCode == 13)
+			{
+				doSearch = true;
+			}
+		}
+		
+		// do search
+		if(doSearch == true)
+		{
+			// make sure we have something to search
+			if(searchText.length == 0)
+			{
+				showErrorNotification('Error', 'Please enter something to search for.');
+				return false;
+			}
+			
+			filterAllFolders = false;
+			filterUploadedDateRange = '';
+			if(isAdvSearch == true)
+			{
+				if($('#filterAllFolders').is(':checked'))
+				{
+					filterAllFolders = true;
+				}
+				filterUploadedDateRange = $('#filterUploadedDateRange').val();
+			}
+			
+			url = '{{ ACCOUNT_WEB_ROOT }}/search/?filterAllFolders='+filterAllFolders+'&filterUploadedDateRange='+filterUploadedDateRange+'&t='+encodeURIComponent(searchText);
+			window.location = url;
+		}
+
+        return false;
+    }
+	
+    function showSharingForm(folderId)
+    {
+        // if we have the folderId as a param, assume we just want to share this
+        if(typeof(folderId) !== "undefined") {
+            fileIds = [];
+            folderIds = [];
+            folderIds.push(folderId);
+        }
+        else {
+            // prepare item ids
+            fileIds = getAllSelectedFileIds();
+            folderIds = getAllSelectedFolderIds();
+        }
+        
+        showLoaderModal();
+        jQuery('#shareFolderModal .modal-content').load("{{ ACCOUNT_WEB_ROOT }}/ajax/share_file_folder", {fileIds: fileIds, folderIds: folderIds}, function () {
+            hideLoaderModal();
+            jQuery('#shareFolderModal').modal('show', {backdrop: 'static'});
+            createdUrl = false;
+            setupPostPopup();
+        });
+    }
+	
+	function setupPostPopup()
+	{
+            // hover over tooptips
+            setupToolTips();
+
+            // radios
+            replaceCheckboxes();
+
+            // block enter key from being pressed
+            $('#registeredEmailAddress').keypress(function (e) {
+                    if (e.which == 13)
+                    {
+                            return false;
+                    }
+            });
+	}
+	
+	function shareFolderInternally(fileIds, folderIds)
+	{
+            setShareFolderButtonLoading();
+            $.ajax({
+                dataType: "json",
+                method: "post",
+                url: "{{ ACCOUNT_WEB_ROOT }}/ajax/share_file_folder_internally",
+                data: {fileIds: fileIds, folderIds: folderIds, registeredEmailAddress: $('#registeredEmailAddress').val(), permissionType: $('input[name=permission_radio]:checked').val()},
+                success: function (data) {
+                    if (data.error == true)
+                    {
+                        showErrorNotification('Error', data.msg);
+                        clearShareFolderButtonLoading();
+                    }
+                    else
+                    {
+                        $('#registeredEmailAddress').val('');
+                        loadExistingInternalShareTable(fileIds, folderIds);
+                        clearShareFolderButtonLoading();
+                        showSuccessNotification('Success', data.msg);
+                    }
+                }
+            });
+	}
+	
+	function loadExistingInternalShareTable(fileIds, folderIds)
+	{
+            $('#existingInternalShareTable').load("{{ ACCOUNT_WEB_ROOT }}/ajax/share_file_folder_internally_existing", {fileIds: fileIds, folderIds: folderIds}).hide().fadeIn();
+	}
+	
+	function shareFolderInternallyRemove(folderShareId, fileIds, folderIds)
+	{
+            $.ajax({
+                dataType: "json",
+                url: "{{ ACCOUNT_WEB_ROOT }}/ajax/share_file_folder_internally_remove",
+                data: {folderShareId: folderShareId},
+                success: function (data) {
+                    if (data.error == true)
+                    {
+                        showErrorNotification('Error', data.msg);
+                    }
+                    else
+                    {
+                        loadExistingInternalShareTable(fileIds, folderIds);
+                        showSuccessNotification('Success', data.msg);
+                    }
+                }
+            });
+	}
+	
+	function setShareFolderButtonLoading()
+	{
+            $('#shareFolderInternallyBtn').removeClass('btn-info');
+            $('#shareFolderInternallyBtn').addClass('btn-default disabled');
+            $('#shareFolderInternallyBtn').html("{{ t("processing", "processing")|title }} <i class=\"entypo-arrows-cw\"></i>");
+	}
+	
+	function clearShareFolderButtonLoading()
+	{
+            $('#shareFolderInternallyBtn').removeClass('btn-default disabled');
+            $('#shareFolderInternallyBtn').addClass('btn-info');
+            $('#shareFolderInternallyBtn').html("{{ t("grant_access", "grant access")|title }} <i class=\"entypo-lock\"></i>");
+	}
+	
+	function copyToClipboard(ele)
+	{
+            destroyClipboard();
+            clipboard = new Clipboard(ele);
+            clipboard.on('success', function(e) {
+                showSuccessNotification('Success', 'Copied to clipboard.');
+                $('#clipboard-placeholder').html('');
+            });
+
+            clipboard.on('error', function(e) {
+                showErrorNotification('Error', 'Failed copying to clipboard.');
+            });
+	}
+	
+	function destroyClipboard()
+	{
+            if(clipboard != null)
+            {
+                clipboard.destroy();
+            }
+	}
+	
+	callbackcheck = false;
+	function showStatsPopup(fileId)
+        {
+            showLoaderModal();
+            jQuery('#statsModal .modal-content').load("{{ ACCOUNT_WEB_ROOT }}/ajax/file_stats", {fileId: fileId}, function () {
+                hideLoaderModal();
+                jQuery('#statsModal').modal('show', {backdrop: 'static'}).on('show', function() {
+                    callbackcheck = setTimeout(function(){
+                        redrawCharts();
+                        clearTimeout(callbackcheck);
+                    }, 100);
+                });
+            });
+        }
+	
+	var createdUrl = false;
+	function generateFolderSharingUrl(fileIds, folderIds)
+	{
+            $.ajax({
+                dataType: "json",
+                method: "post",
+                url: "{{ ACCOUNT_WEB_ROOT }}/ajax/generate_folder_sharing_url",
+                data: {fileIds: fileIds, folderIds: folderIds},
+                success: function (data) {
+                    if (data.error == true)
+                    {
+                        showErrorNotification('Error', data.msg);
+                    }
+                    else
+                    {
+                        $('#sharingUrlInput').html(data.msg);
+                        $('#shareEmailSharingUrl').html(data.msg);
+                        $('#nonPublicSharingUrls').fadeIn();
+                        $('#nonPublicSharingUrls').html($('.social-wrapper-template').html().replace(/SHARE_LINK/g, data.msg));
+                        $('#nonPublicSharingUrls').removeClass('disabled');
+                        createdUrl = true;
+                    }
+                }
+            });
+	}
+        
+        function checkSocialLink(ele) {
+            // alert if link has not been generated
+            if($(ele).attr('href').indexOf('SHARE_LINK') !== -1) {
+                showErrorNotification({{ t('sharing_please_generate_link_before_social_sharing', 'Please generate the sharing url to enable social sharing.')|json_encode()|raw }});
+                return false;
+            }
+
+            return true;
+        }
+        
+        function togglePublicAccessUrl() {
+            if($('#isPublic').val() === '1') {
+                $('.public-access-url').show();
+            }
+            else {
+                $('.public-access-url').hide();
+            }
+        }
+        
+        function copySelectedFolderAndFileUrls(cliboardEle) {
+            urlText = '';
+            for (i in selectedFolders)
+            {
+                urlText += selectedFolders[i][1] + "<br/>";
+            }
+            
+            for (i in selectedFiles)
+            {
+                urlText += selectedFiles[i][3] + "<br/>";
+            }
+
+            $('#clipboard-placeholder').html(urlText);
+            copyToClipboard(cliboardEle);
+        }
+
+        function toggleAdvanced() {
+            if($('.advancedOptions').is(':visible')) {
+                $('.advancedOptionsLink i').addClass('fa-angle-right');
+                $('.advancedOptionsLink i').removeClass('fa-angle-down');
+                $('.advancedOptions').hide();
+            }
+            else {
+                $('.advancedOptionsLink i').addClass('fa-angle-down');
+                $('.advancedOptionsLink i').removeClass('fa-angle-right');
+                $('.advancedOptions').fadeIn();
+            }
+        }
+</script>

@@ -1,0 +1,15 @@
+<div class="image-fullscreen-link">
+    <a href="#" onClick="showFullScreen('{{ imageLink }}', {{ fullScreenWidth }}, {{ fullScreenHeight }}); return false;"><i class="entypo-resize-full"></i></a>
+</div>
+<img src="{{ imageLink }}" class="image-preview background-loader" onLoad="$('.content-preview-wrapper').removeClass('loader');"/>
+
+<!-- pre cache next and previous images -->
+<div class="pre-image-cache-wrapper">
+    {% if imageNextLink|length > 0 %}
+        <img src="{{ imageNextLink }}"/>
+    {% endif %}
+    
+    {% if imagePrevLink|length > 0 %}
+        <img src="{{ imagePrevLink }}"/>
+    {% endif %}
+</div>

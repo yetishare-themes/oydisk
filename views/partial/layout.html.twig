@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en" dir="{{ SITE_LANGUAGE_DIRECTION == "RTL" ? "RTL" : "LTR" }}" class="direction{{ SITE_LANGUAGE_DIRECTION == "RTL" ? "RTL" : "LTR" }}">
+    <head>
+        <meta charset="utf-8">
+        <title>{{ block('title') }} - {{ SITE_CONFIG_SITE_NAME }}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="description" content="{{ block('description') }}"/>
+        <meta name="keywords" content="{{ block('keywords') }}" />
+        <link href="{{ theme.getFrontendCssPath() }}/bootstrap{{ SITE_LANGUAGE_DIRECTION == "RTL" ? "-rtl" : "" }}.min.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="{{ theme.getFrontendCssPath() }}/stack-interface.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="{{ theme.getFrontendCssPath() }}/socicon.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="{{ theme.getFrontendCssPath() }}/lightbox.min.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="{{ theme.getFrontendCssPath() }}/flickity.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="{{ theme.getFrontendCssPath() }}/iconsmind.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="{{ theme.getFrontendCssPath() }}/jquery.steps.css" rel="stylesheet" type="text/css" media="all" />
+        {% if SITE_CONFIG_SHOW_COOKIE_NOTICE == 'yes' %}
+            <link href="{{ theme.getFrontendCssPath() }}/cookiealert.css" rel="stylesheet">
+        {% endif %}
+        <link href="{{ theme.getFrontendCssPath() }}/theme.css" rel="stylesheet" type="text/css" media="all" />
+        {% if theme.getFrontEndThemeSkin() != false %}
+            <link rel="stylesheet" href="{{ theme.getFrontendCssPath() }}/theme/{{ theme.getFrontEndThemeSkin() }}" type="text/css" media="all" />
+        {% endif %}
+        <link href="{{ theme.getFrontendCssPath() }}/font-awesome.min.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="{{ theme.getFrontendCssPath() }}/custom.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,400i,500,600,700%7CMerriweather:300,300i" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+        
+        <link rel="icon" type="image/x-icon" href="{{ theme.getFrontendImagePath() }}/favicon/favicon.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ theme.getFrontendImagePath() }}/favicon/apple-touch-icon.png"/>
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ theme.getFrontendImagePath() }}/favicon/favicon-32x32.png"/>
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ theme.getFrontendImagePath() }}/favicon/favicon-16x16.png"/>
+        <link rel="manifest" href="{{ theme.getFrontendImagePath() }}/favicon/site.webmanifest"/>
+        <meta name="theme-color" content="#ffffff"/>
+        {{ theme.outputCustomCSSCode()|raw }}
+        <script>
+            var LOGGED_IN = {% if Auth.loggedIn() == 'true' %}true{% else %}false{% endif %};
+        </script>
+        {{ theme.outputHeadJSCode()|raw }}
+    </head>
+    <body>
+        <a id="start"></a>
+        {% if SITE_CONFIG_ENABLE_FILE_SEARCH == 'yes' %}
+        <div class="notification pos-top pos-right search-box bg--white border--bottom" data-animation="from-top" data-notification-link="search-box" style="display: none;">
+            <form action="{{ CORE_SITE_PATH }}/search" method="GET">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-8">
+                        <input type="search" name="filterText" placeholder="{{ t("search_box_placeholder_top_hidden", "Search publicly uploaded files...") }}" />
+                    </div>
+                </div>
+                <!--end of row-->
+            </form>
+        </div>
+        {% endif %}
+        <div class="nav-container clear-adblock">
+            <div>
+                <div class="bar bar--sm visible-xs">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-3 col-md-2">
+                                <a href="{{ CORE_SITE_PATH }}">
+                                    <img class="logo logo-dark" alt="logo" src="{{ theme.getInverseLogoUrl() }}">
+                                    <img class="logo logo-light" alt="logo" src="{{ theme.getMainLogoUrl() }}">
+                                </a>
+                            </div>
+                            <div class="col-9 col-md-10 text-right">
+                                <a href="#" class="hamburger-toggle" data-toggle-class="#menu2;hidden-xs hidden-sm"> <i class="icon icon--sm stack-interface stack-menu"></i> </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav id="menu2" class="bar bar-2 hidden-xs">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-2 text-center text-left-sm hidden-xs order-lg-2">
+                                <div class="bar__module">
+                                    <a href="{{ CORE_SITE_PATH }}">
+                                        <img class="logo logo-dark" alt="logo" src="{{ theme.getInverseLogoUrl() }}">
+                                        <img class="logo logo-light" alt="logo" src="{{ theme.getMainLogoUrl() }}">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 order-lg-1">
+                                <div class="bar__module">
+                                    <ul class="menu-horizontal text-left">
+                                        <li> <a href="{{ CORE_SITE_PATH }}" {{ (block("selected_navigation_link") is defined and block("selected_navigation_link") == 'home')?'class="active"':'' }}>{{ t('navigation_home', 'Home') }}</a> </li>
+                                        {% if SITE_CONFIG_ENABLE_FILE_SEARCH == 'yes' %}
+                                            <li> <a href="{{ CORE_SITE_PATH }}/search" {{ (block("selected_navigation_link") is defined and block("selected_navigation_link") == 'search')?'class="active"':'' }}>{{ t('home_search_files', 'Search Files') }}</a> </li>
+                                        {% endif %}
+                                        
+                                        {% if siteHeaderPluginNavigation|length > 0 %}
+                                        <li class="dropdown"> <span class="dropdown__trigger">{{ t('features', 'Features') }}&nbsp;</span>
+                                            <div class="dropdown__container">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="dropdown__content col-lg-2">
+                                                            <ul class="menu-vertical">
+                                                                {% for pluginKey,siteHeaderPluginNavigationItems in siteHeaderPluginNavigation %}
+                                                                    {% for siteHeaderPluginNavigationItem in siteHeaderPluginNavigationItems %}
+                                                                        <li> <a href="{{ siteHeaderPluginNavigationItem['link_url'] }}">{{ t(siteHeaderPluginNavigationItem['link_text'], siteHeaderPluginNavigationItem['link_text'])|title }}<br></a> </li>
+                                                                    {% endfor %}
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        {% endif %}
+                                        
+                                        {% if UserHelper.enableUpgradePage() == 'yes' %}
+                                            <li> <a href="{{ CORE_SITE_PATH }}/upgrade" {{ (block("selected_navigation_link") is defined and block("selected_navigation_link") == 'upgrade')?'class="active"':'' }}>{{ t('premium', 'Premium') }}</a> </li>
+                                        {% endif %}
+                                        <li> <a href="{{ CORE_SITE_PATH }}/faq" {{ (block("selected_navigation_link") is defined and block("selected_navigation_link") == 'faq')?'class="active"':'' }}>{{ t('faq', 'FAQ') }}</a> </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 text-right text-left-xs text-left-sm order-lg-3">
+                                <div class="bar__module">
+                                    <ul class="menu-horizontal text-left">
+                                        {% if SITE_CONFIG_ENABLE_FILE_SEARCH == 'yes' %}
+                                        <li>
+                                            <a href="#" data-notification-link="search-box">
+                                                <i class="stack-interface stack-search"></i>
+                                            </a>
+                                        </li>
+                                        {% endif %}
+                                        {% if SITE_CONFIG_SHOW_MULTI_LANGUAGE_SELECTOR == 'show' %}
+                                        <li class="dropdown dropdown--absolute">
+                                            <span class="dropdown__trigger">
+                                                <img alt="{{ theme.getActiveLabel() }}" class="flag" src="{{ SITE_IMAGE_PATH }}/flags/{{ theme.getActiveFlag() }}.png">
+                                            </span>
+                                            <div class="dropdown__container">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-lg-2 dropdown__content">
+                                                            <ul class="menu-vertical text-left">
+                                                                {% for language in theme.getActiveLanguages() %}
+                                                                    <li>
+                                                                        <a href="{{ CoreHelper.getCoreSitePath() }}/set_language/{{ language.languageName }}">{{ language.languageName }}</a>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                                <div class="bar__module">
+                                    {% if Auth.loggedIn() == true %}
+                                        <a class="btn btn--sm type--uppercase btn--primary" href="{{ CORE_SITE_PATH }}/account"> <span class="btn__text">{{ t("your_account", "your account")|title }}</span> </a>
+                                    {% else %}
+                                        <a class="btn btn--sm type--uppercase" href="{{ CORE_SITE_PATH }}/account/login"> <span class="btn__text">{{ t("login", "login")|title }}</span> </a>
+                                        {% if SITE_CONFIG_ENABLE_USER_REGISTRATION == 'yes' %}
+                                        <a class="btn btn--sm type--uppercase btn--primary" href="{{ CORE_SITE_PATH }}/register"> <span class="btn__text">{{ t("register", "register")|title }}</span> </a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="main-container clear-adblock">
+
+            {% block body %}{% endblock %}
+
+            <footer class="text-center-xs space--xs">
+                <div class="container">
+                    <div class="row">
+                        {% if UserHelper.showSiteAdverts() %}
+                            <div class="col-md-12 text-center advert-wrapper advert-page-footer">
+                                {{ SITE_CONFIG_ADVERT_SITE_FOOTER|raw }}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="col-md-12 text-center">
+                            <ul class="list-inline">
+                                {% if UserHelper.enableUpgradePage() == 'yes' %}
+                                <li>
+                                    <a href="{{ CORE_SITE_PATH }}/upgrade">
+                                        <span class="h6 type--uppercase">{{ t('premium', 'Premium') }}</span>
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% if SITE_CONFIG_ENABLE_USER_REGISTRATION == 'yes' %}
+                                <li>
+                                    <a href="{{ CORE_SITE_PATH }}/register">
+                                        <span class="h6 type--uppercase">{{ t('register', 'register') }}</span>
+                                    </a>
+                                </li>
+                                {% endif %}
+                                
+                                {% if siteFooterPluginNavigation|length > 0 %}
+                                    {% for pluginKey,siteFooterPluginNavigationItems in siteFooterPluginNavigation %}
+                                        {% for siteFooterPluginNavigationItem in siteFooterPluginNavigationItems %}
+                                            <li>
+                                                <a href="{{ siteFooterPluginNavigationItem['link_url'] }}">
+                                                    <span class="h6 type--uppercase">{{ t(siteFooterPluginNavigationItem['link_text'], siteFooterPluginNavigationItem['link_text'])|title }}</span>
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
+
+                                <li>
+                                    <a href="{{ CORE_SITE_PATH }}/report_file">
+                                        <span class="h6 type--uppercase">{{ t('report_file', 'report file') }}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ CORE_SITE_PATH }}/link_checker">
+                                        <span class="h6 type--uppercase">{{ t('link_checker', 'link checker') }}</span>
+                                    </a>
+                                </li>
+                                {% if SITE_CONFIG_SHOW_API_PAGE == 'yes' %}
+                                <li>
+                                    <a href="{{ CORE_SITE_PATH }}/api">
+                                        <span class="h6 type--uppercase">{{ t('api', 'api') }}</span>
+                                    </a>
+                                </li>
+                                {% endif %}
+                                <li>
+                                    <a href="{{ CORE_SITE_PATH }}/contact">
+                                        <span class="h6 type--uppercase">{{ t('contact', 'contact') }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {% if siteFooterPluginBelowNavigation|length > 0 %}
+                        <div class="col-md-12 text-center">
+                            {% for pluginKey,siteFooterPluginBelowNavigationItems in siteFooterPluginBelowNavigation %}
+                                {{ siteFooterPluginBelowNavigationItems['response_html']|raw }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!--end of row-->
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <a href="https://yetishare.com" class="type--fine-print" target="_blank">Yetishare File Upload Script</a><span class="type--fine-print"> {{ t("created_by", "created by ") }} </span><a href="https://mfscripts.com" class="type--fine-print" target="_blank" style="margin-left: 0px;">MFScripts</a>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <span class="type--fine-print">{{ t("copyright", "copyright")|title }} &copy; {{ "now"|date("Y") }} - {{ SITE_CONFIG_SITE_NAME }}</span>
+                            <a class="type--fine-print" href="{{ CORE_SITE_PATH }}/privacy">{{ t('privacy_policy', 'privacy policy')|title }}</a>
+                            <a class="type--fine-print" href="{{ CORE_SITE_PATH }}/terms">{{ t('term_and_conditions', 'terms & conditions')|title|raw }}</a>
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </footer>
+        </div>
+        <!--<div class="loader"></div>-->
+        <a class="back-to-top inner-link" href="#start" data-scroll-class="100vh:active">
+            <i class="stack-interface stack-up-open-big"></i>
+        </a>
+        <script src="{{ theme.getFrontendJsPath() }}/jquery-3.1.1.min.js"></script>
+        <script src="{{ theme.getFrontendJsPath() }}/jquery.dataTables.min.js"></script>
+        <script src="{{ theme.getFrontendJsPath() }}/flickity.min.js"></script>
+        <script src="{{ theme.getFrontendJsPath() }}/typed.min.js"></script>
+        <script src="{{ theme.getFrontendJsPath() }}/datepicker.js"></script>
+        <script src="{{ theme.getFrontendJsPath() }}/granim.min.js"></script>
+        <script src="{{ theme.getFrontendJsPath() }}/jquery.steps.min.js"></script>
+        <script src="{{ theme.getFrontendJsPath() }}/countdown.min.js"></script>
+        <script src="{{ theme.getFrontendJsPath() }}/smooth-scroll.min.js"></script>
+        <script src="{{ theme.getFrontendJsPath() }}/scripts.js"></script>
+
+        {% block footerjs %}{% endblock %}
+        <script>
+            $(document).ready(function() {
+                // clear the display: none on notification divs. This doesn't actually
+                // show them, just avoids the flicker on pageload is display: none isn't set.
+                $('.notification').show();
+            });
+        </script>
+        
+        {% include '@themePath/partial/_ad_block.html.twig' %}
+
+        {{ not SITE_CONFIG_GOOGLE_ANALYTICS_CODE ? "" : SITE_CONFIG_GOOGLE_ANALYTICS_CODE|raw }}
+        
+        {% if SITE_CONFIG_SHOW_COOKIE_NOTICE == 'yes' %}
+        <div class="alert text-center cookiealert" role="alert">
+            <strong>{{ t('cookie_notice_cookies_used_on_the_website', 'Cookies used on the website!') }}</strong> &#x1F36A; {{ t('cookie_notice_this_website_uses', 'This website uses cookies to ensure you get the best experience on our website.') }} <a href="https://cookiesandyou.com/" target="_blank">{{ t('cookie_notice_learn_more', 'Learn more') }}</a>
+            <button type="button" class="btn btn-primary btn-sm acceptcookies">
+                {{ t('cookie_notice_got_it', 'Got it!') }}
+            </button>
+        </div>
+        <script src="{{ theme.getFrontendJsPath() }}/cookiealert.js"></script>
+        {% endif %}
+
+        {% if _CONFIG_DEMO_MODE == true and (block("selected_navigation_link") is defined and block("selected_navigation_link") == 'home') %}
+            <div class="modal-container" data-autoshow="0">
+                <div class="modal-content">
+                    <div class="boxed boxed--lg">
+                        <h2>Welcome to the Demo Site!</h2>
+                        <hr class="short">
+                        <p>This demo has all the YetiShare paid plugins <strong>{{ PluginHelper.demoPluginsEnabled()?'disabled':'enabled' }}</strong>.{{ PluginHelper.demoPluginsEnabled()?'':' This includes our FTP Uploader, Rewards Program and the Media Converter Plugin.' }}</p>
+                        <p>If you want to see what the core script looks like {{ PluginHelper.demoPluginsEnabled()?'with':'without any' }} paid plugins, go to <a href="{{ WEB_ROOT }}/?_p={{ PluginHelper.demoPluginsEnabled()?'0':'1' }}">{{ WEB_ROOT }}/?_p={{ PluginHelper.demoPluginsEnabled()?'0':'1' }}</a>.</p>
+                        <p>You can test the file manager by logging in above using 'admin' &amp; 'Password@Demo' as the credentials.</p>
+                        <span class="btn btn--primary type--uppercase modal-close">
+                            <span class="btn__text">Close</span>
+                        </span>
+                    </div>
+                <div class="modal-close modal-close-cross"></div></div>
+            </div>
+        {% endif %}
+    </body>
+</html>

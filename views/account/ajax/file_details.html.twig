@@ -1,0 +1,398 @@
+<div class="file-browse-container-wrapper">
+    <div class="file-preview-wrapper">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="section-wrapper">
+                    <table class="image-name-wrapper">
+                        <tr>
+                            <td>
+                                <div class="image-name-title">
+                                    {{ file.originalFilename }}
+                                </div>
+                            </td>
+                            <td class="image-hide-wrapper">
+                                <a class="btn btn-default" onclick="hideImage(); return false;" data-original-title="{{ t('account_file_details_go_back', 'Go Back') }}" data-placement="bottom" data-toggle="tooltip">
+                                    <i class="entypo-left"></i>
+                                </a>
+                                {% if isPublic == true and file.status == 'active' %}
+                                     <div class="image-social-sharing">
+                                        <div class="row mobile-social-share">
+                                            <div id="socialHolder">
+                                                <div id="socialShare" class="btn-group share-group">
+                                                    <a data-toggle="dropdown" class="btn btn-default">
+                                                        <i class="entypo-share"></i>
+                                                    </a>
+                                                    <button href="#" data-toggle="dropdown" class="btn btn-default dropdown-toggle share">
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li>
+                                                            <a href="https://twitter.com/intent/tweet?url={{ file.getFullShortUrl() }}&text={{ file.originalFilename }}" data-original-title="{{ t('account_file_details_share_on', 'Share On') }} Twitter" data-toggle="tooltip" href="#" class="btn btn-twitter" data-placement="left" target="_blank">
+                                                                <i class="fa fa-twitter"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ file.getFullShortUrl() }}" data-original-title="{{ t('account_file_details_share_on', 'Share On') }} Facebook" data-toggle="tooltip" href="#" class="btn btn-facebook" data-placement="left" target="_blank">
+                                                                <i class="fa fa-facebook"></i>
+                                                            </a>
+                                                        </li>					
+                                                        <li>
+                                                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ file.getFullShortUrl() }}" data-original-title="{{ t('account_file_details_share_on', 'Share On') }} LinkedIn" data-toggle="tooltip" href="#" class="btn btn-linkedin" data-placement="left" target="_blank">
+                                                                <i class="fa fa-linkedin"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="https://pinterest.com/pin/create/button/?url={{ file.getFullShortUrl() }}" data-original-title="{{ t('account_file_details_share_on', 'Share On') }} Pinterest" data-toggle="tooltip" class="btn btn-pinterest" data-placement="left" target="_blank">
+                                                                <i class="fa fa-pinterest"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                {% if UserHelper.showSiteAdverts() %}
+                    <div class="section-wrapper text-center advert-wrapper">
+                        {{ file.shouldShowAdultAdvert() == true ? SITE_CONFIG_ADULT_ADVERT_FILE_MANAGER_VIEW_FILE_TOP|raw : SITE_CONFIG_ADVERT_FILE_MANAGER_VIEW_FILE_TOP|raw }}
+                    </div>
+                {% endif %}
+                
+                {% if filePreviewPluginPageNotice|length > 0 %}
+                    <div class="alert alert-warning">
+                        <i class="fa fa-warning"></i>&nbsp;&nbsp;
+                            {% for pluginKey,filePreviewPluginPageNoticeItems in filePreviewPluginPageNotice %}
+                                {{ filePreviewPluginPageNoticeItems['alert_message'] }}<br/>
+                            {% endfor %}
+                    </div>
+                {% endif %}
+                
+                {% if file.status == 'active' %}
+                    <div role="tabpanel">
+                        <ul class="nav nav-tabs file-info-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#view" aria-controls="details" role="tab" data-toggle="tab"><i class="entypo-docs"></i><span> {{ t("view_file", "view file")|title }}</span></a></li>
+                            <li role="presentation"><a href="#details" aria-controls="details" role="tab" data-toggle="tab"><i class="entypo-share"></i><span> {{ t("sharing_code", "sharing code")|title }}</span></a></li>
+                            <li role="presentation"><a href="#send-via-email" aria-controls="send-via-email" role="tab" data-toggle="tab"><i class="entypo-mail"></i><span> {{ t("email", "email")|title }}</span></a></li>
+                            {% if imageRawDataArr|length > 0 %}
+                                <li role="presentation"><a href="#image-data" aria-controls="image-data" role="tab" data-toggle="tab"><i class="entypo-info-circled"></i><span> {{ t("meta", "Meta")|title }}</span></a></li>
+                            {% endif %}
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active file-details-view" id="view">
+                                <div class="section-wrapper image-preview-wrapper preview-type-{{ generalFileType }}-wrapper">
+                                    {% if file.status == 'active' %}
+                                        {% if prev != null and userOwnsFile == true %}
+                                            <a href="#" class="prev-link" onClick="showFile({{ prev }}); return false;"><i class="entypo-left-open-big"></i></a>
+                                        {% endif %}
+
+                                        {% if next != null and userOwnsFile == true %}
+                                            <a href="#" class="next-link" onClick="showFile({{ next }}); return false;"><i class="entypo-right-open-big"></i></a>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    <div class="image">
+                                        <div class="content-preview-wrapper loader">
+                                            {{ previewerHtmlContent|raw }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                                
+                                {% if filePreviewPlugin.settings['show_similar_items'] == 1 %}
+                                <div class="section-wrapper">
+                                    {% if file.status == 'active' %}
+                                        <div class="similar-images"><!-- --></div>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                                
+                                <div class="section-wrapper">
+                                    <h4><strong>{{ t('page_link', 'Page Link')|title }}</strong></h4>
+                                    <pre><section onClick="selectAllText(this); return false;">{{ file.getFullShortUrl() }}</section></pre>
+
+                                    <h4><strong>{{ t('html_code', 'HTML Code') }}</strong></h4>
+                                    <pre><section onClick="selectAllText(this); return false;">{{ file.getHtmlLinkCode()|raw }}</section></pre>
+
+                                    <h4><strong>{{ t('forum_code', 'forum code')|title }}</strong></h4>
+                                    <pre><section onClick="selectAllText(this); return false;">{{ file.getForumLinkCode()|raw }}</section></pre>
+                                    
+                                    {% if PluginHelper.pluginEnabled('filepreviewer') == true and filePreviewPlugin.settings['images_show_embedding'] == true and file.isImage() == true %}
+                                        <h4><strong>{{ t('embed_html_code', 'Embed HTML Code')|title }}</strong></h4>
+                                        <pre><section onClick="selectAllText(this); return false;">&lt;a href=&quot;{{ file.getFullShortUrl() }}&quot; target=&quot;_blank&quot; title=&quot;{{ t('download_from', 'Download from') }} {{ SITE_CONFIG_SITE_NAME }}&quot;&gt;&lt;img src=&quot;{{ filePreviewPlugin.createEmbedImageThumbUrl(file) }}&quot;/&gt;&lt;/a&gt;</section></pre>
+
+                                        <h4><strong>{{ t('embed_forum_code', 'Embed Forum Code')|title }}</strong></h4>
+                                        <pre><section onClick="selectAllText(this); return false;">[URL={{ file.getFullShortUrl() }}][IMG]{{ filePreviewPlugin.createEmbedImageThumbUrl(file) }}[/IMG][/URL]</section></pre>
+                                    {% endif %}
+                                
+                                    {% if PluginHelper.pluginEnabled('filepreviewer') == true and filePreviewPlugin.settings['documents_show_embedding'] == true and file.isDocument() == true %}
+                                        <h4><strong>{{ t('embed_document_iframe', 'Embed Document IFrame')|title }}</strong></h4>
+                                        <pre><section onClick="selectAllText(this); return false;">{{ filePreviewPlugin.getEmbededDocumentIframeCode(file) }}</section></pre>
+                                    {% endif %}
+                                        
+                                    {% if PluginHelper.pluginEnabled('filepreviewer') == true and filePreviewPlugin.settings['videos_show_embedding'] == true and file.isVideo() == true %}
+                                        <h4><strong>{{ t('video_embed_code', 'Video Embed Code')|title }}</strong></h4>
+                                        <pre><section onClick="selectAllText(this); return false;">{{ filePreviewPlugin.getEmbededVideoIframeCode(file) }}</section></pre>
+                                    {% endif %}
+                                        
+                                    {% if PluginHelper.pluginEnabled('filepreviewer') == true and filePreviewPlugin.settings['audio_show_embedding'] == true and file.isAudio() == true %}
+                                        <h4><strong>{{ t('audio_embed_code', 'Audio Embed Code')|title }}</strong></h4>
+                                        <pre><section onClick="selectAllText(this); return false;">{{ filePreviewPlugin.getEmbededAudioIframeCode(file) }}</section></pre>
+                                    {% endif %}
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            
+                            <div class="tab-pane file-details-sharing-code" id="details">
+                                {% if isPublic == true and PluginHelper.pluginEnabled('filepreviewer') == true and filePreviewPlugin.areDirectLinksAllowed() == true and showDownloadLink == true %}
+                                    <h4><strong>{{ t('direct_link', 'Direct Link')|title }}</strong></h4>
+                                    <pre><section onClick="selectAllText(this); return false;">{{ file.getFileServerPath() }}/file/{{ file.shortUrl }}/{{ file.getSafeFilenameForUrl() }}</section></pre>
+                                {% endif %}
+                                
+                                <h4><strong>{{ t('statistics_url', 'statistics url')|title }}</strong></h4>
+                                <pre><section onClick="selectAllText(this); return false;">{{ file.getStatisticsUrl() }}</section></pre>
+                                
+                                {% if file.status == 'active' %}
+                                    <h4><strong>{{ t('info_page', 'info page')|title }}</strong></h4>
+                                    <pre><section onClick="selectAllText(this); return false;">{{ file.getShortInfoUrl() }}</section></pre>
+                                {% endif %}
+
+                                {% if userOwnsFile == true and file.status == 'active' %}
+                                    <h4><strong>{{ t('delete_file_url', 'delete file url')|title }}</strong></h4>
+                                    <pre><section onClick="selectAllText(this); return false;">{{ file.getDeleteUrl() }}</section></pre>
+                                {% endif %}
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane" id="send-via-email">
+                                <div class="row">
+                                    <form action="{{ theme.getAccountWebRoot() }}/ajax/file_details_send_email_process" autocomplete="off">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <p>{{ t('account_file_details_intro_user_the_form_below_send_email', 'Use the form below to share this file via email. The recipient will receive a link to download the file.') }}</p>
+                                                {% if isPublic == false %}
+                                                    <div class="alert alert-danger">{{ t('account_file_details_folder_not_publicly_shared', 'This file is not publicly shared. You will need to make it public before the recipient can view it.') }}</div>
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label" for="shareRecipientName">{{ t("recipient_name", "recipient full name")|title }}:</label>
+                                                <input type="text" id="shareRecipientName" name="shareRecipientName" class="form-control"/>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label" for="shareEmailAddress">{{ t("recipient_email_address", "recipient email address")|title }}:</label>
+                                                <input type="text" id="shareEmailAddress" name="shareEmailAddress" class="form-control"/>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label" for="shareExtraMessage">{{ t("extra_message", "extra message (optional)")|title }}:</label>
+                                                <textarea id="shareExtraMessage" name="shareExtraMessage" class="form-control"></textarea>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <input type="hidden" name="submitme" id="submitme" value="1"/>
+                                                <input type="hidden" value="{{ file.id }}" name="fileId"/>
+                                                <button type="button" class="btn btn-info" onClick="processAjaxForm(this, function () {
+                                                            $('#shareRecipientName').val('');
+                                                            $('#shareEmailAddress').val('');
+                                                            $('#shareExtraMessage').val('');
+                                                        });
+                                                        return false;">{{ t("send_email", "send email")|title }} <i class="entypo-mail"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            {% if imageRawDataArr|length > 0 %}
+                                <div class="tab-pane image-data" id="image-data">
+                                    <table class="table table-bordered table-striped">
+                                        <tbody>
+                                            {% for imageRawDataItem in imageRawDataArr %}
+                                                <tr>
+                                                    <td class="view-file-details-first-row">
+                                                        {{ imageRawDataItem.label }}:
+                                                    </td>
+                                                    <td>
+                                                        {{ imageRawDataItem.value }}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endif %}
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger">
+                        <i class="entypo-attention"></i> {{ t("error_file_has_been_removed_by_user", "File has been removed.") }}
+                    </div>
+                {% endif %}
+                
+                {% if UserHelper.showSiteAdverts() %}
+                    <div class="section-wrapper text-center advert-wrapper">
+                        {{ file.shouldShowAdultAdvert() == true ? SITE_CONFIG_ADULT_ADVERT_FILE_MANAGER_VIEW_FILE_BOTTOM|raw : SITE_CONFIG_ADVERT_FILE_MANAGER_VIEW_FILE_BOTTOM|raw }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-3">
+                {% if owner != null %}
+                    <div class="section-wrapper">
+                        <a href="#" onClick="loadImages('{{ userOwnsFile == true?"folder":"shared" }}', {{ folder.id }}); return false;"><img width="60" height="60" class="img-rounded" alt="{{ owner.level_id != 0?owner.getAccountScreenName():t('temp_account', 'Temp Account')|lower }}" src="{{ folderCoverLink }}"/></a>
+                        <span class="text-section">
+                            <a href="#" class="text-section-1" onClick="loadImages('{{ userOwnsFile == true?"folder":"shared" }}', {{ folder.id }}); return false;">{{ folder.folderName }}</a>
+                            {{ t('profile_by', 'by') }}
+                            {{ owner.level_id != 0?owner.getAccountScreenName():t('temp_account', 'Temp Account')|lower }}
+                        </span>
+                    </div>
+                {% endif %}
+
+                <div class="section-wrapper">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            {% if file.description|length > 0 %}
+                            <tr>
+                                <td class="view-file-details-first-row">
+                                    {{ t('description', 'description')|title }}:
+                                </td>
+                                <td class="responsiveTable">
+                                    {{ file.description }}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            
+                            {% if owner != null and owner.level_id != 0 %}
+                            <tr>
+                                <td class="view-file-details-first-row">
+                                    {{ t('added_by', 'added by')|title }}:
+                                </td>
+                                <td class="responsiveTable">
+                                    {{ file.getUploaderUsername() }}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            
+                            {% if file.uploadedUserId != file.userId %}
+                            <tr>
+                                <td class="view-file-details-first-row">
+                                    {{ t('owner', 'owner')|title }}:
+                                </td>
+                                <td class="responsiveTable">
+                                    {{ file.getOwnerUsername() }}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <td class="view-file-details-first-row">
+                                    {{ t('filesize', 'filesize')|title }}:
+                                </td>
+                                <td class="responsiveTable">
+                                    {{ file.getFormattedFilesize() }}
+                                </td>
+                            </tr>
+                            
+                            {% if userOwnsFile == true %}
+                                <tr>
+                                    <td class="view-file-details-first-row">
+                                        {{ t('downloads', 'downloads')|title }}:
+                                    </td>
+                                    <td class="responsiveTable">
+                                        {{ file.visits }}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            
+                            {% if file.keywords|length > 0 %}
+                            <tr>
+                                <td class="view-file-details-first-row">
+                                    {{ t('keywords', 'keywords')|title }}:
+                                </td>
+                                <td class="responsiveTable">
+                                    <div class="bootstrap-tagsview">
+                                        {% set keywords = file.keywords|split(',') %}
+                                        {% for keyword in keywords %}
+                                            {% if keyword|length > 0 %}
+                                                <a 
+                                                {% if Auth.loggedIn() == true %}
+                                                    href="{{ theme.getAccountWebRoot() }}/search/?s=image&filterAllFolders=false&filterUploadedDateRange=&t={{ keyword }}"
+                                                {% endif %}
+                                                 class="tag label label-info">{{ keyword }}</a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            
+                            <tr>
+                                <td class="view-file-details-first-row">
+                                    {{ t('uploaded', 'uploaded')|title }}:
+                                </td>
+                                <td class="responsiveTable">
+                                    {{ file.getFormattedUploadedDate() }}
+                                </td>
+                            </tr>
+                            {% if file.status == 'active' %}
+                            <tr>
+                                <td class="view-file-details-first-row">
+                                    {{ t('permissions', 'permissions')|title }}:
+                                </td>
+                                <td class="responsiveTable">
+                                    {{ shareAccessLevelLabel|title }}
+                                </td>
+                            </tr>
+                            {% endif %}
+
+                            {% if userOwnsFile == true and file.status == 'active' %}
+                                <tr>
+                                    <td class="view-file-details-first-row">
+                                        {{ t('sharing', 'Sharing')|title }}:
+                                    </td>
+                                    <td class="responsiveTable">
+                                        {{ (isPublic == true) ? '<i class="entypo-lock-open"></i>' : '<i class="entypo-lock"></i>' }}
+                                        {{ (isPublic == true) ? (SITE_CONFIG_ENABLE_FILE_SEARCH == 'yes'?t('public_file_alt', 'Public File - Appears in public search results, anyone can download.'):t('public_file', 'Public File - Can be accessed directly by anyone that knows the file url.')) : t('private_file', 'Private File - Only available via your account, or via a generated sharing url.') }}
+                                    </td>
+                                </tr>
+                            {% endif %}
+
+                            {% if file.status != 'active' %}
+                                <tr>
+                                    <td class="view-file-details-first-row">
+                                        {{ t('status', 'status')|title }}:
+                                    </td>
+                                    <td class="responsiveTable">
+                                        {{ file.getStatusLabel()|title }}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if links|length > 0 %}
+                    <div class="section-wrapper">
+                        <div class="button-wrapper responsiveMobileAlign">						
+                            {% for link in links %}
+                                <div class="btn-group responsiveMobileMargin">
+                                    {{ link|raw }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if UserHelper.showSiteAdverts() %}
+                    <div class="section-wrapper text-center advert-wrapper">
+                        {{ file.shouldShowAdultAdvert() == true ? SITE_CONFIG_ADULT_ADVERT_FILE_MANAGER_VIEW_FILE_RIGHT|raw : SITE_CONFIG_ADVERT_FILE_MANAGER_VIEW_FILE_RIGHT|raw }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

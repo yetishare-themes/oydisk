@@ -1,0 +1,37 @@
+{% extends "partial/oydisk_layout_account.html.twig" %}
+
+{% block title %}{{ isTrial==true?t("account_successfully_temp_converted", "Temp Account Converted"):t("account_successfully_registered", "Account Created") }}{% endblock %}
+{% block description %}{{ t("register_complete_meta_description", "Your registration has been completed.") }}{% endblock %}
+{% block keywords %}{{ t("register_complete_meta_keywords", "registration, completed, file, hosting, site") }}{% endblock %}
+
+{% block body %}
+    <section class="page-header-section ptb-100 gradient-bg full-height" data-overlay="8">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <div class="login-signup-wrap p-5 gray-light-bg rounded shadow">
+                        <div class="login-signup-header text-center">
+                            <a class="navbar-brand pt-0" href="{{ CORE_SITE_PATH }}"><img style="max-height: 1.85714286em;" src="{{ theme.getInverseLogoUrl() }}" alt="logo"/></a>
+                            <h4 class="mb-2">{{ isTrial==true?t("account_successfully_temp_converted", "Temp Account Converted"):t("account_successfully_registered", "Account Created") }}</h4>
+							{% if isTrial==true %}
+                        <p>{{ t("register_complete_main_text_temp_converted", "We've converted your temp account to a registered account and sent your new password via email. Please check your spam filters to ensure emails from this site get through. ") }}</p>
+                    {% else %}
+                        <p>{{ t("register_complete_main_text", "We've sent an email to your registered email address with your access password. Please check your spam filters to ensure emails from this site get through. ") }}</p>
+                    {% endif %}
+                    <p>{{ t("register_complete_email_from", "Emails from this site are sent from ") }} <a href="mailto:{{ SITE_CONFIG_DEFAULT_EMAIL_ADDRESS_FROM }}">{{ SITE_CONFIG_DEFAULT_EMAIL_ADDRESS_FROM }}</p>
+                        </div>
+							<a class="btn btn-block btn-brand-02 border-radius mt-4 mb-3" href="{{ CORE_SITE_PATH }}/account/login">{{ t("login", "login")|title }}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="copyright-wrap small-text text-center mt-5 text-white">
+                        <p class="mb-0">{{ t("copyright", "copyright")|title }} &copy; {{ "now"|date("Y") }} - {{ SITE_CONFIG_SITE_NAME }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </section>
+{% endblock %}

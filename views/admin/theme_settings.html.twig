@@ -1,0 +1,109 @@
+{% extends "@corePath/admin/partial/layout_logged_in.html.twig" %}
+
+{% block title %}Theme Settings{% endblock %}
+{% block selected_page %}themes{% endblock %}
+{% block selected_sub_page %}theme_manage{% endblock %}
+
+{% block body %}
+<div class="row clearfix">
+    <div class="col_12">
+        <div class="widget clearfix">
+            <h2>Settings</h2>
+            <div class="widget_inside">
+
+                {{ msg_page_notifications|raw }}
+                
+                <form method="POST" action="{{ ADMIN_WEB_ROOT }}/theme_settings/spirit" name="pluginForm" id="pluginForm" autocomplete="off" enctype="multipart/form-data">
+
+                    <div class="clearfix col_12">
+                        <div class="col_4">
+                            <h3>Theme Settings</h3>
+                            <p>Site logo, skin and any other settings.</p>
+                        </div>
+                        <div class="col_8 last">
+                            <div class="form">
+                                <div class="clearfix alt-highlight">
+                                    <label>Site Logo (Dark BG):</label>
+                                    <div class="input">
+                                        <input type="file" name="site_logo"/>
+                                        Shown on the login screen &amp; file manager, generally on a dark background. Leave blank to keep existing. Must be a transparent png.
+                                        <br/>
+                                        <br/>
+                                        <img src="{{ mainLogoUrl }}?r={{ random(999999) }}" style="max-height: 80px; background-color: #efefef; padding: 10px;"/>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix">
+                                    <label>Site Logo (White BG & Email):</label>
+                                    <div class="input">
+                                        <input type="file" name="site_logo_inverted"/>
+                                        Shown on the front-end website and used on emails, on a white background. Leave blank to keep existing. Must be a transparent png.
+                                        <br/>
+                                        <br/>
+                                        <div class="image-hover">
+                                            <img src="{{ inverseLogoUrl }}?r={{ random(999999) }}" style="max-height: 80px; background-color: #efefef; padding: 10px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix alt-highlight">
+                                    <label>File Manager Skin:</label>
+                                    <div class="input">
+                                        <select name="site_skin" id="site_skin" class="medium">
+                                            {% for skin in skinsArr %}
+                                                <option{{ site_skin==skin?' SELECTED':'' }}>{{ skin }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix alt-highlight">
+                                    <label>Front End Website Skin:</label>
+                                    <div class="input">
+                                        <select name="front_end_site_skin" id="site_skin" class="medium">
+                                            <option value="">- {{ t('none', 'none') }} -</option>
+                                            {% for skin in frontEndskinsArr %}
+                                                <option{{ front_end_site_skin==skin?' SELECTED':'' }}>{{ skin }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix">
+                                    <label>Custom CSS Code:</label>
+                                    <div class="input">
+                                        <textarea name="css_code" class="xxlarge" placeholder="css code..." style="font-family: monospace; height: 200px;">{{ css_code }}</textarea>
+                                        Optional. Use this field to override any of the site CSS without having to create a new theme. By right clicking on an element in your browser and selecting 'inspect', you can find the relating CSS rules. These changes will be kept after any script upgrades.
+                                    </div>
+                                </div>
+
+                                <div class="clearfix">
+                                    <label>Head JS Code:</label>
+                                    <div class="input">
+                                        <textarea name="head_js_code" class="xxlarge" placeholder="js code including <script></script> tags..." style="font-family: monospace; height: 200px;">{{ head_js_code }}</textarea>
+                                        Optional. Use this field to add javascript code within the head part of the site. This will include the front-end site, file manager and any embeds. These changes will be kept after any script upgrades.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix col_12">
+                        <div class="col_4 adminResponsiveHide">&nbsp;</div>
+                        <div class="col_8 last">
+                            <div class="clearfix">
+                                <div class="input no-label">
+                                    <input type="submit" value="Submit" class="button blue">
+                                    <input type="reset" value="Cancel" class="button" onClick="window.location = '{{ ADMIN_WEB_ROOT }}/theme_manage';"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input name="submitted" type="hidden" value="1"/>
+                </form>
+            </div>
+        </div>   
+    </div>
+</div>
+{% endblock %}

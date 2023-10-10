@@ -1,0 +1,38 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2>{{ t("account_benefits", "Account Benefits")|title }}</h2>
+            </div>
+            <div class="col-md-4">
+                <div class="feature boxed boxed--border">
+                    <ul>
+                        <li><i class="fas fa-check"></i>&nbsp;&nbsp;{{ t('direct_downloads_no_waiting', 'Direct downloads. No waiting.') }}</li>
+                        <li><i class="fas fa-check"></i>&nbsp;&nbsp;{{ t('no_advertising', 'No advertising.') }}</li>
+                        <li><i class="fas fa-check"></i>&nbsp;&nbsp;{{ t('unlimited_simultaneous_downloads', 'Unlimited simultaneous downloads.') }}</li>
+                        <li><i class="fas fa-check"></i>&nbsp;&nbsp;{{ t('maximum_downloads_speeds_possible', 'Maximum download speeds possible.') }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature boxed boxed--border">
+                    <ul>
+                        <li><i class="fas fa-check"></i>&nbsp;&nbsp;{{ t('unique_members_area', 'Unique Members Area')|title }}</li>
+                        <li><i class="fas fa-check"></i>&nbsp;&nbsp;{{ UserHelper.getDaysToKeepInactiveFiles(2) > 0?t('files_kept_for_x_days', 'Files kept for [[[DAYS]]] days.', {'DAYS': UserHelper.getDaysToKeepInactiveFiles(2)}):t('files_kept_forever', 'Files in your premium account kept forever.') }}</li>
+                        <li><i class="fas fa-check"></i>&nbsp;&nbsp;{{ t('upload_files_up_to_x_in_size', 'Upload files up to [[[MAX_UPLOAD_FILESIZE]]] in size.', {'MAX_UPLOAD_FILESIZE': CoreHelper.formatSize(UserHelper.getMaxUploadFilesize(2))}) }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature boxed boxed--border">
+                    <ul>
+                        <li><i class="fas fa-check"></i>&nbsp;&nbsp;{{ t('download_manager_support', 'Download manager support.') }}</li>
+                        <li><i class="fas fa-check"></i>&nbsp;&nbsp;{{ t('no_limits_on_the_amount_of_downloads', 'No limits on the amount of downloads.') }}</li>
+                        <li><i class="fas fa-check"></i>&nbsp;&nbsp;{{ t('low_price_per_day', 'Low price per day.') }}</li>
+                        <li><i class="fas fa-check"></i>&nbsp;&nbsp;{{ t('no_subscriptions', 'No subscriptions.') }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

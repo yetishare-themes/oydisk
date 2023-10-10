@@ -1,0 +1,148 @@
+<form action="{{ theme.getAccountWebRoot() }}/ajax/add_edit_folder_process" autocomplete="off">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{{ editFolderId == null ? t("add_folder", "add folder") : (t("edit_existing_folder", "Edit Existing Folder") ~ ' (' ~ folderName ~ ')') }}</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="modal-icon-left"><img src="{{ theme.getAccountImagePath() }}/modal_icons/folder_yellow_{{ editFolderId == null? "plus" : "edit" }}.png"/></div>
+            </div>
+
+            <div class="col-md-9">				
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="folderName" class="control-label">{{ t("edit_folder_name", "Folder Name:") }}</label>
+                            <input type="text" class="form-control" name="folderName" id="folderName" value="{{ folderName }}"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="parentId" class="control-label">{{ t('edit_folder_parent_folder', 'Parent Folder:') }}</label>
+                            <select class="form-control" name="parentId" id="parentId">
+                                <option value="-1">{{ t('_none_', '- none -') }}</option>
+                                {% for k,folderListingItem in folderListing %}
+                                    {% if (editFolderId != null) and (folderListingItem|slice(0, currentFolderStr|length) == currentFolderStr) %}
+                                    {% else %}
+                                        <option value="{{ k }}"{% if parentId == k %} SELECTED{% endif %}>
+                                            {{ folderListingItem }}
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="isPublic" class="control-label">{{ t('edit_folder_privacy', 'Folder Privacy:') }}</label>            
+                            <select class="form-control" name="isPublic" id="isPublic"{% if editFolderId != null %} onchange="togglePublicAccessUrl(); return false;"{% endif %}>
+                                {% if userIsPublic != 0 %}
+                                    <option value="1" {{ (isPublic == 1) ? 'SELECTED' : '' }}>{{ t('privacy_public_limited_access', 'Public - Access if users know the folder url.') }}</option>
+                                {% endif %}
+
+                                <option value="0" {{ (isPublic == 0) ? 'SELECTED' : '' }} {% if Auth.level_id == 0 %}disabled="disabled"{% endif %}>{{ t('privacy_private_no_access', 'Private - No access outside of your account, unless you generate a unique access url.') }}{% if Auth.level_id == 0 %} ({{ t('unavailable', 'Unavailable')|title }}){% endif %}</option>
+                                
+                                {% if userIsPublic == 0 %}
+                                    <option value="0" disabled="disabled">{{ t('privacy_public_no_access', 'Public - Unavailable. See the note below.') }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if userIsPublic == 0 %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <p>
+                                {{ t('edit_folder_privacy_notice_note', 'Note: You can not update this folder privacy settings as your account settings are set to make all files private, or the parent folder is set to private.') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if folderUrl|length > 0 %}
+                <div class="row public-access-url"{% if isPublic != 1 %} style="display: none;"{% endif %}>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="folderName" class="control-label">{{ t('edit_folder_public_access_url', 'Public Access Url:') }}</label>
+                            <div class="input-group">
+                                <pre style="margin: 0px; cursor: pointer; white-space: normal;"><section onClick="selectAllText(this); return false;" id="folderUrlSection">{{ folderUrl }}</section></pre>
+                                <span class="input-group-btn" style="vertical-align: top;">
+                                    <button id="copyToClipboardBtn" type="button" class="btn btn-primary" data-clipboard-action="copy" data-clipboard-target="#folderUrlSection" style="padding: 7px 12px;" data-placement="bottom" data-toggle="tooltip" data-original-title="Copy Url to Clipboard" onClick="copyToClipboard('#copyToClipboardBtn'); return false;"><i class="entypo-clipboard"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="accessPassword" class="control-label">{{ t("edit_folder_optional_password", "Optional Password:") }}</label>
+                            <div class="row">
+                                <div class="col-md-3 inline-checkbox">
+                                    <input type="checkbox" name="enablePassword" id="enablePassword" value="1" {{ accessPassword|length > 0 ? 'CHECKED' : '' }} onClick="toggleFolderPasswordField();">
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="password" class="form-control" name="password" id="password" autocomplete="off"{{ accessPassword|length > 0 ? ' value="**********"' : '' }} {{ accessPassword|length > 0 ? '' : 'READONLY' }}/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="watermarkPreviews" class="control-label">{{ t('edit_folder_watermark_image_previews', 'Watermark Image Previews:') }} *</label>            
+                            <select class="form-control" name="watermarkPreviews" id="watermarkPreviews">
+                                <option value="1" {{ (watermarkPreviews == 1) ? 'SELECTED' : '' }} {% if Auth.level_id == 0 %}disabled="disabled"{% endif %}>{{ t('option_yes', 'Yes') }}{% if Auth.level_id == 0 %} ({{ t('unavailable', 'Unavailable')|title }}){% endif %}</option>
+                                <option value="0" {{ (watermarkPreviews == 0) ? 'SELECTED' : '' }}>{{ t('option_no', 'No') }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="showDownloadLinks" class="control-label">{{ t('edit_folder_allow_download_links', 'Allow Downloading When Shared:') }}</label>            
+                            <select class="form-control" name="showDownloadLinks" id="showDownloadLinks">
+                                <option value="1" {{ (showDownloadLinks == 1) ? 'SELECTED' : '' }}>{{ t('option_yes', 'Yes') }}</option>
+                                <option value="0" {{ (showDownloadLinks == 0) ? 'SELECTED' : '' }} {% if Auth.level_id == 0 %}disabled="disabled"{% endif %}>{{ t('option_no', 'No') }}{% if Auth.level_id == 0 %} ({{ t('unavailable', 'Unavailable')|title }}){% endif %}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <p style="color: #aaa;">
+                                {% if Auth.level_id > 0 %}
+                                    {{ t('edit_folder_watermark_notice_extra_v2', '* You can set or update your watermark via your <a href="[[[ACCOUNT_WEB_ROOT]]]/edit">account settings</a> page. The original images will not be watermarked.', {'ACCOUNT_WEB_ROOT': theme.getAccountWebRoot()})|raw }}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <input type="hidden" name="submitme" id="submitme" value="1"/>
+        {% if editFolderId != null %}
+            <input type="hidden" value="{{ editFolderId }}" name="editFolderId"/>
+        {% endif %}
+
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ t("cancel", "cancel")|title }}</button>
+        <button type="button" class="btn btn-info" data-submit-btn="true" onClick="processAjaxForm(this, function (data) {
+                {% if editFolderId == null %}setUploaderFolderList(data['folder_listing_html']);loadImages(currentPageType, data['folder_id']);{% endif %} reloadPreviousAjax(); refreshFolderListing(false);$('.modal').modal('hide'); updateStatsViaAjax(); }); return false;">{{ editFolderId == null ? t("add_folder", "add folder")|title : t("update_folder", "update folder")|title }} <i class="entypo-check"></i></button>
+    </div>
+</form>

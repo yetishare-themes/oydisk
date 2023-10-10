@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en" dir="{{ SITE_LANGUAGE_DIRECTION == "RTL" ? "RTL" : "LTR" }}" class="direction{{ SITE_LANGUAGE_DIRECTION == "RTL" ? "RTL" : "LTR" }}">
+    <head>
+        <meta charset="utf-8">
+        <title>{{ block('title') }} - {{ SITE_CONFIG_SITE_NAME }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="{{ block('description') }}"/>
+        <meta name="keywords" content="{{ block('keywords') }}" />
+
+        {% if SITE_CONFIG_SHOW_COOKIE_NOTICE == 'yes' %}
+            <link href="{{ theme.OyDiskCssPath() }}/cookiealert.css" rel="stylesheet">
+        {% endif %}
+        <link href="{{ theme.OyDiskCssPath() }}/main.css" rel="stylesheet" type="text/css" media="all" />
+          
+        <link rel="icon" type="image/x-icon" href="{{ theme.OyDiskImgPath() }}/favicon/favicon.png" />
+
+        {{ theme.outputCustomCSSCode()|raw }}
+        <script>
+            var LOGGED_IN = {% if Auth.loggedIn() == 'true' %}true{% else %}false{% endif %};
+        </script>
+        {{ theme.outputHeadJSCode()|raw }}
+		{{ not SITE_CONFIG_GOOGLE_ANALYTICS_CODE ? "" : SITE_CONFIG_GOOGLE_ANALYTICS_CODE|raw }}
+<style>
+.g-recaptcha > div > div
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+.g-recaptcha > div {
+    margin: auto;
+}
+</style>
+    </head>
+    <body>
+	<div id="preloader">
+        <div class="preloader-wrap">
+            <div class="preloader">
+                <i>.</i>
+                <i>.</i>
+                <i>.</i>
+            </div>
+        </div>
+    </div>
+    <header id="header" class="header-main">
+        <div id="logoAndNav" class="main-header-menu-wrap bg-transparent fixed-top clear-adblock">
+            <div class="container">
+                <nav id="menu2" class="js-mega-menu navbar navbar-expand-md header-nav">
+                    <a class="navbar-brand pt-0" href="{{ CORE_SITE_PATH }}"><img style="max-height: 1.85714286em;" src="{{ theme.getInverseLogoUrl() }}" alt="logo"/></a>
+                    <button type="button" class="navbar-toggler btn" aria-expanded="false" aria-controls="navBar" data-toggle="collapse" data-target="#navBar">
+                        <span id="hamburgerTrigger">
+                          <span class="ti-menu"></span>
+                        </span>
+                    </button>
+                    <div id="navBar" class="collapse navbar-collapse">
+                        <ul class="navbar-nav ml-auto main-navbar-nav">
+                            <li class="nav-item custom-nav-item">
+                                <a class="nav-link custom-nav-link" href="{{ CORE_SITE_PATH }}" {{ (block("selected_navigation_link") is defined and block("selected_navigation_link") == 'home')?:'' }}>{{ t('navigation_home', 'Home') }}</a>
+                            </li>
+                            {% if SITE_CONFIG_ENABLE_FILE_SEARCH == 'yes' %}
+							<li class="nav-item custom-nav-item">
+                                <a class="nav-link custom-nav-link" href="{{ CORE_SITE_PATH }}/search" {{ (block("selected_navigation_link") is defined and block("selected_navigation_link") == 'search')?:'' }}>{{ t('home_search_files', 'Search Files') }}</a>
+                            </li>
+                            {% endif %}
+                            {% if UserHelper.enableUpgradePage() == 'yes' %}
+							<li class="nav-item custom-nav-item">
+                                <a class="nav-link custom-nav-link" href="{{ CORE_SITE_PATH }}/upgrade" {{ (block("selected_navigation_link") is defined and block("selected_navigation_link") == 'upgrade')?:'' }}>{{ t('premium', 'Premium') }}</a>
+                            </li>
+                            {% endif %}
+							{% if siteHeaderPluginNavigation|length > 0 %}
+							{% for pluginKey,siteHeaderPluginNavigationItems in siteHeaderPluginNavigation %}
+                            {% for siteHeaderPluginNavigationItem in siteHeaderPluginNavigationItems %}
+                            <li class="nav-item custom-nav-item">
+                                <a class="nav-link custom-nav-link" href="{{ siteHeaderPluginNavigationItem['link_url'] }}">{{ t(siteHeaderPluginNavigationItem['link_text'], siteHeaderPluginNavigationItem['link_text'])|title }}</a>	
+                            </li>
+							{% endfor %}
+							{% endfor %}
+							{% endif %}
+                            <li class="nav-item custom-nav-item">
+                                <a class="nav-link custom-nav-link" href="{{ CORE_SITE_PATH }}/report-abuse">{{ t('report_abuse', 'Report Abuse') }}</a>
+                            </li>
+                            <li class="nav-item hs-has-sub-menu custom-nav-item">
+                                <a id="pagesMegaMenu" class="nav-link custom-nav-link main-link-toggle" href="javascript:void(0);" aria-haspopup="true" aria-expanded="false" aria-labelledby="pagesSubMenu">{{ t('about', 'About') }}</a>
+                                <ul id="pagesSubMenu" class="hs-sub-menu main-sub-menu" aria-labelledby="pagesMegaMenu" style="min-width: 230px;">
+									<li class="nav-item submenu-item">
+										<a class="nav-link sub-menu-nav-link" href="{{ CORE_SITE_PATH }}/contact">{{ t('contact', 'Contact') }}</a>
+									</li>
+                                    <li class="nav-item submenu-item">
+                                        <a class="nav-link sub-menu-nav-link" href="{{ CORE_SITE_PATH }}/faq" {{ (block("selected_navigation_link") is defined and block("selected_navigation_link") == 'faq')?:'' }}>{{ t('faq', 'FAQ') }}</a>
+                                    </li>
+									<li class="nav-item submenu-item">
+										<a class="nav-link sub-menu-nav-link" href="{{ CORE_SITE_PATH }}/dmca">{{ t('copyright_dmca', 'Copyright / DMCA')|title }}</a>
+									</li>
+									<li class="nav-item submenu-item">
+										<a class="nav-link sub-menu-nav-link" href="{{ CORE_SITE_PATH }}/privacy">{{ t('privacy_policy', 'Privacy Policy')|title }}</a>
+									</li>
+									<li class="nav-item submenu-item">
+										<a class="nav-link sub-menu-nav-link" href="{{ CORE_SITE_PATH }}/terms">{{ t('term_of_service', 'Terms of service')|title|raw }}</a>
+									</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item header-nav-last-item d-flex align-items-center">
+								{% if Auth.loggedIn() == true %}
+									<a class="btn btn-brand-03 animated-btn" href="{{ CORE_SITE_PATH }}/account"> <span class="fa fa-user pr-2"></span>{{ t("your_account", "your account")|title }}</a>
+								{% else %}
+									<a class="btn btn-brand-03 animated-btn" href="{{ CORE_SITE_PATH }}/account/login"> <span class="fa fa-user pr-2"></span>{{ t("login", "login")|title }}</a>
+								{% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div class="main">
+    {% block body %}{% endblock %}
+    <footer class="footer-1 ptb-60 dark-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-lg-6">
+                    <a href="{{ CORE_SITE_PATH }}" class="navbar-brand mb-2" href="{{ CORE_SITE_PATH }}">
+                        <img style="max-height: 1.85714286em;" src="{{ theme.getInverseLogoUrl() }}" alt="logo"/>
+                    </a>
+                    <br>
+                    <p>{{ SITE_CONFIG_SITE_NAME }} is an international service for safe file transfer, storage, backup, and distribution. The speed of our servers, all of them working on several gigabyte connection links, is nearly unlimited. Today there are no similar services that can offer our level of quality.</p>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                    <div class="row mt-0">
+                        <div class="col-sm-6 col-md-6 col-lg-6 mb-6 mb-sm-6 mb-md-0 mb-lg-0">
+							<h6 class="font-weight-normal">Features</h6>
+                            <ul>
+								{% if UserHelper.enableUpgradePage() == 'yes' %}
+                                <li>
+									<a href="{{ CORE_SITE_PATH }}/upgrade">{{ t('premium', 'Premium') }}</a>
+                                </li>
+								{% endif %}
+								{% if SITE_CONFIG_ENABLE_USER_REGISTRATION == 'yes' %}
+                                <li>
+                                    <a href="{{ CORE_SITE_PATH }}/register">{{ t('Register', 'Register') }}</a>
+                                </li>
+								{% endif %}
+                                {% if siteFooterPluginNavigation|length > 0 %}
+                                    {% for pluginKey,siteFooterPluginNavigationItems in siteFooterPluginNavigation %}
+                                        {% for siteFooterPluginNavigationItem in siteFooterPluginNavigationItems %}
+                                            <li>
+                                                <a href="{{ siteFooterPluginNavigationItem['link_url'] }}">{{ t(siteFooterPluginNavigationItem['link_text'], siteFooterPluginNavigationItem['link_text'])|title}}</a>
+                                            </li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
+								<li>
+                                     <a href="{{ CORE_SITE_PATH }}/report-abuse">{{ t('report_file', 'Report File') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ CORE_SITE_PATH }}/link-checker">{{ t('link_checker', 'Link Checker') }}
+                                    </a>
+                                </li>
+								{% if SITE_CONFIG_SHOW_API_PAGE == 'yes' %}
+                                <li>
+                                    <a href="{{ CORE_SITE_PATH }}/api">{{ t('api', 'API') }}</a>
+                                </li>
+								{% endif %}
+                            </ul>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6 mb-6 mb-sm-6 mb-md-0 mb-lg-0">
+							<h6 class="font-weight-normal">About</h6>
+                            <ul>
+								<li>
+                                    <a href="{{ CORE_SITE_PATH }}/faq">FAQ</a>
+                                </li>
+								<li>
+                                    <a href="{{ CORE_SITE_PATH }}/dmca">{{ t('copyright_dmca', 'Copyright / DMCA')|title }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ CORE_SITE_PATH }}/privacy">{{ t('privacy_policy', 'Privacy Policy')|title }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ CORE_SITE_PATH }}/terms">{{ t('term_of_service', 'Terms of service')|title|raw }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ CORE_SITE_PATH }}/contact">{{ t('contact', 'Contact') }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    </div>
+    <div class="footer-bottom py-3 gray-light-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-lg-7">
+                    <div class="copyright-wrap small-text">
+                        <p class="mb-0">{{ t("copyright", "copyright")|title }} &copy; {{ "now"|date("Y") }} - {{ SITE_CONFIG_SITE_NAME }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-top scroll-to-target primary-bg text-white" data-target="html">
+        <span class="fas fa-angle-double-up"></span>
+    </div>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/jquery-3.5.1.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/popper.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/bootstrap.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/bootstrap-slider.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/jquery.easing.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/owl.carousel.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/countdown.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/jquery.waypoints.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/jquery.rcounterup.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/magnific-popup.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/validator.min.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/vendors/hs.megamenu.js"></script>
+    <script src="{{ theme.OyDiskJsPath() }}/app.js"></script>
+
+        {% block footerjs %}{% endblock %}
+        <script>
+            $(document).ready(function() {
+                // clear the display: none on notification divs. This doesn't actually
+                // show them, just avoids the flicker on pageload is display: none isn't set.
+                $('.notification').show();
+            });
+        </script>
+        
+        {% include '@themePath/partial/_ad_block.html.twig' %}
+
+        
+        {% if SITE_CONFIG_SHOW_COOKIE_NOTICE == 'yes' %}
+    <script type="text/javascript">
+    var options = {
+        title: 'Accept Cookies & Privacy Policy',
+        message: 'Cookies used on the website! 🍪 This website uses cookies to ensure you get the best experience on our website.',
+        delay: 600,
+        expires: 1,
+        link: 'privacy',
+        onAccept: function(){
+            var myPreferences = $.fn.ihavecookies.cookie();
+            console.log('Yay! The following preferences were saved...');
+            console.log(myPreferences);
+        },
+        uncheckBoxes: true,
+        acceptBtnLabel: 'Accept Cookies',
+        moreInfoLabel: 'More information',
+        cookieTypesTitle: 'Select which cookies you want to accept',
+        fixedCookieTypeLabel: 'Essential',
+        fixedCookieTypeDesc: 'These are essential for the website to work correctly.'
+    }
+
+    $(document).ready(function() {
+        $('body').ihavecookies(options);
+
+        if ($.fn.ihavecookies.preference('marketing') === true) {
+            console.log('This should run because marketing is accepted.');
+        }
+
+        $('#ihavecookiesBtn').on('click', function(){
+            $('body').ihavecookies(options, 'reinit');
+        });
+    });
+
+    </script>
+        <script src="{{ theme.OyDiskJsPath() }}/cookiealert.js"></script>
+        {% endif %}
+    </body>
+</html>

@@ -1,0 +1,25 @@
+{% extends "account/partial/layout_logged_in.html.twig" %}
+
+{% block title %}{{ pageTitle }}{% endblock %}
+{% block description %}{{ PAGE_OG_DESCRIPTION is defined?PAGE_OG_DESCRIPTION:t("account_home_meta_description", "Your Account Home") }}{% endblock %}
+{% block keywords %}{{ PAGE_OG_KEYWORDS is defined?PAGE_OG_KEYWORDS:t("account_home_meta_keywords", "account, home, file, your, interface, upload, download, site") }}{% endblock %}
+{% block selected_navigation_link %}your_files{% endblock %}
+
+{% block body %}
+{% if initialFileId == null %}
+    <script>
+    $(document).ready(function() {
+        loadImages('{{ pageType }}', '{{ initialLoadFolderId }}', 1, 0, '', {'searchTerm': "{{ searchTerm|escape("js") }}", 'filterUploadedDateRange': "{{ filterUploadedDateRange|escape("js") }}"});
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            // sometimes hidden image thumbnails don't get rendered correct, so fix
+            fixImageBrowseHeights('#browse-images');
+        });
+        
+        {% if triggerUpload > 0 %}
+            uploadFiles(null, false);
+        {% endif %}
+    });
+    </script>
+{% endif %}
+{% endblock %}

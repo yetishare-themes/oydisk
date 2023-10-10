@@ -1,0 +1,74 @@
+{% extends "partial/oydisk_layout.html.twig" %}
+
+{% block title %}{{ t("privacy_page_name", "Privacy") }}{% endblock %}
+{% block description %}{{ t("privacy_meta_description", "Privacy policy.") }}{% endblock %}
+{% block keywords %}{{ t("privacy_meta_keywords", "privacy, policy, file, hosting, site") }}{% endblock %}
+
+{% block body %}
+		<section class="ptb-120 justify-content-center bg-image">
+            <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg')repeat center center;opacity: 1;"></div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-8">
+                        <div class="hero-content-left text-white text-center">
+                            <h2 class="text-white">Privacy Policy</h2>
+                            <p class="lead">we shall do its best to safeguard your privacy within the legal boundaries</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>	
+        <section class="privacy-policy ptb-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="content-with-sidebar">
+                            <div class="section-heading">
+                                A substantial amount information is collected during rendering services {{ SITE_CONFIG_SITE_NAME }} in ordinary course of business due to technological or contractual necessity. {{ SITE_CONFIG_SITE_NAME }} shall do its best to safeguard your privacy within the legal boundaries. In other words we do not collect more data than necessary for proper rendering of Services and we do our best to keep any collected information confidential unless legally obliged otherwise.
+                            </div>
+							<div class="pt-5">
+                                <h5>Public Content</h5>
+                                <p>Any content which is accessible by means of publically available URL</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>Public information</h5>
+                                <p>Any information you wishfully elect to disclose to public or which has been known to public prior to being collected by {{ SITE_CONFIG_SITE_NAME }}</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>Private Content</h5>
+                                <p>Any stored information accessible exclusively via private account within the terms of DepositStorage services is confidential and is not subject to review or filtering upon presumption of fair use</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>Cookies use</h5>
+                                <p>You explicitly authorize {{ SITE_CONFIG_SITE_NAME }} to create and store cookies at your web-client. Such cookies are exclusively used for your comfort in order to save the browser settings. {{ SITE_CONFIG_SITE_NAME }} does not use any methods for tracking users</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>Page indexing</h5>
+                                <p>{{ SITE_CONFIG_SITE_NAME }} does not index data or pages to be available in human-readable form and proceeds with reasonable actions to stop any third parties (e.g. search engines) from indexing independently.</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>IP addresses</h5>
+                                <p>IP address of your browser is detected due to the use of Internet-protocols. Such IP address is stored by {{ SITE_CONFIG_SITE_NAME }} servers for internal use (usage registration, optimal downloads use, statistics etc.)</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>E-mail</h5>
+                                <p>{{ SITE_CONFIG_SITE_NAME }} servers store and sort user e-mails for the purposes of registration and statistics. {{ SITE_CONFIG_SITE_NAME }} does not lease, sell, or provide your e-mails to any third parties</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>Safe operation</h5>
+                                <p>We have taken the security measures at the server's physical location to protect from loss, incorrect usage, or change of information provided to us by the users of the service. Files, saved at the servers of {{ SITE_CONFIG_SITE_NAME }} can be accessible only to {{ SITE_CONFIG_SITE_NAME }} staff members or via a URL initially provided to the uploader. Any files saved by our service are deleted (I) after a certain term of disuse; (II) for violation of User Agreement, its supplemental agreements or any applicable legislation; or (III) deleted via a special URL initially provided to the uploade</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>Financial information</h5>
+                                <p>Any financial transfers between you and {{ SITE_CONFIG_SITE_NAME }} are handled by third party, payment services. Your payment details are disclosed to such third parties for the aim of completion of each transaction. The security and non-disclosure of such information is handled by such third parties under their current policies. {{ SITE_CONFIG_SITE_NAME }} does not sort or store numbers or any information related to your banking card.</p>
+                            </div>
+							<div class="pt-5">
+                                <h5>Advertisers' access to information</h5>
+                                <p>Advertisements located on our website can be posted and/or hosted by a third party, advertisers or their agents. These persons can use the information regarding your visits obtained due to common use of Internet-protocols (geographical location, IP, language and other information automatically disclosed by your browser) to place an advertisement of goods and services that might be interest you. Any information collected at the pages owned by third parties is not subject to this Privacy Policy.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% endblock %}

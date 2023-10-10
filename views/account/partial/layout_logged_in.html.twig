@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" dir="{{ SITE_LANGUAGE_DIRECTION|upper }}" class="direction{{ SITE_LANGUAGE_DIRECTION|capitalize }} {% if block("html_element_class") is defined %}{{ block("html_element_class") }}{% endif %}">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>{{ block('title') }} - {{ SITE_CONFIG_SITE_NAME }}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="{{ block('description') }}" />
+        <meta name="keywords" content="{{ block('keywords') }}" />
+        <meta name="copyright" content="Copyright &copy; - {{ SITE_CONFIG_SITE_NAME }}" />
+        <meta name="robots" content="all" />
+        <meta http-equiv="Cache-Control" content="no-cache" />
+        <meta http-equiv="Expires" content="-1" />
+        <meta http-equiv="Pragma" content="no-cache" />
+
+        <!-- og meta tags -->
+        {% if PAGE_OG_TITLE is defined %}
+            <meta property="og:title" content="{{ PAGE_OG_TITLE }}" />
+        {% endif %}
+        {% if PAGE_OG_DESCRIPTION is defined %}
+            <meta property="og:description" content="{{ PAGE_OG_DESCRIPTION }}" />
+        {% endif %}
+        {% if PAGE_OG_URL is defined %}
+            <meta property="og:url" content="{{ PAGE_OG_URL }}" />
+        {% endif %}
+        {% if PAGE_OG_IMAGE is defined %}
+            <meta property="og:image" content="{{ PAGE_OG_IMAGE }}" />
+            {% if PAGE_OG_IMAGE_WIDTH is defined %}
+                <meta property="og:image:width" content="{{ PAGE_OG_IMAGE_WIDTH }}" />
+            {% endif %}
+            {% if PAGE_OG_IMAGE_HEIGHT is defined %}
+                <meta property="og:image:height" content="{{ PAGE_OG_IMAGE_HEIGHT }}" />
+            {% endif %}
+        {% else %}
+            <meta property="og:image" content="{{ theme.getAccountImagePath() }}/favicon/ms-icon-144x144.png" />
+        {% endif %}
+        <meta property="og:type" content="website" />
+
+        <link rel="icon" type="image/x-icon" href="{{ theme.getAccountImagePath() }}/favicon/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ theme.getAccountImagePath() }}/favicon/apple-touch-icon.png"/>
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ theme.getAccountImagePath() }}/favicon/favicon-32x32.png"/>
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ theme.getAccountImagePath() }}/favicon/favicon-16x16.png"/>
+        <link rel="manifest" href="{{ theme.getAccountImagePath() }}/favicon/site.webmanifest"/>
+        <meta name="theme-color" content="#ffffff"/>
+
+        <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/fonts.css" />
+        <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/font-icons/entypo/css/entypo.css" />
+        <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/font-icons/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/bootstrap.css" />
+        {% if theme.getThemeSkin() != false %}
+            <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/skins/{{ theme.getThemeSkin() }}" />
+        {% else %}
+            <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/skins/default.css" />
+        {% endif %}
+        <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/core.css" />
+        <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/theme.css" />
+        <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/forms.css" />
+        <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/responsive.css" />
+        {% if SITE_LANGUAGE_DIRECTION == 'RTL' %}
+            <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/rtl.css" />
+        {% endif %}
+        <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/daterangepicker-bs3.css" />
+        <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/custom.css" />
+        <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/file-upload.css" />
+        <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/search_widget.css" />
+        <link rel="stylesheet" type="text/css"  href="{{ PLUGIN_WEB_ROOT }}/filepreviewer/assets/players/ultimate/content/global.css"/>
+        {{ theme.outputCustomCSSCode()|raw }}
+
+        <script src="{{ theme.getAccountJsPath() }}/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery.ckie.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery.jstree.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery.event.drag-2.2.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery.event.drag.live-2.2.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery.event.drop-2.2.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery.event.drop.live-2.2.js"></script>
+
+        <link rel="stylesheet" href="{{ theme.getAccountCssPath() }}/file_browser_sprite_48px.css" type="text/css" charset="utf-8" />
+
+        <link rel="stylesheet" type="text/css" href="{{ theme.getAccountJsPath() }}/slick/slick.css"/>
+
+        <link rel="stylesheet" type="text/css" href="{{ theme.getAccountJsPath() }}/slick/slick-theme.css"/>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/slick/slick.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="{{ theme.getAccountJsPath() }}/photo-swipe/photoswipe.css"/>
+        <link rel="stylesheet" type="text/css" href="{{ theme.getAccountJsPath() }}/photo-swipe/default-skin/default-skin.css"/>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/photo-swipe/photoswipe.min.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/photo-swipe/photoswipe-ui-default.min.js"></script>
+
+        <!-- mobile swipe navigation -->
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery.touchSwipe.min.js"></script>
+
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/evolution.js"></script>
+        <script type="text/javascript" src="{{ CORE_SITE_PATH }}/assets/js/uploader.js?r={{ date().timestamp }}"></script>
+
+        <!--[if lt IE 9]><script src="{{ theme.getAccountJsPath() }}/ie8-responsive-file-warning.js"></script><![endif]-->
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+                <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script type="text/javascript">
+            document.domain = '{{ documentDomain }}';
+            var ACCOUNT_WEB_ROOT = "{{ theme.getAccountWebRoot() }}";
+            var SITE_THEME_WEB_ROOT = "{{ SITE_THEME_WEB_ROOT }}";
+            var SITE_CSS_PATH = "{{ theme.getAccountCssPath() }}";
+            var SITE_IMAGE_PATH = "{{ theme.getAccountImagePath() }}";
+            var _CONFIG_SITE_PROTOCOL = "{{ _CONFIG_SITE_PROTOCOL }}";
+            var CORE_AJAX_WEB_ROOT = "{{ CORE_AJAX_WEB_ROOT }}";
+            var LOGGED_IN = {% if Auth.loggedIn() == 'true' %}true{% else %}false{% endif %};
+        </script>
+        <script type="text/javascript" src="{{ CORE_SITE_PATH }}/js/translations.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery-ui.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery.tmpl.min.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/load-image.min.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/canvas-to-blob.min.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery.iframe-transport.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery.fileupload.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery.fileupload-process.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery.fileupload-resize.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery.fileupload-validate.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/jquery.fileupload-ui.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/zeroClipboard/ZeroClipboard.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/daterangepicker/moment.min.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/daterangepicker/daterangepicker.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/charts/Chart.js"></script>
+        <script type="text/javascript" src="{{ PLUGIN_WEB_ROOT }}/filepreviewer/assets/players/ultimate/java/FWDUVPlayer.js"></script>
+        <script type="text/javascript" src="{{ theme.getAccountJsPath() }}/global.js"></script>
+        {% include '@themePath/account/partial/account_home_javascript.html.twig' %}
+        {% if accountHomePluginJavascript|length > 0 %}
+            {% for pluginKey,accountHomePluginJavascriptItems in accountHomePluginJavascript %}
+                {{ accountHomePluginJavascriptItems['response_html']|raw }}
+            {% endfor %}
+        {% endif %}
+        {{ theme.outputHeadJSCode()|raw }}
+        {% if UserHelper.showSiteAdverts() %}
+            {{ SITE_CONFIG_ADVERT_HEAD_TAG_CODE|raw }}
+        {%  endif %}
+    </head>
+    <body class="page-body">
+        <div class="page-container horizontal-menu with-sidebar fit-logo-with-sidebar {% if Auth.loggedIn() == true %}logged-in{% else %}logged-out{% endif %} clear-adblock">	
+
+            <header class="navbar navbar-fixed-top navbar-custom">
+                <div class="navbar-inner">
+                    <div class="navbar-toprow">
+                        <!-- logo -->
+                        <div class="navbar-brand">
+                            <a href="{{ CORE_SITE_PATH }}/">
+                                <img src="{{ theme.getMainLogoUrl() }}" alt="{{ SITE_CONFIG_SITE_NAME }}" />
+                            </a>
+                        </div>
+
+                        <div class="header-home-button pull-left">
+                            <a href="{% if sharekeyOriginalUrl is defined and Auth.loggedIn() == false %}{{ sharekeyOriginalUrl }}{% else %}#{% endif %}" onClick="{{ Auth.loggedIn() ? "loadImages(currentPageType, -1, 1); return false;" : "" }}">
+                                <i class="glyphicon glyphicon-home"></i>
+                            </a>
+                        </div>
+
+                        <ul class="navbar-nav">
+                            <li class="active"><a href="{{ theme.getAccountWebRoot() }}"><span>{{ t('your_files', 'your files')|title }}</span></a></li>
+                            {% if SITE_CONFIG_ENABLE_FILE_SEARCH == 'yes' %}
+                                <li><a href="{{ WEB_ROOT }}/search"></i><span>{{ t('public_files', 'public files')|title }}</span></a></li>
+                            {% endif %}
+                            {% if siteHeaderPluginNavigation|length > 0 %}
+                                <li class="has-sub root-level">
+                                    <a href="#"><span>{{ t('tools', 'Tools') }}</span> <b class="caret"></b></a>
+                                    <ul style="display: none;">
+                                        {% for pluginKey,siteHeaderPluginNavigationItems in siteHeaderPluginNavigation %}
+                                            {% for siteHeaderPluginNavigationItem in siteHeaderPluginNavigationItems %}
+                                                <li>
+                                                    <a href="{{ siteHeaderPluginNavigationItem['link_url'] }}">
+                                                        <span>{{ t(siteHeaderPluginNavigationItem['link_text'], siteHeaderPluginNavigationItem['link_text'])|title }}</span>
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if UserHelper.enableUpgradePage() == 'yes' %}
+                                <li><a href="{{ theme.getFrontendWebRoot() }}/upgrade"></i><span>{{ t('extend_account', 'extend account')|title }}</span></a></li>
+                            {% endif %}
+                        </ul>
+
+                        <ul class="mobile-account-toolbar-wrapper nav navbar-right pull-right">
+                            {% if Auth.loggedIn() == true %}
+                                <li class="dropdown responsive-Hide internal-notification">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                        <i class="fa fa-bell"></i>
+                                        {% if unreadNotificationCount > 0 %}
+                                            <span class="badge badge-warning">{{ unreadNotificationCount }}</span>
+                                        {% endif %}
+                                    </a>
+                                    <!-- dropdown menu -->
+                                    <ul class="dropdown-menu">
+                                        <li class="top">
+                                            <p class="small">
+                                                {% if unreadNotificationCount > 0 %}
+                                                    <a href="#" class="pull-right mark-read-link" onClick="markInternalNotificationsRead();
+                                                            return false;">{{ t('file_manager_mark_all_read', 'Mark all Read') }}</a>
+                                                {% endif %}
+                                                <span class="unread-count">{{ unreadNotificationCount != 1 ? (t('file_manager_you_have_x_new_notifications', 'You have <strong>[[[UNREAD]]]</strong> new notifications.', {'UNREAD': unreadNotificationCount})|raw) : (t('file_manager_you_have_x_new_notification', 'You have <strong>[[[UNREAD]]]</strong> new notification.', {'UNREAD': unreadNotificationCount})|raw) }}</span>
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <ul class="dropdown-menu-list scroller">
+                                                {% for internalNotification in internalNotifications %}
+                                                    <li class="{{ internalNotification.is_read == 0 ? 'unread' : 'read' }} notification-{{ internalNotification.is_read == 0 ? 'info' : 'default' }}">
+                                                        <a href="{{ internalNotification.href_url|length > 0 ? internalNotification.href_url : '#' }}" {{ internalNotification.onclick?length ? (' onClick=' ~ internalNotification.onclick|json_encode()|raw) : '' }}>
+                                                            <i class="{{ internalNotification.notification_icon }} pull-right"></i>
+                                                            <span class="line {{ internalNotification.is_read == 0 ? 'text-bold' : '' }}">
+                                                                {{ internalNotification.content|raw }}
+                                                            </span>
+                                                            <span class="line small">
+                                                                {{ CoreHelper.timeToRelativeString(internalNotification.date_added) }}
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="root-level responsive-Hide">
+                                    {% if Auth.package_id == 20 %}
+                                    <a href="{{ ADMIN_WEB_ROOT }}/" target="_blank">
+                                        <span class="badge badge-danger badge-roundless">{{ UserHelper.getLevelLabel(Auth.package_id)|upper }}</span>
+                                    </a>
+                                    {% else %}
+                                    <a href="{{ theme.getFrontendWebRoot() }}/upgrade">
+                                        <span class="badge badge-success badge-roundless">{{ UserHelper.getLevelLabel(Auth.package_id)|upper }}</span>
+                                    </a>
+                                    {% endif %}
+                                </li>
+
+                                <li class="dropdown account-nav-icon">
+                                    <a href="#" data-toggle="dropdown" class="dropdown-toggle clear">
+                                        <span class="thumb-sm avatar pull-right">
+                                            <img width="40" height="40" class="img-circle" alt="{{ Auth.getAccountScreenName() }}" src="{{ Auth.user.getAvatarUrl() }}"/>
+                                        </span>
+                                        <span class="user-screen-name hidden-sm hidden-md">{{ Auth.level_id > 0?Auth.getAccountScreenName():t('temp_account', 'Temp Account') }}</span> <b class="caret"></b>
+                                    </a>
+                                    <!-- dropdown -->
+                                    <ul class="dropdown-menu">
+                                        {% if Auth.level_id == 0 %}
+                                        <li class="convert-trial-account-menu-item">
+                                            <a href="{{ CORE_SITE_PATH }}/register"> <i class="entypo-rocket"></i>{{ t("register_page_name_temp_account", "Convert Temp Account") }}</a>
+                                        </li>
+                                        {% else %}
+                                        <li>
+                                            <a href="{{ CORE_SITE_PATH }}/account/edit"> <i class="entypo-cog"></i>{{ t('file_manager_account_settings', 'Account Settings') }}</a>
+                                        </li>
+                                        {% endif %}
+                                        <li>
+                                            <a href="{{ CORE_SITE_PATH }}/account/shared_with_me"> <i class="entypo-users"></i>{{ t('shared_files', 'Shared Files') }}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ CORE_SITE_PATH }}/account/trash"> <i class="entypo-trash"></i>{{ t('trash_can', 'Trash Can') }}</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        
+                                        {% if siteHeaderPluginNavigation|length > 0 %}
+                                            {% for pluginKey,siteHeaderPluginNavigationItems in siteHeaderPluginNavigation %}
+                                                {% for siteHeaderPluginNavigationItem in siteHeaderPluginNavigationItems %}
+                                                    <li>
+                                                        <a href="{{ siteHeaderPluginNavigationItem['link_url'] }}"> <i class="entypo-right-open"></i>{{ t(siteHeaderPluginNavigationItem['link_text'], siteHeaderPluginNavigationItem['link_text'])|title }}</a>
+                                                    </li>
+                                                {% endfor %}
+                                            {% endfor %}
+                                            <li class="divider"></li>
+                                        {% endif %}
+                                        
+                                            {% if Auth.package_id == 20 %}
+                                            <li>
+                                                <a href="{{ ADMIN_WEB_ROOT }}/" target="_blank"></i> <i class="entypo-user"></i>{{ t('admin_area_link', 'Admin Area') }}</a>
+                                            </li>
+                                            <li class="divider"></li>
+                                            {% endif %}
+                                        <li>
+                                            <a href="{{ CORE_SITE_PATH }}/account/logout" {% if Auth.level_id == 0 %}onclick="return confirm('Are you sure you want to logout of this temp account? Once you do this, any files you\'ve uploaded will no longer be able to be managed. We\'d recommend converting to a free account to save any uploads.');"{% endif %}> <i class="entypo-logout"></i>{{ t('file_manager_logout', 'Logout') }}</a>
+                                        </li>
+                                    </ul>
+                                    <!-- / dropdown -->
+                                </li>
+                            {% else %}
+                                <li class="login">
+                                    <a href="{{ CORE_SITE_PATH }}/account/login">
+                                        <i class="entypo-lock"></i>
+                                        <span>{{ t('login', 'login')|title }}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                    
+                    {% if Auth.loggedIn() == true %}
+                    <div class="navbar-secondrow">
+                        <div class="navbar-secondrow-left">
+                            <div class="left-action-buttons">
+                                <div class="btn-group">
+                                    <button href="#" data-toggle="dropdown" class="btn btn-white">{{ t('new_title', 'New') }}&nbsp;&nbsp;<i class="caret"></i></button>
+                                    <ul class="dropdown-menu dropdown-white">
+                                        <li><a href="#" onclick="showAddFolderForm(currentAlbumId); return false;"><span class="context-menu-icon"><span class="entypo-folder"></span></span>{{ t('new_folder', 'Folder') }}</a></li>
+                                    </ul>
+                                </div>
+
+                                {% if userAllowedToUpload == true %}
+                                    <div class="btn-group upload-button-wrapper">
+                                        <button class="btn btn-green" type="button" onClick="showUploaderPopup(false, 'tabFileUpload'); return false;">{{ t('upload_account', 'Upload') }}</button>
+                                        <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#" onclick="showUploaderPopup(false, 'tabFileUpload'); return false;"><span class="context-menu-icon"><span class="glyphicon glyphicon-cloud-upload"></span></span>{{ t('upload_file_upload', 'File Upload') }}</a></li>
+                                            {% if UserHelper.userTypeCanUseRemoteUrlUpload() == true %}
+                                                <li><a href="#" onclick="showUploaderPopup(false, 'tabUrlUpload'); return false;"><span class="context-menu-icon"><span class="glyphicon glyphicon-link"></span></span>{{ t('upload_remote_url', 'Remote Url') }}</a></li>
+                                            {% endif %}
+                                            {% if fileManagerPluginTabs|length > 0 %}
+                                                {% for k,fileManagerPluginTab in fileManagerPluginTabs %}
+                                                    {% for k,tab in fileManagerPluginTab %}
+                                                    <li><a href="#" onclick="showUploaderPopup(false, 'tab{{ tab['anchor'] }}'); return false;"><span class="context-menu-icon"><span class="{{ tab['icon'] }}"></span></span>{{ tab['label']|title }}</a></li>
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="navbar-secondrow-right">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="navbar-form-sm navbar-left shift" ui-shift="prependTo" data-target=".navbar-collapse" role="search">
+                                        <div class="form-group">
+                                            <form autocomplete="off">
+                                                <div class="input-group" id="top-search">
+                                                    <span class="input-group-btn">
+                                                        <a href="#" class="btn bg-light btn-input-pre" onClick="showFilterModal();
+                                                            return false;" title="" data-original-title="{{ t('advanced_search', 'Advanced Search') }}" data-placement="bottom" data-toggle="tooltip"><i class="entypo-search"></i></a>
+                                                    </span>
+                                                    <input name="searchInput" id="searchInput" type="text" value="{{ t }}" class="form-control input-sm bg-light no-border rounded padder typeahead" placeholder="{{ t('account_header_search_your_files_and_folders', 'Search your files and folders...')|e }}" onKeyUp="handleTopSearch(event, this); return false;"/>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <ol id="folderBreadcrumbs2" class="selected-items-wrapper breadcrumb bc-3 pull-right">
+                                        <li class="active">
+                                            <span id="statusText"></span>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    {% endif %}
+                </div>
+            </header>
+            
+            
+            <div class="sidebar-menu fixed responsiveMobileHide">
+                <div class="sub-title">{{ t('my_drive', 'My Drive') }}</div>
+                <div id="folderTreeview"></div>
+                <div class="clear"></div>
+                
+                <div class="sub-title">{{ t('storage_status', 'Storage Status') }}</div>
+                
+                <div class="remaining-storage responsiveMobileHide">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div onClick="window.location = '{{ theme.getAccountWebRoot() }}/edit';">
+                                <div class="left-section-wrapper">
+                                    <span class="left">
+                                        <i class="entypo-database"></i>
+                                    </span>
+                                    <span class="right">
+                                        <span id="totalUsageTextLoading">{{ t('loading', 'loading')|title }}</span>
+                                        <span id="totalUsageText" style="display: none;"><span id="totalActiveFileSizeFormatted">-</span> {{ t('used_of', 'used of') }} <span id="totalFileStorageFormatted">-</span></span>
+                                        <div class="progress">
+                                            <div style="width: {{ storagePercentage }} ?>%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="{{ storagePercentage }}" role="progressbar" class="progress-bar progress-bar-success"></div>
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                
+                {% if Auth.level_id == 0 %}
+                    <div class="sub-title side-notice">{{ t('temp_account', 'Temp Account') }}</div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="left-section-wrapper side-notice">
+                                <p>{{ t('temp_account_left_nav_text', 'This is a temp account not linked to any email address. All uploads are publicly available. Temp accounts are removed after [[[NON_ACCOUNT_REMOVAL_DAYS]]] days unless you register.', {'NON_ACCOUNT_REMOVAL_DAYS': UserHelper.getDaysToKeepAccountOpen(0)}) }}</p>
+                                <a class="btn btn-orange" type="button" href="{{ CORE_SITE_PATH }}/register"><i class="entypo-rocket"></i>&nbsp;&nbsp;{{ t("register_page_name_temp_account", "Convert Temp Account") }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                {% endif %}
+                
+                {% if fileManagerPluginLefthandBottom|length > 0 %}
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            {% for pluginKey,fileManagerPluginLefthandBottomItems in fileManagerPluginLefthandBottom %}
+                                {{ fileManagerPluginLefthandBottomItems['response_html']|raw }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                {% endif %}
+              
+                {% if UserHelper.showSiteAdverts() %}
+                    <div class="col-md-12 text-center advert-wrapper">
+                        {{ SITE_CONFIG_ADVERT_FILE_MANAGER_LEFT_BAR|raw }}
+                    </div>
+                    <div class="clear"></div>
+                {% endif %}
+                
+            </div>
+
+            <div id="main-ajax-container" class="layer"></div>
+
+        {% block body %}{% endblock %}
+
+    </div>
+
+{% embed "account/partial/site_js_html_containers.html.twig" %}{% endembed %}
+
+<!-- Bottom Scripts -->
+<script type="text/javascript" src="{{ theme.getAccountJsPath() }}/gsap/main-gsap.js"></script>
+<script type="text/javascript" src="{{ theme.getAccountJsPath() }}/bootstrap.js"></script>
+<script type="text/javascript" src="{{ theme.getAccountJsPath() }}/joinable.js"></script>
+<script type="text/javascript" src="{{ theme.getAccountJsPath() }}/resizeable.js"></script>
+<script type="text/javascript" src="{{ theme.getAccountJsPath() }}/evolution-api.js"></script>
+<script type="text/javascript" src="{{ theme.getAccountJsPath() }}/toastr.js"></script>
+<script type="text/javascript" src="{{ theme.getAccountJsPath() }}/custom.js"></script>
+<script type="text/javascript" src="{{ theme.getAccountJsPath() }}/handlebars.js"></script>
+<script type="text/javascript" src="{{ theme.getAccountJsPath() }}/typeahead.bundle.js"></script>
+<script type="text/javascript" src="{{ theme.getAccountJsPath() }}/search_widget.js"></script>
+<script type="text/javascript" src="{{ theme.getAccountJsPath() }}/clipboardjs/clipboard.min.js"></script>
+<script type="text/javascript" src="{{ theme.getAccountJsPath() }}/bootstrap-tagsinput.min.js"></script>
+
+<script src="{{ theme.getAccountJsPath() }}/file-manager-gallery/jquery.wookmark.js" type="text/javascript"></script>
+
+<div class="clipboard-placeholder-wrapper">
+    <button id="clipboard-placeholder-btn" type="button" data-clipboard-action="copy" data-clipboard-target="#clipboard-placeholder"></button>
+    <div id="clipboard-placeholder"></div>
+</div>
+
+{% include '@themePath/partial/_ad_block.html.twig' %}
+
+{{ not SITE_CONFIG_GOOGLE_ANALYTICS_CODE ? "" : SITE_CONFIG_GOOGLE_ANALYTICS_CODE|raw }}
+
+</body>
+{% include '@themePath/account/partial/notifications.html.twig' %}
+</html>

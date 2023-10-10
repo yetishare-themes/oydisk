@@ -1,0 +1,49 @@
+{% extends "partial/oydisk_layout.html.twig" %}
+
+{% block title %}{{ file.originalFilename }}{% endblock %}
+{% block description %}{{ file.description|length > 0 ? file.description|slice(0, 250) : t("file_download_description", "Download file")~' - '~file.originalFilename }}{% endblock %}
+{% block keywords %}{{ file.getFileKeywords() }}{% endblock %}
+
+{% block body %}
+<section class="ptb-120 gradient-overlay bg-image">
+            <div class="background-image-wraper custom-overlay" style="background: url('{{ theme.OyDiskImgPath() }}/pattern-1.svg') repeat center center;opacity: 1;"></div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-8">
+                        <div class="hero-content-left text-white text-center">
+                            <h3 class="text-white">{{ t("share_file_title", "File Information") }}</h3>
+                            <p>{{ t("file_information_description", "Information about") }} "{{ file.originalFilename }}"</p>
+							<img src="{{ file.getLargeIconPath()|raw }}" alt="{{ file.extension }}"  style="max-height: 7.42857143em;" class="mb-3">
+							<h3 class="text-white mb-5">{{ file.originalFilename }}</h3>
+                            <div class="fileinfo-wrap-2 mb-5">
+								<div class="row">
+									<div class="col">
+										<p class="mb-3">Filesize</p>
+										<h5 class="text-white">{{ file.getFormattedFilesize() }}</h5>
+									</div>
+									<div class="col">
+										<p class="mb-3">Uploaded</p>
+										<h5 class="text-white">{{ file.getFormattedUploadedDate() }}</h5>
+									</div>
+									<div class="col">
+										<p class="mb-3">Status</p>
+										<h5 class="text-white">{{ file.getStatusLabel()|title }}</h5>
+									</div>
+								</div>
+							</div>
+                    {% if file.status == 'active' %}
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <button class="btn btn-success save-now-btn" onclick="window.location = '{{ file.getFullShortUrl() }}'; return false;">{{ t("download_now", "download now")|upper }}</button>
+                            </div>
+                        </div>
+                    {% endif %}
+            <input type="hidden" name="submitted" value="1"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+			{% include '@themePath/partial/_oydisk_premium.html.twig' %}
+{% endblock %}

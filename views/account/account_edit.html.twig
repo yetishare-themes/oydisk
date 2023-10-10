@@ -1,0 +1,479 @@
+{% extends "account/partial/layout_logged_in.html.twig" %}
+
+{% block title %}{{ t("account_edit_page_name", "Account Details") }}{% endblock %}
+{% block description %}{{ t("account_edit_meta_description", "Account details") }}{% endblock %}
+{% block keywords %}{{ t("account_edit_meta_keywords", "details, account, short, url, user") }}{% endblock %}
+{% block selected_navigation_link %}settings{% endblock %}
+
+{% block body %}
+    <div class="main-content layer base-slide account-edit">
+        <div class="row">
+            <div class="col-sm-3 col-xs-6 responsive-column">
+                <div class="tile-stats tile-red">
+                    <div class="icon"><i class="entypo-drive"></i></div>
+                    {% if totalFreeSpace is not empty %}
+                        <div data-delay="0" data-duration="1500" data-decimals="2" data-postfix="&nbsp;{{ totalFreeSpaceExt }}" data-end="{{ totalFreeSpaceSize }}" data-start="0" class="num">{{ totalFreeSpace == 0?"0":"-" }}</div>
+                    {% else %}
+                        <div class="num">{{ t("unlimited", "Unlimited")|title }}</div>
+                    {% endif %}
+                    <h3>{{ t("available_storage", "Available Storage") }}</h3>
+                </div>
+            </div>
+
+            <div class="col-sm-3 col-xs-6 responsive-column">
+                <div class="tile-stats tile-green">
+                    <div class="icon"><i class="entypo-upload"></i></div>
+                    <div data-delay="0" data-duration="1500" data-decimals="2" data-postfix="&nbsp;{{ totalActiveFileSizeExt }}" data-end="{{ totalActiveFileSizeSize }}" data-start="0" class="num">-</div>
+                    <h3>{{ t("used_storage", "Used Storage") }}</h3>
+                </div>
+            </div>
+
+            <div class="col-sm-3 col-xs-6 responsive-column">
+                <div class="tile-stats tile-aqua">
+                    <div class="icon"><i class="entypo-doc-text-inv"></i></div>
+                    <div data-delay="0" data-duration="1500" data-end="{{ totalActiveFiles }}" data-start="0" class="num">-</div>
+                    <h3>{{ t("active_files", "Active Files") }}</h3>
+                </div>
+            </div>
+
+            <div class="col-sm-3 col-xs-6 responsive-column">
+                <div class="tile-stats tile-blue">
+                    <div class="icon"><i class="entypo-down"></i></div>
+                    <div data-delay="0" data-duration="1500" data-end="{{ totalDownloads }}" data-start="0" class="num">-</div>
+                    <h3>{{ t("total_downloads", "Total Downloads") }}</h3>
+                </div>
+            </div>
+        </div>
+        <br/>
+
+        <form class="form-horizontal form-groups-bordered" role="form" action="{{ theme.getAccountWebRoot() }}/edit" method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs bordered">
+                        <li class="active">
+                            <a href="#details" data-toggle="tab" aria-expanded="true">
+                                <span><i class="entypo-user"></i></span>
+                                <span class="hidden-xs">{{ t('your_details', 'Your Details') }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#security" data-toggle="tab" aria-expanded="true">
+                                <span><i class="entypo-lock"></i></span>
+                                <span class="hidden-xs">{{ t('account_security', 'Account Security') }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#settings" data-toggle="tab" aria-expanded="false">
+                                <span><i class="entypo-cog"></i></span>
+                                <span class="hidden-xs">{{ t('account_settings', 'Settings') }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#api" data-toggle="tab" aria-expanded="false">
+                                <span><i class="entypo-code"></i></span>
+                                <span class="hidden-xs">{{ t('api_access', 'API Access') }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="details">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div data-collapsed="0" class="panel panel-primary">
+
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                {{ t('paid_account_expiry_section_header', 'Premium account expiry details.') }}
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">{{ t('account_type', 'account type')|title }}</label>
+                                                <div class="col-sm-5" style="padding-top: 7px;">
+                                                    {{ accountTypeLabel }}
+                                                </div>
+                                            </div>
+                                            {% if accountType in ['paid', 'admin', 'moderator'] %}
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">{{ t("account_home_expiry_date", "Account expiry date")|title }}</label>
+                                                    <div class="col-sm-5" style="padding-top: 7px;">
+                                                        {{ accountExpiry }}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>
+
+                                    <div data-collapsed="0" class="panel panel-primary">
+
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                {{ t('keep_your_account_details_up_to_date_below', 'Keep your account details up to date below.') }}
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-body">
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="title">{{ t("title", "Title") }}</label>
+                                                <div class="col-sm-5">
+                                                    <select id="title" name="title" class="form-control" autofocus="autofocus" data-content="{{ t('your_title', 'Your title') }}" data-placement="right" data-trigger="hover focus" data-container="body" data-toggle="popover">
+                                                        <option value="">- {{ t('select', 'select') }} -</option>
+                                                        <option value="Mr" {{ (title == 'Mr') ? 'SELECTED' : '' }}>{{ t('title_mr', 'Mr') }}</option>
+                                                        <option value="Ms" {{ (title == 'Ms') ? 'SELECTED' : '' }}>{{ t('title_ms', 'Ms') }}</option>
+                                                        <option value="Mrs" {{ (title == 'Mrs') ? 'SELECTED' : '' }}>{{ t('title_mrs', 'Mrs') }}</option>
+                                                        <option value="Miss" {{ (title == 'Miss') ? 'SELECTED' : '' }}>{{ t('title_miss', 'Miss') }}</option>
+                                                        <option value="Dr" {{ (title == 'Dr') ? 'SELECTED' : '' }}>{{ t('title_dr', 'Dr') }}</option>
+                                                        <option value="Pro" {{ (title == 'Pro') ? 'SELECTED' : '' }}>{{ t('title_pro', 'Pro') }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="firstname">{{ t("firstname", "Firstname") }}</label>
+                                                <div class="col-sm-5">
+                                                    <input id="firstname" name="firstname" type="text" value="{{ firstname }}" class="form-control" data-content="{{ t('your_firstname', 'Your firstname') }}" data-placement="right" data-trigger="hover focus" data-container="body" data-toggle="popover">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="lastname">{{ t("lastname", "Lastname") }}</label>
+                                                <div class="col-sm-5">
+                                                    <input id="lastname" name="lastname" type="text" value="{{ lastname }}" class="form-control" data-content="{{ t('your_lastname', 'Your lastname') }}" data-placement="right" data-trigger="hover focus" data-container="body" data-toggle="popover">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="emailAddress">{{ t("email_address", "Email Address") }}</label>
+                                                <div class="col-sm-5">
+                                                    <input id="emailAddress" name="emailAddress" type="text" value="{{ emailAddress }}" class="form-control" data-content="{{ t('your_new_email_address', 'Your new email address') }}" data-placement="right" data-trigger="hover focus" data-container="body" data-toggle="popover">
+                                                </div>
+                                            </div>
+
+                                            {% if SITE_CONFIG_LANGUAGE_USER_SELECT_LANGUAGE == 'yes' %}
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="languageId">{{ t("language", "Language") }}</label>
+                                                    <div class="col-sm-5">
+                                                        <select id="languageId" name="languageId" class="form-control" data-content="{{ t('settings_tip_site_language', 'The language to use on the site.') }}" data-placement="right" data-trigger="hover focus" data-container="body" data-toggle="popover">
+                                                            {% for activeLanguage in activeLanguages %}
+                                                                <option value="{{ activeLanguage.id }}"{% if languageId == activeLanguage.id %} SELECTED{% endif %}>{{ activeLanguage.languageName }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                                        
+                            {% if PluginHelper.pluginEnabled('newsletters') == true %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div data-collapsed="0" class="panel panel-primary">
+                                            <div class="panel-heading">
+                                                <div class="panel-title">
+                                                    {{ t('mailing_list', 'Mailing list.') }}
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label for="avatar" class="col-sm-3 control-label">{{ t('receive_occasional_email', 'Receive Occational Emails') }}</label>
+                                                    <div class="col-sm-5">
+                                                        <div class="checkbox" style="float: left;">
+                                                            <label>
+                                                                <input type="checkbox" id="marketingEmails" name="marketingEmails" value="1" {{ marketingEmails == 1?'CHECKED':'' }} />{{ t('receive_occasional_email_text', "Receive occasional marketing emails from us. We'll never share your details with anyone else.") }}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="tab-pane" id="security">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div data-collapsed="0" class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                {{ t('account_settings_change_password', 'Change password.') }}
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="password">{{ t("change_password", "Change Password") }}</label>
+                                                <div class="col-sm-5">
+                                                    <input id="password" name="password" type="password" value="" class="form-control" data-content="{{ t('a_new_account_password_leave_blank_to_keep', 'Optional. A new account password, leave this blank to keep your existing.') }}" data-placement="right" data-trigger="hover focus" data-container="body" data-toggle="popover">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="passwordConfirm">{{ t("confirm_password_edit", "Confirm Password") }}</label>
+                                                <div class="col-sm-5">
+                                                    <input id="passwordConfirm" name="passwordConfirm" type="password" value="" class="form-control" data-content="{{ t('a_new_account_password_confirm_leave_blank_to_keep', 'Optional. Confirm the password entered above, leave this blank to keep your existing.') }}" data-placement="right" data-trigger="hover focus" data-container="body" data-toggle="popover">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                
+                            {% if SITE_CONFIG_ENABLE_2FA == 'yes' %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div data-collapsed="0" class="panel panel-primary">
+                                            <div class="panel-heading">
+                                                <div class="panel-title">
+                                                    {{ t('account_settings_2fa', '2FA.') }}
+                                                </div>
+                                            </div>
+
+                                            <div id="Enable2FAWrapper" class="panel-body"{{ enabled2FA==1?' style="display: none;"':'' }}>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">{{ t('2fa_status', '2FA Status') }}</label>
+                                                    <div class="col-sm-5" style="padding-top: 7px;">
+                                                        {{ t("settings_2fa_disabled", "Disabled") }}&nbsp;&nbsp;<i class="fa fa-unlock lock-2fa"></i>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label"></label>
+                                                    <div class="col-sm-5">
+                                                        <button class="btn btn-secondary" type="button" onClick="enable2fa(); return false;">{{ t("settings_2fa_enable_2fa", "Enable 2FA") }}</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div id="Disable2FAWrapper" class="panel-body"{{ enabled2FA==0?' style="display: none;"':'' }}>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">{{ t('2fa_status', '2FA Status') }}</label>
+                                                    <div class="col-sm-5" style="padding-top: 7px;">
+                                                        {{ t("settings_2fa_enabled", "Enabled") }}&nbsp;&nbsp;<i class="fa fa-lock lock-2fa"></i>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label"></label>
+                                                    <div class="col-sm-5">
+                                                        <button class="btn btn-secondary" type="button" onClick="if(confirm('Are you sure you want to disable 2FA?')) { disable2fa(); } return false;">{{ t("settings_2fa_disable_2fa", "Disable 2FA") }}</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                        </div>
+                        <div class="tab-pane" id="settings">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div data-collapsed="0" class="panel panel-primary">
+
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                {{ t("privacy", "Privacy")|title }}
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-body">
+                                            {% if SITE_CONFIG_FORCE_FILES_PRIVATE == 'no' %}
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="isPublic">{{ t("default_privacy", "Default Privacy")|title }}</label>
+                                                    <div class="col-sm-5">
+                                                        <select id="isPublic" name="isPublic" class="form-control" autofocus="autofocus" data-content="{{ t('settings_tip_private_files_text', 'Whether to keep all files private or allow sharing. If this is set as public, you can still set folders as private.') }}" data-placement="right" data-trigger="hover focus" data-container="body" data-toggle="popover">
+                                                            <option value="1" {% if isPublic == 1 %}selected="selected"{% endif %}>{{ t('settings_public_files', 'All Files Publicly Accessible') }}</option>
+                                                            <option value="0" {% if isPublic == 0 %}selected="selected"{% endif %}>{{ t('settings_private_files', 'All Files Private (only via your account)') }}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="privateFileStatistics">{{ t("file_statistics", "File Statistics") }}</label>
+                                                <div class="col-sm-5">
+                                                    <select id="privateFileStatistics" name="privateFileStatistics" class="form-control" data-content="{{ t('settings_tip_file_statistics', 'Whether to keep all file stats private or allow public access.') }}" data-placement="right" data-trigger="hover focus" data-container="body" data-toggle="popover">
+                                                        {% for k,statisticsOption in statisticsOptions %}
+                                                            <option value="{{ k }}"{% if privateFileStatistics == k %} SELECTED{% endif %}>{{ statisticsOption }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="fileReferrerWhitelist">{{ t("file_referrer_whitelisted_domains", "File Referrer Whitelisted Domains") }}</label>
+                                                <div class="col-sm-5">
+                                                    <textarea placeholder="i.e. website.com" id="fileReferrerWhitelist" name="fileReferrerWhitelist" rows="2" class="form-control" data-content="{{ t('settings_tip_referrer_whitelist', 'Optional list of domain names which are allowed to link to files. If set, any referring sites not in the list will be shown an error message. Comma separated for each entry. Leave empty to allow any site to link to files.') }}" data-placement="right" data-trigger="hover focus" data-container="body" data-toggle="popover">{{ fileReferrerWhitelist }}</textarea>
+                                                    <p class="text-muted">{{ t("file_referrer_muted", "- Optional. Comma separated, excluding the http/https part.") }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div data-collapsed="0" class="panel panel-primary">
+
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                {{ t('account_settings_avatar', 'Account avatar.') }}
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-body">
+
+                                            <div class="form-group">
+                                                <label for="avatar" class="col-sm-3 control-label">{{ t('account_settings_avatar_file', 'Select File (jpg, png or gif)') }}</label>
+                                                <div class="col-sm-5">
+                                                    <input type="file" class="form-control" id="avatar" name="avatar" placeholder="{{ t('account_settings_avatar_file', 'Select File (jpg, png or gif)') }}">
+                                                    {% if hasAvatar == true %}
+                                                        <br/>
+                                                        <img class="img-square settings-avatar" src="{{ Auth.user.getAvatarUrl() }}">
+                                                        <div class="checkbox" style="float: left;">
+                                                            <label>
+                                                                <input type="checkbox" id="removeAvatar" name="removeAvatar" value="1"/>{{ t('account_settings_avatar_remove', 'Remove avatar') }}
+                                                            </label>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div data-collapsed="0" class="panel panel-primary">
+
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                {{ t('account_settings_watermark', 'Optional image preview watermark. After upload, enable watermarking using each folder settings.') }}
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-body">
+
+                                            <div class="form-group">
+                                                <label for="watermark" class="col-sm-3 control-label">{{ t('account_settings_watermark_file', 'Select File (transparent png)') }}</label>
+                                                <div class="col-sm-5">
+                                                    <input type="file" class="form-control" id="watermark" name="watermark" placeholder="{{ t('account_settings_watermark_file', 'Select File (transparent png)') }}">
+                                                    {% if hasWatermark == true %}
+                                                        <br/>
+                                                        <div class="checkbox" style="float: left;">
+                                                            <label>
+                                                                <input type="checkbox" id="removeWatermark" name="removeWatermark" value="1"/>{{ t('account_settings_watermark_remove', 'Remove watermark') }}
+                                                            </label>
+                                                        </div>
+                                                        <div class="clear"></div>
+                                                        <br/>
+                                                        <img src="{{ watermarkCacheUrl }}">
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="watermarkPosition">{{ t("account_settings_watermark_position", "Watermark Position") }}</label>
+                                                <div class="col-sm-5">
+                                                    <select name="watermarkPosition" id="watermarkPosition" class="form-control">
+                                                        {% for k,watermarkPositionOption in watermarkPositionOptions %}
+                                                            <option value="{{ k }}"{% if watermarkPosition == k %} SELECTED{% endif %}>{{ watermarkPositionOption }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="watermarkPadding">{{ t("account_settings_watermark_padding", "Watermark Padding") }}</label>
+                                                <div class="col-sm-5">
+                                                    <div class="input-spinner"> <button type="button" class="btn btn-default">-</button> <input id="watermarkPadding" name="watermarkPadding" type="text" class="form-control size-1" value="{{ watermarkPadding is defined ? watermarkPadding : '10' }}" data-min="0" data-max="50"> <button type="button" class="btn btn-default">+</button> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="api">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div data-collapsed="0" class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                {{ t('account_settings_file_upload_api_keys', 'File Upload API Keys.') }}
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="key1">{{ t("key1", "Key 1") }}</label>
+                                                <div class="col-sm-5">
+                                                    <div class="input-group">
+                                                        <input id="key1" name="key1" type="text" value="{{ key1 }}" class="form-control" data-content="{{ t('account_api_keys', 'Optional. Generate access keys to the file upload API.') }}" data-placement="right" data-trigger="hover focus" data-container="body" data-toggle="popover" READONLY/>
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-secondary" type="button" onClick="createRandomAPIKey('key1'); return false;">Generate</button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="key2">{{ t("key2", "Key 2") }}</label>
+                                                <div class="col-sm-5">
+                                                    <div class="input-group">
+                                                        <input id="key2" name="key2" type="text" value="{{ key2 }}" class="form-control" data-content="{{ t('account_api_keys', 'Optional. Generate access keys to the file upload API.') }}" data-placement="right" data-trigger="hover focus" data-container="body" data-toggle="popover" READONLY/>
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-secondary" type="button" onClick="createRandomAPIKey('key2'); return false;">Generate</button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            {% if SITE_CONFIG_SHOW_API_PAGE == 'yes' %}
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">{{ t('api_documentation', 'API Documentation')|title }}</label>
+                                                    <div class="col-sm-5">
+                                                        <a href="{{ WEB_ROOT }}/api" target="_blank" class="btn btn-default">{{ t('api_documentation_view', 'View')|title }}</a>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div data-collapsed="0" class="panel panel-primary">
+
+                        <div class="panel-body">
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-5">
+                                    <input type="hidden" value="1" name="submitme"/>
+                                    <button class="btn btn-info" type="submit">{{ t("update_account", "update account")|title }} <i class="entypo-check"></i></button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

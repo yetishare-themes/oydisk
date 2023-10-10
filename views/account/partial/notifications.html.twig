@@ -1,0 +1,13 @@
+{% if msg_page_errors is defined %}
+    <script>
+    $(document).ready(function () {
+        showErrorNotification("{{ t('error', 'Error') }}", "{{ msg_page_errors|join('. ') }}");
+    });
+    </script>
+{% elseif msg_page_successes is defined %}
+    <script>
+    $(document).ready(function () {
+        showSuccessNotification("{{ t('success', 'Success') }}", "{{ msg_page_successes|join('. ') }}");
+    });
+    </script>
+{% endif %}

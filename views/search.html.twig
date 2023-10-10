@@ -1,0 +1,170 @@
+{% extends "partial/layout.html.twig" %}
+
+{% block title %}{{ t('home_search_files', 'Search Files')|title }}{% endblock %}
+{% block description %}{{ pageTitlePrepend }} {{ t("search_meta_description", "Check multiple download links at the same time.") }}{% endblock %}
+{% block keywords %}{{ pageTitlePrepend|lower }}{{ t("search_meta_keywords", "link, checker, copyright, infringement, file, hosting") }}{% endblock %}
+{% block selected_navigation_link %}search{% endblock %}
+
+{% block body %}
+    <section class="text-center public-search-page">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12 col-lg-11">
+                    <div class="cta">
+                        <h2>{{ t('home_search_files', 'Search Files')|title }}</h2>
+                    </div>
+                </div>
+            </div>
+            <form action="{{ WEB_ROOT }}/search" class="row justify-content-center form--active" method="POST" onSubmit="reloadTable(); return false;">
+                <div class="search-input col-lg-6 col-md-8">
+                    <input name="filterText" id="filterText" type="text" value="{{ filterText }}" placeholder="{{ t("search_box_placeholder", "Enter your search term here...") }}" autocomplete="off" autofocus/>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <button type="submit" class="btn btn--primary type--uppercase">{{ t("search_form_search", "Search") }}</button>
+                </div>
+            </form>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tabs-container">
+                        <ul class="tabs">
+                            <li class="active" onClick="reloadTable('all'); return false;">
+                                <div class="tab__title text-center">
+                                    <i class="icon icon--sm block icon-Files"></i><span class="h5">{{ t('search_type_all_files', "All Files") }}</span>&nbsp;&nbsp;<span class="text-danger label-text tab-text-all"></span>
+                                </div>
+                            </li>
+                            {% for documentType,documentExt in documentTypes %}
+                                <li onClick="reloadTable('{{ documentType }}'); return false;">
+                                    <div class="tab__title text-center">
+                                        <i class="icon icon--sm block icon-{{ documentExt['icon'] }}"></i><span class="h5">{{ t('search_type_' ~ documentType, documentType|title) }}</span>&nbsp;&nbsp;<span class="text-danger label-text tab-text-{{ documentType }}"></span>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        <div>
+                            {% if msg_page_errors is defined %}
+                            <div class="alert bg--error">
+                                <div class="alert__body"><i class="fa fa-exclamation-triangle color--error"></i>&nbsp;&nbsp;{% if msg_page_errors is defined %}{{ msg_page_errors|join('. ') }}{% endif %}</div>
+                            </div>
+                            {% endif %}
+
+                            <table id="searchResults" width="100%" cellpadding="3" cellspacing="0" class="searchResults text-left table--alternate-row">
+                                <tbody><tr><td>{{ t('loading_please_wait', 'Loading, please wait...') }}</td></tr></tbody>
+                            </table>
+                        </div>
+                             
+                    </div>
+                </div>
+            </div>
+
+            <div class="customFilter" id="customFilter" style="display: none;">
+                <label class="adminResponsiveHide filterByTypeWrapper" style="padding-left: 6px;">
+                    <select name="filterByType" id="filterByType" onChange="reloadTable();
+                            return false;" style="width: 120px;">
+                        <option value="">- all -</option>
+                        {% for documentType,documentExt in documentTypes %}
+                            <option value="{{ documentExt['ext'] }}"{{ filterByType == documentExt['ext']?" SELECTED":"" }}>{{ documentType }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block footerjs %}
+    <script>
+        oTable = null;
+        filterType = '';
+        newSearch = true;
+        firstLoad = true;
+        $(document).ready(function () {
+            oTable = $('#searchResults').dataTable({
+                "sPaginationType": "full_numbers",
+                "bAutoWidth": false,
+                "bServerSide": true,
+                "bProcessing": true,
+                "sAjaxSource": 'ajax/search',
+                "iDisplayLength": 25,
+                "bFilter": false,
+                "bSort": false,
+                "bLengthChange": false,
+                "aoColumns": [
+                    {},
+                    {sClass: "alignCenter searchLastCol", sWidth: "150"}
+                ],
+                "oLanguage": {
+                    "oPaginate": {
+                        "sFirst": "{{ t('datatable_first', 'First') }}",
+                        "sPrevious": "{{ t('datatable_previous', 'Previous') }}",
+                        "sNext": "{{ t('datatable_next', 'Next') }}",
+                        "sLast": "{{ t('datatable_last', 'Last') }}"
+                    },
+                    "sEmptyTable": "{{ t('datatable_no_files_available_in_search_results', 'No files available in search results') }}",
+                    "sInfo": "{{ t('datatable_showing_x_to_x_of_total_files', 'Showing _START_ to _END_ of _TOTAL_ files') }}",
+                    "sInfoEmpty": "{{ t('datatable_no_files', '') }}",
+                    "sLengthMenu": "{{ t('datatable_show_menu_files', 'Show _MENU_ files') }}",
+                    "sProcessing": "{{ t('datatable_loading_please_wait', 'Loading, please wait...') }}",
+                    "sInfoFiltered": "{{ t('datatable_base_filtered', ' (filtered)') }}",
+                    "sSearch": "{{ t('datatable_search_text', 'Search:') }}",
+                    "sZeroRecords": "{{ t('datatable_no_matching_records_found', 'No matching records found') }}"
+                },
+                "fnServerData": function (sSource, aoData, fnCallback) {
+                    if (firstLoad != true) {
+                        $('#searchResults').parent().fadeTo('fast', 0.3);
+                    }
+                    firstLoad = false;
+
+                    aoData.push({"name": "filterText", "value": $('#filterText').val()});
+                    aoData.push({"name": "filterType", "value": filterType});
+                    $.ajax({
+                        "dataType": 'json',
+                        "type": "GET",
+                        "url": "ajax/search",
+                        "data": aoData,
+                        "success": function (json) {
+                            updateTotals(json);
+                            fnCallback(json);
+                            $('#searchResults').parent().fadeTo('fast', 1.0);
+                        }
+                    });
+                }
+            });
+        });
+
+        function reloadTable(lFilterType)
+        {
+            if (typeof (lFilterType) == 'undefined')
+            {
+                lFilterType = null;
+            }
+            filterType = lFilterType;
+
+            oTable.fnPageChange('first');
+            oTable.fnDraw(false);
+        }
+
+        function updateTotals(json)
+        {
+            if (filterType == null)
+            {
+                $('.tabs li:first').click();
+            }
+
+            newSearch = false;
+
+            setTabText('all', json.iTotalAll);
+
+        {% for documentType,documentExt in documentTypes %}
+                setTabText('{{ documentType }}', json.iTotal{{ documentType|title }});
+        {% endfor %}
+            }
+
+            function setTabText(id, total)
+            {
+                $('.tab-text-' + id).html('(' + total + ')');
+            }
+    </script>
+{% endblock %}
