@@ -7,7 +7,9 @@ Free theme for the Yetishare file hosting script by [Yetishare Themes](https://y
 ## Installation
 
 - Requires Yetishare v5.x available from [yetishare.com](https://yetishare.com)
-- Download the code as a zip file and install via the Yetishare admin area
+- Download the code as a zip file
+- Ensure the theme files are in the root of the zip file (GitHub may add them in a sub-folder)
+- Install via the Yetishare admin area, manage themes section
 
 ## Support
 
